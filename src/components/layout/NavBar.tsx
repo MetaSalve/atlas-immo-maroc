@@ -1,13 +1,16 @@
 
 import React from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { Home, Search, Heart, Map, Menu, UserCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { useAuth } from '@/providers/AuthProvider';
 
 export const NavBar = () => {
   const isMobile = useIsMobile();
+  const { user, signOut } = useAuth();
+  const navigate = useNavigate();
   
   return (
     <header className="sticky top-0 z-40 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -34,12 +37,39 @@ export const NavBar = () => {
         </div>
         
         <div className="flex items-center gap-2">
-          <Button variant="ghost" size="sm" className="hidden md:flex items-center gap-2">
-            <UserCircle className="h-4 w-4" />
-            <span>Se connecter</span>
-          </Button>
-          {!isMobile && (
-            <Button variant="default" size="sm">S'inscrire</Button>
+          {user ? (
+            <>
+              <Button 
+                variant="ghost" 
+                size="sm" 
+                className="hidden md:flex items-center gap-2"
+                onClick={() => signOut()}
+              >
+                <UserCircle className="h-4 w-4" />
+                <span>Sign Out</span>
+              </Button>
+            </>
+          ) : (
+            <>
+              <Button 
+                variant="ghost" 
+                size="sm" 
+                className="hidden md:flex items-center gap-2"
+                onClick={() => navigate('/auth')}
+              >
+                <UserCircle className="h-4 w-4" />
+                <span>Sign In</span>
+              </Button>
+              {!isMobile && (
+                <Button 
+                  variant="default" 
+                  size="sm"
+                  onClick={() => navigate('/auth')}
+                >
+                  Sign Up
+                </Button>
+              )}
+            </>
           )}
         </div>
       </div>
