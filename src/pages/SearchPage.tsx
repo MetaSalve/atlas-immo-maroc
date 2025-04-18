@@ -1,9 +1,11 @@
-
 import { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { SearchBar } from '@/components/search/SearchBar';
 import { SearchFilters, SearchFiltersValues } from '@/components/search/SearchFilters';
 import { PropertyGrid } from '@/components/property/PropertyGrid';
+import { PropertyMap } from '@/components/map/PropertyMap';
+import { MapPin, List } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 import { Property } from '@/types/property';
 import { useProperties } from '@/hooks/useProperties';
 import { useFavorites } from '@/hooks/useFavorites';
@@ -13,6 +15,7 @@ const SearchPage = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const { data: allProperties = [], isLoading } = useProperties();
   const { favorites, toggleFavorite } = useFavorites();
+  const [showMap, setShowMap] = useState(false);
   
   const [filters, setFilters] = useState<SearchFiltersValues>({
     status: 'all',
@@ -39,7 +42,6 @@ const SearchPage = () => {
   useEffect(() => {
     let results = allProperties;
     
-    // Filtre par recherche/localisation
     if (filters.location) {
       const searchTerms = filters.location.toLowerCase();
       results = results.filter((property) => {
@@ -48,7 +50,6 @@ const SearchPage = () => {
       });
     }
     
-    // Filtres additionnels avec plus de précision
     results = results.filter((property) => {
       const statusMatch = filters.status === 'all' || property.status === filters.status;
       const typeMatch = filters.type === 'all' || property.type === filters.type;
@@ -72,10 +73,24 @@ const SearchPage = () => {
     setFilters(newFilters);
   };
   
+  const handlePropertyClick = (property: Property) => {
+    window.location.href = `/properties/${property.id}`;
+  };
+  
   return (
     <div className="py-6">
       <div className="mb-6">
-        <SearchBar initialValue={searchQuery} onSearch={handleSearch} />
+        <div className="flex gap-4 items-center">
+          <SearchBar initialValue={searchQuery} onSearch={handleSearch} className="flex-1" />
+          <Button
+            variant="outline"
+            size="icon"
+            onClick={() => setShowMap(!showMap)}
+            className="flex-none"
+          >
+            {showMap ? <List className="h-4 w-4" /> : <MapPin className="h-4 w-4" />}
+          </Button>
+        </div>
       </div>
       
       <div className="grid grid-cols-1 lg:grid-cols-[300px_1fr] gap-6">
@@ -94,13 +109,21 @@ const SearchPage = () => {
             </h1>
           </div>
           
-          <PropertyGrid
-            properties={filteredProperties}
-            favorites={favorites}
-            onToggleFavorite={toggleFavorite}
-            isLoading={isLoading}
-            emptyMessage="Aucun bien ne correspond à vos critères. Essayez d'élargir votre recherche."
-          />
+          {showMap ? (
+            <PropertyMap
+              properties={filteredProperties}
+              onPropertyClick={handlePropertyClick}
+              className="sticky top-24"
+            />
+          ) : (
+            <PropertyGrid
+              properties={filteredProperties}
+              favorites={favorites}
+              onToggleFavorite={toggleFavorite}
+              isLoading={isLoading}
+              emptyMessage="Aucun bien ne correspond à vos critères. Essayez d'élargir votre recherche."
+            />
+          )}
         </main>
       </div>
     </div>
