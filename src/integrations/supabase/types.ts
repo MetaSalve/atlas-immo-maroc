@@ -152,6 +152,130 @@ export type Database = {
         }
         Relationships: []
       }
+      property_sources: {
+        Row: {
+          active: boolean | null
+          created_at: string | null
+          id: string
+          last_scraped_at: string | null
+          logo: string | null
+          name: string
+          scrape_frequency_hours: number | null
+          type: string
+          updated_at: string | null
+          url: string
+        }
+        Insert: {
+          active?: boolean | null
+          created_at?: string | null
+          id?: string
+          last_scraped_at?: string | null
+          logo?: string | null
+          name: string
+          scrape_frequency_hours?: number | null
+          type: string
+          updated_at?: string | null
+          url: string
+        }
+        Update: {
+          active?: boolean | null
+          created_at?: string | null
+          id?: string
+          last_scraped_at?: string | null
+          logo?: string | null
+          name?: string
+          scrape_frequency_hours?: number | null
+          type?: string
+          updated_at?: string | null
+          url?: string
+        }
+        Relationships: []
+      }
+      scraping_logs: {
+        Row: {
+          completed_at: string | null
+          error_message: string | null
+          id: string
+          properties_added: number | null
+          properties_found: number | null
+          properties_updated: number | null
+          source_id: string | null
+          started_at: string | null
+          status: string
+        }
+        Insert: {
+          completed_at?: string | null
+          error_message?: string | null
+          id?: string
+          properties_added?: number | null
+          properties_found?: number | null
+          properties_updated?: number | null
+          source_id?: string | null
+          started_at?: string | null
+          status: string
+        }
+        Update: {
+          completed_at?: string | null
+          error_message?: string | null
+          id?: string
+          properties_added?: number | null
+          properties_found?: number | null
+          properties_updated?: number | null
+          source_id?: string | null
+          started_at?: string | null
+          status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "scraping_logs_source_id_fkey"
+            columns: ["source_id"]
+            isOneToOne: false
+            referencedRelation: "property_sources"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      scraping_queue: {
+        Row: {
+          completed_at: string | null
+          created_at: string | null
+          id: string
+          priority: number | null
+          scheduled_for: string | null
+          source_id: string
+          started_at: string | null
+          status: string | null
+        }
+        Insert: {
+          completed_at?: string | null
+          created_at?: string | null
+          id?: string
+          priority?: number | null
+          scheduled_for?: string | null
+          source_id: string
+          started_at?: string | null
+          status?: string | null
+        }
+        Update: {
+          completed_at?: string | null
+          created_at?: string | null
+          id?: string
+          priority?: number | null
+          scheduled_for?: string | null
+          source_id?: string
+          started_at?: string | null
+          status?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "scraping_queue_source_id_fkey"
+            columns: ["source_id"]
+            isOneToOne: false
+            referencedRelation: "property_sources"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
