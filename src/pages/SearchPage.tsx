@@ -5,14 +5,15 @@ import { SearchBar } from '@/components/search/SearchBar';
 import { SearchFilters, SearchFiltersValues } from '@/components/search/SearchFilters';
 import { PropertyGrid } from '@/components/property/PropertyGrid';
 import { Property } from '@/types/property';
-import { mockProperties } from '@/data/mockProperties';
-import { useToast } from '@/hooks/use-toast';
+import { useProperties } from '@/hooks/useProperties';
+import { useFavorites } from '@/hooks/useFavorites';
 
 const SearchPage = () => {
   const location = useLocation();
-  const { toast } = useToast();
   const [searchQuery, setSearchQuery] = useState('');
-  const [favorites, setFavorites] = useState<string[]>([]);
+  const { data: allProperties = [], isLoading } = useProperties();
+  const { favorites, toggleFavorite } = useFavorites();
+  
   const [filters, setFilters] = useState<SearchFiltersValues>({
     status: 'all',
     type: 'all',
@@ -24,10 +25,9 @@ const SearchPage = () => {
     areaMin: 0,
   });
   
-  const [filteredProperties, setFilteredProperties] = useState<Property[]>(mockProperties);
+  const [filteredProperties, setFilteredProperties] = useState<Property[]>(allProperties);
   
   useEffect(() => {
-    // Extract search query from URL
     const queryParams = new URLSearchParams(location.search);
     const q = queryParams.get('q');
     if (q) {
@@ -37,10 +37,9 @@ const SearchPage = () => {
   }, [location.search]);
   
   useEffect(() => {
-    // Apply filters to properties
-    let results = mockProperties;
+    let results = allProperties;
     
-    // Filter by search query/location
+    // Filtre par recherche/localisation
     if (filters.location) {
       const searchTerms = filters.location.toLowerCase();
       results = results.filter((property) => {
@@ -49,38 +48,20 @@ const SearchPage = () => {
       });
     }
     
-    // Filter by status
-    if (filters.status !== 'all') {
-      results = results.filter((property) => property.status === filters.status);
-    }
-    
-    // Filter by type
-    if (filters.type !== 'all') {
-      results = results.filter((property) => property.type === filters.type);
-    }
-    
-    // Filter by price
-    results = results.filter(
-      (property) => property.price >= filters.priceMin && property.price <= filters.priceMax
-    );
-    
-    // Filter by bedrooms
-    if (filters.bedroomsMin > 0) {
-      results = results.filter((property) => property.bedrooms >= filters.bedroomsMin);
-    }
-    
-    // Filter by bathrooms
-    if (filters.bathroomsMin > 0) {
-      results = results.filter((property) => property.bathrooms >= filters.bathroomsMin);
-    }
-    
-    // Filter by area
-    if (filters.areaMin > 0) {
-      results = results.filter((property) => property.area >= filters.areaMin);
-    }
+    // Filtres additionnels avec plus de précision
+    results = results.filter((property) => {
+      const statusMatch = filters.status === 'all' || property.status === filters.status;
+      const typeMatch = filters.type === 'all' || property.type === filters.type;
+      const priceMatch = property.price >= filters.priceMin && property.price <= filters.priceMax;
+      const bedroomsMatch = filters.bedroomsMin === 0 || property.bedrooms >= filters.bedroomsMin;
+      const bathroomsMatch = filters.bathroomsMin === 0 || property.bathrooms >= filters.bathroomsMin;
+      const areaMatch = filters.areaMin === 0 || property.area >= filters.areaMin;
+      
+      return statusMatch && typeMatch && priceMatch && bedroomsMatch && bathroomsMatch && areaMatch;
+    });
     
     setFilteredProperties(results);
-  }, [filters]);
+  }, [filters, allProperties]);
   
   const handleSearch = (query: string) => {
     setSearchQuery(query);
@@ -89,16 +70,6 @@ const SearchPage = () => {
   
   const handleFilterChange = (newFilters: SearchFiltersValues) => {
     setFilters(newFilters);
-  };
-  
-  const handleToggleFavorite = (id: string) => {
-    setFavorites((prevFavorites) => {
-      if (prevFavorites.includes(id)) {
-        return prevFavorites.filter((favId) => favId !== id);
-      } else {
-        return [...prevFavorites, id];
-      }
-    });
   };
   
   return (
@@ -126,7 +97,8 @@ const SearchPage = () => {
           <PropertyGrid
             properties={filteredProperties}
             favorites={favorites}
-            onToggleFavorite={handleToggleFavorite}
+            onToggleFavorite={toggleFavorite}
+            isLoading={isLoading}
             emptyMessage="Aucun bien ne correspond à vos critères. Essayez d'élargir votre recherche."
           />
         </main>
