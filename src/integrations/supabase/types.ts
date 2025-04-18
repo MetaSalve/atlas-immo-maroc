@@ -9,7 +9,149 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      [_ in never]: never
+      favorites: {
+        Row: {
+          created_at: string | null
+          id: string
+          property_id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          property_id: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          property_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "favorites_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      profiles: {
+        Row: {
+          avatar_url: string | null
+          created_at: string | null
+          email: string | null
+          full_name: string | null
+          id: string
+          phone: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          avatar_url?: string | null
+          created_at?: string | null
+          email?: string | null
+          full_name?: string | null
+          id: string
+          phone?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          avatar_url?: string | null
+          created_at?: string | null
+          email?: string | null
+          full_name?: string | null
+          id?: string
+          phone?: string | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      properties: {
+        Row: {
+          address: string
+          area: number
+          bathrooms: number | null
+          bedrooms: number | null
+          city: string
+          contact_email: string | null
+          contact_name: string
+          contact_phone: string | null
+          created_at: string | null
+          description: string | null
+          district: string
+          features: string[] | null
+          id: string
+          images: string[] | null
+          lat: number | null
+          lng: number | null
+          price: number
+          price_unit: string
+          source_logo: string | null
+          source_name: string
+          source_url: string
+          status: string
+          title: string
+          type: string
+          updated_at: string | null
+        }
+        Insert: {
+          address: string
+          area: number
+          bathrooms?: number | null
+          bedrooms?: number | null
+          city: string
+          contact_email?: string | null
+          contact_name: string
+          contact_phone?: string | null
+          created_at?: string | null
+          description?: string | null
+          district: string
+          features?: string[] | null
+          id?: string
+          images?: string[] | null
+          lat?: number | null
+          lng?: number | null
+          price: number
+          price_unit: string
+          source_logo?: string | null
+          source_name: string
+          source_url: string
+          status: string
+          title: string
+          type: string
+          updated_at?: string | null
+        }
+        Update: {
+          address?: string
+          area?: number
+          bathrooms?: number | null
+          bedrooms?: number | null
+          city?: string
+          contact_email?: string | null
+          contact_name?: string
+          contact_phone?: string | null
+          created_at?: string | null
+          description?: string | null
+          district?: string
+          features?: string[] | null
+          id?: string
+          images?: string[] | null
+          lat?: number | null
+          lng?: number | null
+          price?: number
+          price_unit?: string
+          source_logo?: string | null
+          source_name?: string
+          source_url?: string
+          status?: string
+          title?: string
+          type?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never

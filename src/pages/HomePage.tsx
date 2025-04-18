@@ -1,26 +1,16 @@
-
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useProperties } from '@/hooks/useProperties';
+import { useFavorites } from '@/hooks/useFavorites';
 import { SearchBar } from '@/components/search/SearchBar';
 import { PropertyGrid } from '@/components/property/PropertyGrid';
-import { mockProperties } from '@/data/mockProperties';
+import { useNavigate } from 'react-router-dom';
 
 const HomePage = () => {
   const navigate = useNavigate();
-  const [favorites, setFavorites] = useState<string[]>([]);
+  const { data: properties = [], isLoading } = useProperties();
+  const { favorites, toggleFavorite } = useFavorites();
   
-  const handleToggleFavorite = (id: string) => {
-    setFavorites((prevFavorites) => {
-      if (prevFavorites.includes(id)) {
-        return prevFavorites.filter((favId) => favId !== id);
-      } else {
-        return [...prevFavorites, id];
-      }
-    });
-  };
-  
-  const featuredProperties = mockProperties.slice(0, 3);
-  const recentProperties = mockProperties.slice(3);
+  const featuredProperties = properties.slice(0, 3);
+  const recentProperties = properties.slice(3);
   
   return (
     <div className="py-6 space-y-10">
@@ -48,9 +38,10 @@ const HomePage = () => {
           </button>
         </div>
         <PropertyGrid 
-          properties={featuredProperties} 
+          properties={featuredProperties}
           favorites={favorites}
-          onToggleFavorite={handleToggleFavorite}
+          onToggleFavorite={toggleFavorite}
+          isLoading={isLoading}
         />
       </section>
       
@@ -65,9 +56,10 @@ const HomePage = () => {
           </button>
         </div>
         <PropertyGrid 
-          properties={recentProperties} 
+          properties={recentProperties}
           favorites={favorites}
-          onToggleFavorite={handleToggleFavorite}
+          onToggleFavorite={toggleFavorite}
+          isLoading={isLoading}
         />
       </section>
       
