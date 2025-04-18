@@ -19,7 +19,7 @@ export const useProperties = () => {
         title: property.title,
         description: property.description || '',
         price: Number(property.price),
-        priceUnit: property.price_unit,
+        priceUnit: property.price_unit as 'MAD' | 'EUR' | 'USD', // Type assertion for price_unit
         area: Number(property.area),
         bedrooms: property.bedrooms || 0,
         bathrooms: property.bathrooms || 0,
@@ -33,8 +33,8 @@ export const useProperties = () => {
           },
         },
         images: property.images || [],
-        type: property.type,
-        status: property.status,
+        type: property.type as 'apartment' | 'house' | 'villa' | 'riad' | 'land' | 'commercial' | 'other', // Type assertion for type
+        status: property.status as 'for-sale' | 'for-rent', // Type assertion for status
         features: property.features || [],
         source: {
           name: property.source_name,
