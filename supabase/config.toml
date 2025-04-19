@@ -3,3 +3,6 @@ project_id = "lomogmjwjnhvmcqkpjmg"
 
 [functions.process-scraping-queue]
 verify_jwt = false
+
+[functions.process-alert-notifications]
+verify_jwt = false

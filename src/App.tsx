@@ -12,6 +12,8 @@ import SearchPage from "./pages/SearchPage";
 import PropertyDetailPage from "./pages/PropertyDetailPage";
 import MapPage from "./pages/MapPage";
 import FavoritesPage from "./pages/FavoritesPage";
+import AlertsPage from "./pages/AlertsPage";
+import AdminPage from "./pages/AdminPage";
 import AuthPage from "./pages/AuthPage";
 import NotFound from "./pages/NotFound";
 
@@ -41,6 +43,8 @@ const App = () => (
                 <Route path="/properties/:id" element={<PropertyDetailPage />} />
                 <Route path="/map" element={<MapPage />} />
                 <Route path="/favorites" element={<FavoritesPage />} />
+                <Route path="/alerts" element={<AlertsPage />} />
+                <Route path="/admin" element={<AdminPage />} />
                 <Route path="*" element={<NotFound />} />
               </Route>
             </Routes>
