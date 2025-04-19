@@ -26,7 +26,14 @@ export const useAlerts = () => {
         .order('created_at', { ascending: false });
         
       if (error) throw error;
-      setAlerts(data || []);
+      
+      // Cast the data to ensure TypeScript compatibility
+      const typedAlerts = data?.map(item => ({
+        ...item,
+        filters: item.filters as unknown as UserAlert['filters']
+      })) || [];
+      
+      setAlerts(typedAlerts as UserAlert[]);
     } catch (error) {
       console.error('Error fetching alerts:', error);
       toast({

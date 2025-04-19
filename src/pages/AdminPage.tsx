@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/providers/AuthProvider';
@@ -10,27 +9,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Switch } from '@/components/ui/switch';
 import { useToast } from '@/hooks/use-toast';
-
-interface PropertySource {
-  id: string;
-  name: string;
-  url: string;
-  type: 'website' | 'social';
-  active: boolean;
-  scrape_frequency_hours: number;
-  last_scraped_at: string | null;
-}
-
-interface ScrapingLog {
-  id: string;
-  source_id: string;
-  status: 'processing' | 'completed' | 'error';
-  properties_found: number;
-  properties_added: number;
-  started_at: string;
-  completed_at: string | null;
-  error_message: string | null;
-}
+import { PropertySource, ScrapingLog, PropertySourceInsert } from '@/types/admin';
 
 const AdminPage = () => {
   const { user } = useAuth();
@@ -43,10 +22,10 @@ const AdminPage = () => {
   const [isProcessing, setIsProcessing] = useState(false);
   
   // New source form state
-  const [newSource, setNewSource] = useState({
+  const [newSource, setNewSource] = useState<PropertySourceInsert>({
     name: '',
     url: '',
-    type: 'website' as 'website' | 'social',
+    type: 'website',
     scrape_frequency_hours: 24
   });
 
@@ -69,7 +48,12 @@ const AdminPage = () => {
         .order('name');
         
       if (error) throw error;
-      setSources(data || []);
+      
+      // Cast data to ensure TypeScript compatibility
+      setSources((data || []).map(source => ({
+        ...source,
+        type: source.type as 'website' | 'social'
+      })));
     } catch (error) {
       console.error('Error fetching sources:', error);
       toast({
@@ -91,7 +75,12 @@ const AdminPage = () => {
         .limit(20);
         
       if (error) throw error;
-      setLogs(data || []);
+      
+      // Cast data to ensure TypeScript compatibility
+      setLogs((data || []).map(log => ({
+        ...log,
+        status: log.status as 'processing' | 'completed' | 'error'
+      })));
     } catch (error) {
       console.error('Error fetching logs:', error);
     }

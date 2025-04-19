@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { useAuth } from '@/providers/AuthProvider';
 import { supabase } from '@/integrations/supabase/client';
@@ -9,6 +8,8 @@ import { Input } from '@/components/ui/input';
 import { Switch } from '@/components/ui/switch';
 import { SearchFiltersValues } from '@/components/search/SearchFilters';
 import { Bell } from 'lucide-react';
+import { Json } from '@/integrations/supabase/types';
+import { UserAlertInsert } from '@/types/alerts';
 
 interface AlertFormProps {
   initialValues?: SearchFiltersValues;
@@ -56,14 +57,16 @@ export const AlertForm = ({ initialValues, onSave }: AlertFormProps) => {
     try {
       setIsSaving(true);
       
+      const alertData: UserAlertInsert = {
+        user_id: user.id,
+        name: alertName,
+        filters: filters as unknown as Json,
+        is_active: isEnabled,
+      };
+      
       const { error } = await supabase
         .from('user_alerts')
-        .insert({
-          user_id: user.id,
-          name: alertName,
-          filters: filters,
-          is_active: isEnabled,
-        });
+        .insert(alertData);
         
       if (error) throw error;
       
@@ -72,7 +75,6 @@ export const AlertForm = ({ initialValues, onSave }: AlertFormProps) => {
         description: 'Vous recevrez des notifications pour les nouveaux biens correspondant à vos critères'
       });
       
-      // Reset form or call onSave callback
       setAlertName('');
       if (onSave) onSave();
     } catch (error) {
