@@ -1,11 +1,19 @@
 
 import React from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
-import { Home, Search, Heart, Map, Menu, UserCircle } from 'lucide-react';
+import { Home, Search, Heart, Map, Menu, UserCircle, Bell, LogOut } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { useAuth } from '@/providers/AuthProvider';
+import { 
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 export const NavBar = () => {
   const isMobile = useIsMobile();
@@ -33,22 +41,38 @@ export const NavBar = () => {
           <NavItem to="/" icon={<Home className="h-4 w-4 mr-2" />} label="Accueil" />
           <NavItem to="/search" icon={<Search className="h-4 w-4 mr-2" />} label="Recherche" />
           <NavItem to="/map" icon={<Map className="h-4 w-4 mr-2" />} label="Carte" />
-          <NavItem to="/favorites" icon={<Heart className="h-4 w-4 mr-2" />} label="Favoris" />
+          {user && (
+            <>
+              <NavItem to="/favorites" icon={<Heart className="h-4 w-4 mr-2" />} label="Favoris" />
+              <NavItem to="/alerts" icon={<Bell className="h-4 w-4 mr-2" />} label="Alertes" />
+            </>
+          )}
         </div>
         
         <div className="flex items-center gap-2">
           {user ? (
-            <>
-              <Button 
-                variant="ghost" 
-                size="sm" 
-                className="hidden md:flex items-center gap-2"
-                onClick={() => signOut()}
-              >
-                <UserCircle className="h-4 w-4" />
-                <span>Sign Out</span>
-              </Button>
-            </>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" size="sm" className="flex items-center gap-2">
+                  <UserCircle className="h-4 w-4" />
+                  <span className="hidden md:inline">{user.email?.split('@')[0]}</span>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-56">
+                <DropdownMenuLabel>Mon compte</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={() => navigate('/favorites')}>
+                  <Heart className="h-4 w-4 mr-2" /> Favoris
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => navigate('/alerts')}>
+                  <Bell className="h-4 w-4 mr-2" /> Alertes
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={() => signOut()}>
+                  <LogOut className="h-4 w-4 mr-2" /> Déconnexion
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           ) : (
             <>
               <Button 
@@ -58,7 +82,7 @@ export const NavBar = () => {
                 onClick={() => navigate('/auth')}
               >
                 <UserCircle className="h-4 w-4" />
-                <span>Sign In</span>
+                <span>Connexion</span>
               </Button>
               {!isMobile && (
                 <Button 
@@ -66,7 +90,7 @@ export const NavBar = () => {
                   size="sm"
                   onClick={() => navigate('/auth')}
                 >
-                  Sign Up
+                  Inscription
                 </Button>
               )}
             </>

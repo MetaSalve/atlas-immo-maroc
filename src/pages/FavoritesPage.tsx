@@ -1,55 +1,46 @@
 
-import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { PropertyGrid } from '@/components/property/PropertyGrid';
-import { Property } from '@/types/property';
-import { mockProperties } from '@/data/mockProperties';
-import { useToast } from '@/hooks/use-toast';
+import { useProperties } from '@/hooks/useProperties';
+import { useFavorites } from '@/hooks/useFavorites';
+import { useAuth } from '@/providers/AuthProvider';
+import { Loader2 } from 'lucide-react';
 
 const FavoritesPage = () => {
-  const { toast } = useToast();
-  const [favorites, setFavorites] = useState<string[]>([]);
-  const [favoriteProperties, setFavoriteProperties] = useState<Property[]>([]);
+  const { user } = useAuth();
+  const navigate = useNavigate();
   
-  // In a real app, we would load favorites from localStorage or an API
-  useEffect(() => {
-    // Demo: initialize with some random favorites
-    const initialFavorites = ['p2', 'p4'];
-    setFavorites(initialFavorites);
-  }, []);
+  const { data: properties, isLoading: propertiesLoading } = useProperties();
+  const { favorites, toggleFavorite, isLoading: favoritesLoading } = useFavorites();
   
   useEffect(() => {
-    // Filter properties based on favorites
-    const properties = mockProperties.filter((property) => 
-      favorites.includes(property.id)
-    );
-    setFavoriteProperties(properties);
-  }, [favorites]);
+    // Redirect to auth page if not logged in
+    if (!user) {
+      navigate('/auth');
+    }
+  }, [user, navigate]);
   
-  const handleToggleFavorite = (id: string) => {
-    setFavorites((prevFavorites) => {
-      if (prevFavorites.includes(id)) {
-        toast({
-          title: 'Retiré des favoris',
-          description: mockProperties.find(p => p.id === id)?.title,
-          duration: 2000,
-        });
-        return prevFavorites.filter((favId) => favId !== id);
-      } else {
-        return prevFavorites;
-      }
-    });
-  };
+  if (!user) return null;
+  
+  const isLoading = propertiesLoading || favoritesLoading;
+  
+  // Filter properties based on favorites
+  const favoriteProperties = properties?.filter((property) => favorites.includes(property.id)) || [];
   
   return (
     <div className="py-6">
       <h1 className="text-2xl font-bold mb-6">Mes favoris</h1>
       
-      {favoriteProperties.length > 0 ? (
+      {isLoading ? (
+        <div className="flex justify-center items-center py-12">
+          <Loader2 className="h-8 w-8 animate-spin text-primary" />
+        </div>
+      ) : favoriteProperties.length > 0 ? (
         <PropertyGrid
           properties={favoriteProperties}
           favorites={favorites}
-          onToggleFavorite={handleToggleFavorite}
+          onToggleFavorite={toggleFavorite}
         />
       ) : (
         <div className="flex flex-col items-center justify-center py-12 text-center">

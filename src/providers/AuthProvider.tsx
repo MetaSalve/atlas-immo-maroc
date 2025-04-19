@@ -3,6 +3,7 @@ import { createContext, useContext, useEffect, useState } from 'react';
 import { User, Session } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'sonner';
 
 type AuthContextType = {
   user: User | null;
@@ -28,6 +29,14 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       (event, session) => {
         setSession(session);
         setUser(session?.user ?? null);
+        
+        // Only show toast for specific events, not on initial load
+        if (event === 'SIGNED_IN' && !loading) {
+          toast.success('Connexion réussie');
+        } else if (event === 'SIGNED_OUT') {
+          toast.info('Déconnexion réussie');
+        }
+        
         setLoading(false);
       }
     );
