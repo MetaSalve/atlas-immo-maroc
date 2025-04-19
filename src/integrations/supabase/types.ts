@@ -276,6 +276,39 @@ export type Database = {
           },
         ]
       }
+      user_alerts: {
+        Row: {
+          created_at: string
+          filters: Json
+          id: string
+          is_active: boolean
+          last_notification_at: string | null
+          last_notification_count: number | null
+          name: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          filters: Json
+          id?: string
+          is_active?: boolean
+          last_notification_at?: string | null
+          last_notification_count?: number | null
+          name: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          filters?: Json
+          id?: string
+          is_active?: boolean
+          last_notification_at?: string | null
+          last_notification_count?: number | null
+          name?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
