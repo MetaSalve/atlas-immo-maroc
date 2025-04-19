@@ -1,5 +1,5 @@
 
-import { createClient } from '@supabase/supabase-js'
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.39.3'
 
 export async function processFacebookMarketplace(supabase: any, item: any, logId: string) {
   const FB_ACCESS_TOKEN = Deno.env.get('FACEBOOK_API_KEY')
