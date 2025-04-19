@@ -3,3 +3,4 @@ project_id = "lomogmjwjnhvmcqkpjmg"
 
 [functions.process-scraping-queue]
 verify_jwt = false
+
