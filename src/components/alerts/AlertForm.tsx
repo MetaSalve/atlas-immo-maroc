@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { useAuth } from '@/providers/AuthProvider';
 import { toast } from 'sonner';
@@ -42,20 +41,14 @@ export const AlertForm = ({ initialValues, onSave, createAlert }: AlertFormProps
       return;
     }
     
-    if (!alertName) {
-      toast('Nom requis', {
-        description: 'Veuillez donner un nom à votre alerte',
-      });
-      return;
-    }
+    const finalAlertName = alertName.trim() || "Alerte immobilière";
     
     try {
       setIsSaving(true);
       
-      // Si createAlert est fourni en prop, l'utiliser
       if (createAlert) {
         const success = await createAlert({
-          name: alertName,
+          name: finalAlertName,
           filters: filters as unknown as Json,
           is_active: isEnabled
         });
@@ -65,7 +58,6 @@ export const AlertForm = ({ initialValues, onSave, createAlert }: AlertFormProps
           if (onSave) onSave();
         }
       } else {
-        // Ancienne méthode de sauvegarde comme fallback
         toast('Création d\'alerte temporairement indisponible', {
           description: 'La fonctionnalité est en cours de maintenance',
         });
@@ -128,7 +120,7 @@ export const AlertForm = ({ initialValues, onSave, createAlert }: AlertFormProps
         <div className="border-t pt-4 flex justify-end">
           <Button
             onClick={saveAlert}
-            disabled={isSaving || !alertName}
+            disabled={isSaving}
             className="bg-terracotta hover:bg-terracotta/90"
           >
             <Bell className="h-4 w-4 mr-2" />
