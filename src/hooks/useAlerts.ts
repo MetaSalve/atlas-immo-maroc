@@ -1,21 +1,23 @@
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useAuth } from '@/providers/AuthProvider';
 import { supabase } from '@/integrations/supabase/client';
-import { useToast } from '@/hooks/use-toast';
+import { toast } from 'sonner';
 import { UserAlert } from '@/types/alerts';
 import { useNavigate } from 'react-router-dom';
 
 export const useAlerts = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
-  const { toast } = useToast();
   
   const [alerts, setAlerts] = useState<UserAlert[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   
   const fetchAlerts = async () => {
-    if (!user) return;
+    if (!user) {
+      navigate('/auth');
+      return;
+    }
     
     try {
       setIsLoading(true);
@@ -36,28 +38,55 @@ export const useAlerts = () => {
       setAlerts(typedAlerts as UserAlert[]);
     } catch (error) {
       console.error('Error fetching alerts:', error);
-      toast({
-        variant: 'destructive',
-        title: 'Erreur',
-        description: 'Impossible de charger vos alertes'
+      toast('Impossible de charger vos alertes', {
+        description: 'Une erreur est survenue lors du chargement des alertes.',
+        duration: 5000,
       });
     } finally {
       setIsLoading(false);
     }
   };
 
-  useEffect(() => {
+  // Créer une nouvelle alerte
+  const createAlert = async (alertData: {name: string, filters: any, is_active: boolean}) => {
     if (!user) {
       navigate('/auth');
-      return;
+      return false;
     }
     
-    fetchAlerts();
-  }, [user, navigate]);
+    try {
+      const { error } = await supabase
+        .from('user_alerts')
+        .insert({
+          user_id: user.id,
+          name: alertData.name,
+          filters: alertData.filters,
+          is_active: alertData.is_active
+        });
+        
+      if (error) throw error;
+      
+      toast('Alerte créée avec succès', {
+        description: 'Vous recevrez des notifications pour les nouveaux biens correspondant à vos critères.',
+        duration: 5000,
+      });
+      
+      await fetchAlerts(); // Rafraîchir la liste des alertes
+      return true;
+    } catch (error) {
+      console.error('Error creating alert:', error);
+      toast('Erreur lors de la création de l\'alerte', {
+        description: 'Veuillez réessayer plus tard.',
+        duration: 5000,
+      });
+      return false;
+    }
+  };
 
   return {
     alerts,
     isLoading,
-    fetchAlerts
+    fetchAlerts,
+    createAlert
   };
 };

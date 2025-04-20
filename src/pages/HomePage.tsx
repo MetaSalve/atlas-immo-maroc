@@ -86,12 +86,15 @@ const HomePage = () => {
         />
       </section>
       
-      <section className="rounded-xl bg-muted p-6 text-center">
+      <section className="rounded-xl bg-sand/30 p-6 text-center">
         <h2 className="text-2xl font-bold mb-2 font-playfair text-terracotta">Recevez les nouvelles annonces en premier</h2>
         <p className="text-muted-foreground mb-4 max-w-lg mx-auto">
           Inscrivez-vous pour recevoir les alertes personnalisées des nouveaux biens correspondant à vos critères de recherche
         </p>
-        <button className="bg-primary text-white px-6 py-2 rounded-md hover:bg-primary/90 transition-colors font-bold">
+        <button 
+          className="bg-terracotta text-white px-6 py-2 rounded-md hover:bg-terracotta/90 transition-colors font-bold"
+          onClick={() => navigate('/alerts')}
+        >
           Créer une alerte
         </button>
       </section>

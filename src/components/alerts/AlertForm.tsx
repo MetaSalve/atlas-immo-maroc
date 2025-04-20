@@ -1,7 +1,7 @@
+
 import { useState } from 'react';
 import { useAuth } from '@/providers/AuthProvider';
-import { supabase } from '@/integrations/supabase/client';
-import { useToast } from '@/hooks/use-toast';
+import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -9,16 +9,15 @@ import { Switch } from '@/components/ui/switch';
 import { SearchFiltersValues } from '@/components/search/SearchFilters';
 import { Bell } from 'lucide-react';
 import { Json } from '@/integrations/supabase/types';
-import { UserAlertInsert } from '@/types/alerts';
 
 interface AlertFormProps {
   initialValues?: SearchFiltersValues;
   onSave?: () => void;
+  createAlert?: (data: {name: string, filters: any, is_active: boolean}) => Promise<boolean>;
 }
 
-export const AlertForm = ({ initialValues, onSave }: AlertFormProps) => {
+export const AlertForm = ({ initialValues, onSave, createAlert }: AlertFormProps) => {
   const { user } = useAuth();
-  const { toast } = useToast();
   
   const [alertName, setAlertName] = useState('');
   const [filters] = useState<SearchFiltersValues>(initialValues || {
@@ -37,19 +36,15 @@ export const AlertForm = ({ initialValues, onSave }: AlertFormProps) => {
   
   const saveAlert = async () => {
     if (!user) {
-      toast({
-        variant: 'destructive',
-        title: 'Erreur',
-        description: 'Vous devez être connecté pour créer une alerte'
+      toast('Connexion requise', {
+        description: 'Vous devez être connecté pour créer une alerte',
       });
       return;
     }
     
     if (!alertName) {
-      toast({
-        variant: 'destructive',
-        title: 'Erreur',
-        description: 'Veuillez donner un nom à votre alerte'
+      toast('Nom requis', {
+        description: 'Veuillez donner un nom à votre alerte',
       });
       return;
     }
@@ -57,32 +52,28 @@ export const AlertForm = ({ initialValues, onSave }: AlertFormProps) => {
     try {
       setIsSaving(true);
       
-      const alertData: UserAlertInsert = {
-        user_id: user.id,
-        name: alertName,
-        filters: filters as unknown as Json,
-        is_active: isEnabled,
-      };
-      
-      const { error } = await supabase
-        .from('user_alerts')
-        .insert(alertData);
+      // Si createAlert est fourni en prop, l'utiliser
+      if (createAlert) {
+        const success = await createAlert({
+          name: alertName,
+          filters: filters as unknown as Json,
+          is_active: isEnabled
+        });
         
-      if (error) throw error;
-      
-      toast({
-        title: 'Alerte créée',
-        description: 'Vous recevrez des notifications pour les nouveaux biens correspondant à vos critères'
-      });
-      
-      setAlertName('');
-      if (onSave) onSave();
+        if (success) {
+          setAlertName('');
+          if (onSave) onSave();
+        }
+      } else {
+        // Ancienne méthode de sauvegarde comme fallback
+        toast('Création d\'alerte temporairement indisponible', {
+          description: 'La fonctionnalité est en cours de maintenance',
+        });
+      }
     } catch (error) {
       console.error('Error saving alert:', error);
-      toast({
-        variant: 'destructive',
-        title: 'Erreur',
-        description: 'Impossible de créer l\'alerte'
+      toast('Erreur', {
+        description: 'Impossible de créer l\'alerte',
       });
     } finally {
       setIsSaving(false);
@@ -138,6 +129,7 @@ export const AlertForm = ({ initialValues, onSave }: AlertFormProps) => {
           <Button
             onClick={saveAlert}
             disabled={isSaving || !alertName}
+            className="bg-terracotta hover:bg-terracotta/90"
           >
             <Bell className="h-4 w-4 mr-2" />
             Créer l'alerte

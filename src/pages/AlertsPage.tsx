@@ -4,10 +4,17 @@ import { AlertForm } from '@/components/alerts/AlertForm';
 import { AlertsList } from '@/components/alerts/AlertsList';
 import { useAlerts } from '@/hooks/useAlerts';
 import { useAuth } from '@/providers/AuthProvider';
+import { useEffect } from 'react';
 
 const AlertsPage = () => {
   const { user } = useAuth();
-  const { alerts, isLoading, fetchAlerts } = useAlerts();
+  const { alerts, isLoading, fetchAlerts, createAlert } = useAlerts();
+
+  useEffect(() => {
+    if (user) {
+      fetchAlerts();
+    }
+  }, [user]);
 
   if (!user) {
     return null; // Will redirect in useEffect in useAlerts hook
@@ -15,7 +22,7 @@ const AlertsPage = () => {
   
   return (
     <div className="py-6">
-      <h1 className="text-2xl font-bold mb-6">Mes alertes</h1>
+      <h1 className="text-2xl font-bold mb-6 font-playfair text-deepblue">Mes alertes</h1>
       
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Alerts list */}
@@ -40,8 +47,8 @@ const AlertsPage = () => {
         
         {/* Create new alert */}
         <div className="space-y-4">
-          <h2 className="text-lg font-semibold">Nouvelle alerte</h2>
-          <AlertForm onSave={fetchAlerts} />
+          <h2 className="text-lg font-semibold font-playfair text-terracotta">Nouvelle alerte</h2>
+          <AlertForm onSave={fetchAlerts} createAlert={createAlert} />
         </div>
       </div>
     </div>
