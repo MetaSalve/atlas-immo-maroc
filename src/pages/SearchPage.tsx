@@ -1,11 +1,10 @@
-
 import { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { SearchBar } from '@/components/search/SearchBar';
 import { SearchFilters, SearchFiltersValues } from '@/components/search/SearchFilters';
 import { PropertyGrid } from '@/components/property/PropertyGrid';
 import { PropertyMap } from '@/components/map/PropertyMap';
-import { MapPin, List, Bell } from 'lucide-react';
+import { MapPin, List, Bell, BookmarkPlus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Property } from '@/types/property';
 import { useProperties } from '@/hooks/useProperties';
@@ -136,14 +135,14 @@ const SearchPage = () => {
             onFilterChange={handleFilterChange}
           />
           
-          {/* Save as Alert Button */}
           <div className="mt-4">
             <Button 
               onClick={handleSaveAlert} 
               className="w-full"
-              variant="outline"
+              variant="default"
+              size="lg"
             >
-              <Bell className="h-4 w-4 mr-2" />
+              <BookmarkPlus className="h-4 w-4 mr-2" />
               Sauvegarder comme alerte
             </Button>
           </div>
@@ -172,10 +171,26 @@ const SearchPage = () => {
               emptyMessage="Aucun bien ne correspond à vos critères. Essayez d'élargir votre recherche."
             />
           )}
+
+          {filteredProperties.length === 0 && !isLoading && (
+            <div className="mt-8 p-4 border border-muted rounded-lg bg-background">
+              <h3 className="font-semibold text-lg mb-2">Notes sur le fonctionnement en production:</h3>
+              <p className="text-sm mb-3">
+                En production, le système de scraping collectera régulièrement des annonces immobilières depuis différentes 
+                sources (sites web, réseaux sociaux). Cette fonctionnalité est configurée via les Edge Functions de Supabase:
+              </p>
+              <ul className="list-disc pl-5 text-sm space-y-2">
+                <li>Les Edge Functions <code>process-scraping-queue</code> et <code>process-alert-notifications</code> 
+                collectent et traitent les données immobilières.</li>
+                <li>Les données sont stockées dans la base de données Supabase et associées à leurs critères de recherche.</li>
+                <li>Quand un utilisateur effectue une recherche, les résultats correspondant à ses critères lui sont présentés.</li>
+                <li>Pour les alertes, le système vérifie régulièrement les nouvelles propriétés et envoie des notifications.</li>
+              </ul>
+            </div>
+          )}
         </main>
       </div>
 
-      {/* Alert Creation Dialog */}
       <Dialog open={showAlertDialog} onOpenChange={setShowAlertDialog}>
         <DialogContent>
           <DialogHeader>

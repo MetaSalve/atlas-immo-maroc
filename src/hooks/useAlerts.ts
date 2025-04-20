@@ -5,6 +5,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { UserAlert } from '@/types/alerts';
 import { useNavigate } from 'react-router-dom';
+import { SearchFiltersValues } from '@/components/search/SearchFilters';
 
 export const useAlerts = () => {
   const { user } = useAuth();
@@ -48,19 +49,22 @@ export const useAlerts = () => {
   };
 
   // Créer une nouvelle alerte
-  const createAlert = async (alertData: {name: string, filters: any, is_active: boolean}) => {
+  const createAlert = async (alertData: {name: string, filters: SearchFiltersValues, is_active: boolean}) => {
     if (!user) {
       navigate('/auth');
       return false;
     }
     
     try {
+      // Convertir les filtres en JSON avant de les envoyer à Supabase
+      const filtersJson = JSON.parse(JSON.stringify(alertData.filters));
+      
       const { error } = await supabase
         .from('user_alerts')
         .insert({
           user_id: user.id,
           name: alertData.name,
-          filters: alertData.filters,
+          filters: filtersJson,
           is_active: alertData.is_active
         });
         
@@ -91,11 +95,14 @@ export const useAlerts = () => {
     }
     
     try {
+      // Convertir les filtres en JSON si présents
+      const filtersJson = alertData.filters ? JSON.parse(JSON.stringify(alertData.filters)) : undefined;
+      
       const { error } = await supabase
         .from('user_alerts')
         .update({
           name: alertData.name,
-          filters: alertData.filters,
+          filters: filtersJson,
           is_active: alertData.is_active
         })
         .eq('id', id)
