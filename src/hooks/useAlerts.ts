@@ -83,10 +83,80 @@ export const useAlerts = () => {
     }
   };
 
+  // Modifier une alerte existante
+  const updateAlert = async (id: string, alertData: Partial<UserAlert>) => {
+    if (!user) {
+      navigate('/auth');
+      return false;
+    }
+    
+    try {
+      const { error } = await supabase
+        .from('user_alerts')
+        .update({
+          name: alertData.name,
+          filters: alertData.filters,
+          is_active: alertData.is_active
+        })
+        .eq('id', id)
+        .eq('user_id', user.id);
+        
+      if (error) throw error;
+      
+      toast('Alerte mise à jour', {
+        duration: 3000,
+      });
+      
+      await fetchAlerts();
+      return true;
+    } catch (error) {
+      console.error('Error updating alert:', error);
+      toast('Erreur lors de la mise à jour de l\'alerte', {
+        description: 'Veuillez réessayer plus tard.',
+        duration: 5000,
+      });
+      return false;
+    }
+  };
+
+  // Supprimer une alerte
+  const deleteAlert = async (id: string) => {
+    if (!user) {
+      navigate('/auth');
+      return false;
+    }
+    
+    try {
+      const { error } = await supabase
+        .from('user_alerts')
+        .delete()
+        .eq('id', id)
+        .eq('user_id', user.id);
+        
+      if (error) throw error;
+      
+      toast('Alerte supprimée', {
+        duration: 3000,
+      });
+      
+      await fetchAlerts();
+      return true;
+    } catch (error) {
+      console.error('Error deleting alert:', error);
+      toast('Erreur lors de la suppression de l\'alerte', {
+        description: 'Veuillez réessayer plus tard.',
+        duration: 5000,
+      });
+      return false;
+    }
+  };
+
   return {
     alerts,
     isLoading,
     fetchAlerts,
-    createAlert
+    createAlert,
+    updateAlert,
+    deleteAlert
   };
 };

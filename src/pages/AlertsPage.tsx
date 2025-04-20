@@ -4,17 +4,33 @@ import { AlertForm } from '@/components/alerts/AlertForm';
 import { AlertsList } from '@/components/alerts/AlertsList';
 import { useAlerts } from '@/hooks/useAlerts';
 import { useAuth } from '@/providers/AuthProvider';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import { SearchFilters, SearchFiltersValues } from '@/components/search/SearchFilters';
+import { Card } from '@/components/ui/card';
 
 const AlertsPage = () => {
   const { user } = useAuth();
   const { alerts, isLoading, fetchAlerts, createAlert } = useAlerts();
+  const [filters, setFilters] = useState<SearchFiltersValues>({
+    status: 'all',
+    type: 'all',
+    location: '',
+    priceMin: 0,
+    priceMax: 10000000,
+    bedroomsMin: 0,
+    bathroomsMin: 0,
+    areaMin: 0,
+  });
 
   useEffect(() => {
     if (user) {
       fetchAlerts();
     }
   }, [user]);
+
+  const handleFilterChange = (newFilters: SearchFiltersValues) => {
+    setFilters(newFilters);
+  };
 
   if (!user) {
     return null; // Will redirect in useEffect in useAlerts hook
@@ -48,7 +64,20 @@ const AlertsPage = () => {
         {/* Create new alert */}
         <div className="space-y-4">
           <h2 className="text-lg font-semibold font-playfair text-terracotta">Nouvelle alerte</h2>
-          <AlertForm onSave={fetchAlerts} createAlert={createAlert} />
+          
+          <Card className="p-4">
+            <h3 className="font-medium mb-3">Filtres</h3>
+            <SearchFilters
+              initialValues={filters}
+              onFilterChange={handleFilterChange}
+            />
+          </Card>
+          
+          <AlertForm 
+            onSave={fetchAlerts} 
+            createAlert={createAlert} 
+            initialValues={filters}
+          />
         </div>
       </div>
     </div>

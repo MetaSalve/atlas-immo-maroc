@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { useAuth } from '@/providers/AuthProvider';
 import { toast } from 'sonner';
@@ -13,9 +14,17 @@ interface AlertFormProps {
   initialValues?: SearchFiltersValues;
   onSave?: () => void;
   createAlert?: (data: {name: string, filters: any, is_active: boolean}) => Promise<boolean>;
+  className?: string;
+  containerComponent?: "card" | "div";
 }
 
-export const AlertForm = ({ initialValues, onSave, createAlert }: AlertFormProps) => {
+export const AlertForm = ({ 
+  initialValues, 
+  onSave, 
+  createAlert,
+  className = "",
+  containerComponent = "card"
+}: AlertFormProps) => {
   const { user } = useAuth();
   
   const [alertName, setAlertName] = useState('');
@@ -92,42 +101,52 @@ export const AlertForm = ({ initialValues, onSave, createAlert }: AlertFormProps
     
     return parts.join(' • ');
   };
-  
-  return (
-    <Card className="w-full">
-      <CardContent className="pt-6 pb-4 space-y-4">
-        <div className="space-y-3">
-          <div className="flex items-center justify-between">
-            <h3 className="font-medium">Créer une alerte</h3>
-            <div className="flex items-center space-x-2">
-              <span className="text-sm text-muted-foreground">Activée</span>
-              <Switch checked={isEnabled} onCheckedChange={setIsEnabled} />
-            </div>
-          </div>
-          
-          <div className="space-y-1">
-            <Input
-              placeholder="Nom de l'alerte (ex: Appartements 2 chambres à Marrakech)"
-              value={alertName}
-              onChange={e => setAlertName(e.target.value)}
-            />
-            <p className="text-sm text-muted-foreground">
-              {getSummary(filters)}
-            </p>
+
+  const formContent = (
+    <div className="space-y-4">
+      <div className="space-y-3">
+        <div className="flex items-center justify-between">
+          <h3 className="font-medium">Créer une alerte</h3>
+          <div className="flex items-center space-x-2">
+            <span className="text-sm text-muted-foreground">Activée</span>
+            <Switch checked={isEnabled} onCheckedChange={setIsEnabled} />
           </div>
         </div>
         
-        <div className="border-t pt-4 flex justify-end">
-          <Button
-            onClick={saveAlert}
-            disabled={isSaving}
-            className="bg-terracotta hover:bg-terracotta/90"
-          >
-            <Bell className="h-4 w-4 mr-2" />
-            Créer l'alerte
-          </Button>
+        <div className="space-y-1">
+          <Input
+            placeholder="Nom de l'alerte (ex: Appartements 2 chambres à Marrakech)"
+            value={alertName}
+            onChange={e => setAlertName(e.target.value)}
+          />
+          <p className="text-sm text-muted-foreground">
+            {getSummary(filters)}
+          </p>
         </div>
-      </CardContent>
-    </Card>
+      </div>
+      
+      <div className="pt-4 flex justify-end">
+        <Button
+          onClick={saveAlert}
+          disabled={isSaving}
+          className="bg-terracotta hover:bg-terracotta/90"
+        >
+          <Bell className="h-4 w-4 mr-2" />
+          Créer l'alerte
+        </Button>
+      </div>
+    </div>
   );
+  
+  if (containerComponent === "card") {
+    return (
+      <Card className={`w-full ${className}`}>
+        <CardContent className="pt-6 pb-4">
+          {formContent}
+        </CardContent>
+      </Card>
+    );
+  }
+  
+  return <div className={className}>{formContent}</div>;
 };

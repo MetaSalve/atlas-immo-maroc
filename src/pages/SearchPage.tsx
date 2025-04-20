@@ -1,21 +1,38 @@
+
 import { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { SearchBar } from '@/components/search/SearchBar';
 import { SearchFilters, SearchFiltersValues } from '@/components/search/SearchFilters';
 import { PropertyGrid } from '@/components/property/PropertyGrid';
 import { PropertyMap } from '@/components/map/PropertyMap';
-import { MapPin, List } from 'lucide-react';
+import { MapPin, List, Bell } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Property } from '@/types/property';
 import { useProperties } from '@/hooks/useProperties';
 import { useFavorites } from '@/hooks/useFavorites';
+import { useAuth } from '@/providers/AuthProvider';
+import { toast } from 'sonner';
+import { AlertForm } from '@/components/alerts/AlertForm';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { useAlerts } from '@/hooks/useAlerts';
 
 const SearchPage = () => {
   const location = useLocation();
+  const navigate = useNavigate();
+  const { user } = useAuth();
   const [searchQuery, setSearchQuery] = useState('');
   const { data: allProperties = [], isLoading } = useProperties();
   const { favorites, toggleFavorite } = useFavorites();
   const [showMap, setShowMap] = useState(false);
+  const { createAlert } = useAlerts();
+  const [showAlertDialog, setShowAlertDialog] = useState(false);
   
   const [filters, setFilters] = useState<SearchFiltersValues>({
     status: 'all',
@@ -76,6 +93,25 @@ const SearchPage = () => {
   const handlePropertyClick = (property: Property) => {
     window.location.href = `/properties/${property.id}`;
   };
+
+  const handleSaveAlert = () => {
+    if (!user) {
+      toast('Connexion requise', {
+        description: 'Vous devez être connecté pour créer une alerte',
+        action: {
+          label: 'Se connecter',
+          onClick: () => navigate('/auth')
+        }
+      });
+      return;
+    }
+    
+    setShowAlertDialog(true);
+  };
+
+  const handleAlertDialogClose = () => {
+    setShowAlertDialog(false);
+  };
   
   return (
     <div className="py-6">
@@ -99,6 +135,18 @@ const SearchPage = () => {
             initialValues={filters}
             onFilterChange={handleFilterChange}
           />
+          
+          {/* Save as Alert Button */}
+          <div className="mt-4">
+            <Button 
+              onClick={handleSaveAlert} 
+              className="w-full"
+              variant="outline"
+            >
+              <Bell className="h-4 w-4 mr-2" />
+              Sauvegarder comme alerte
+            </Button>
+          </div>
         </aside>
         
         <main>
@@ -126,6 +174,24 @@ const SearchPage = () => {
           )}
         </main>
       </div>
+
+      {/* Alert Creation Dialog */}
+      <Dialog open={showAlertDialog} onOpenChange={setShowAlertDialog}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Créer une alerte</DialogTitle>
+            <DialogDescription>
+              Vous recevrez des notifications pour les nouveaux biens qui correspondent à ces critères.
+            </DialogDescription>
+          </DialogHeader>
+          
+          <AlertForm 
+            initialValues={filters} 
+            onSave={handleAlertDialogClose}
+            createAlert={createAlert}
+          />
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
