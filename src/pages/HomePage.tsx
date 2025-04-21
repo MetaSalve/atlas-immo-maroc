@@ -3,7 +3,7 @@ import { useFavorites } from '@/hooks/useFavorites';
 import { SearchBar } from '@/components/search/SearchBar';
 import { PropertyGrid } from '@/components/property/PropertyGrid';
 import { useNavigate } from 'react-router-dom';
-import { Layers3, Globe } from 'lucide-react';
+import { Layers3, Globe, Database } from 'lucide-react';
 
 const MoroccanSalonHeroImage = () => (
   <img
@@ -35,7 +35,7 @@ const HomePage = () => {
             Retrouvez en un clic l'ensemble des annonces immobilières du web au Maroc
           </h1>
           <p className="mb-4 text-gray-800 font-medium">
-            Atlas Immo n'est pas une agence ! Nous centralisons, trions et mettons à jour en continu les meilleures annonces venues de tous les grands sites marocains et réseaux sociaux.
+            Atlas Immo n'est pas une agence ! Nous centralisons, trions et mettons à jour en continu les meilleures annonces venues de tous les grands sites marocains et réseaux sociaux.
           </p>
           <div className="flex justify-center gap-8 mb-8">
             <div className="flex flex-col items-center">
