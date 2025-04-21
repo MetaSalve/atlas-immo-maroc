@@ -38,7 +38,7 @@ export const SearchBar = ({
         <Input
           type="text"
           placeholder="Ville, quartier, adresse..."
-          className="pl-10 pr-20"
+          className="pl-10 pr-20 text-gray-900 dark:text-gray-100"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
         />
