@@ -29,7 +29,7 @@ export const NavBar = () => {
           )}
           <NavLink to="/" className="flex items-center gap-2">
             <img
-              src="/lovable-uploads/photo-1721322800607-8c38375eef04"
+              src="/lovable-uploads/user-uploaded-1.jpg"
               alt="Atlas Immo - logo salon marocain"
               className="w-8 h-8 rounded-md object-cover border border-sand"
               draggable={false}

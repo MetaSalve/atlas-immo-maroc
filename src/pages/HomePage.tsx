@@ -1,13 +1,14 @@
+
 import { useProperties } from '@/hooks/useProperties';
 import { useFavorites } from '@/hooks/useFavorites';
 import { SearchBar } from '@/components/search/SearchBar';
 import { PropertyGrid } from '@/components/property/PropertyGrid';
 import { useNavigate } from 'react-router-dom';
-import { Layers3, Globe, Database } from 'lucide-react';
+import { Layers3, Globe, Folder } from 'lucide-react'; // Use allowed icons only
 
 const MoroccanSalonHeroImage = () => (
   <img
-    src="/lovable-uploads/photo-1721322800607-8c38375eef04"
+    src="/lovable-uploads/user-uploaded-1.jpg"
     alt="Salon marocain avec zellige"
     className="absolute inset-0 w-full h-full object-cover opacity-30 z-0"
     draggable={false}
@@ -39,7 +40,7 @@ const HomePage = () => {
           </p>
           <div className="flex justify-center gap-8 mb-8">
             <div className="flex flex-col items-center">
-              <img src="/lovable-uploads/photo-1721322800607-8c38375eef04" alt="Annonces agrégées" className="w-12 h-12 mb-2 rounded-full object-cover bg-sand p-1 border" />
+              <img src="/lovable-uploads/user-uploaded-1.jpg" alt="Annonces agrégées" className="w-12 h-12 mb-2 rounded-full object-cover bg-sand p-1 border" />
               <p className="text-sm">Annonces web centralisées</p>
             </div>
             <div className="flex flex-col items-center">
@@ -64,7 +65,7 @@ const HomePage = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
           <div className="bg-white p-6 rounded-md shadow-sm">
             <div className="w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center mb-4 mx-auto">
-              <Database className="h-6 w-6 text-primary" />
+              <Folder className="h-6 w-6 text-primary" />
             </div>
             <h3 className="font-bold mb-2">Collecte Automatisée</h3>
             <p className="text-sm text-muted-foreground">Notre système analyse en continu les sites immobiliers et réseaux sociaux marocains.</p>
@@ -123,12 +124,12 @@ const HomePage = () => {
       </section>
       
       <section className="rounded-xl bg-sand/30 p-6 text-center">
-        <h2 className="text-2xl font-bold mb-2 font-playfair text-terracotta">Recevez les nouvelles annonces en premier</h2>
+        <h2 className="text-2xl font-bold mb-2 font-playfair text-olive">Recevez les nouvelles annonces en premier</h2>
         <p className="text-muted-foreground mb-4 max-w-lg mx-auto">
           Inscrivez-vous pour recevoir les alertes personnalisées des nouveaux biens correspondant à vos critères de recherche
         </p>
         <button 
-          className="bg-terracotta text-white px-6 py-2 rounded-md hover:bg-terracotta/90 transition-colors font-bold"
+          className="bg-olive text-white px-6 py-2 rounded-md hover:bg-olive/90 transition-colors font-bold"
           onClick={() => navigate('/alerts')}
         >
           Créer une alerte
