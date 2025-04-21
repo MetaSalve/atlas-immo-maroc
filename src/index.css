@@ -5,65 +5,55 @@
 
 @layer base {
   :root {
-    --background: #FDE1D3;
-    --foreground: #222222;
+    --background: #F4F7FB;
+    --foreground: #36373b;
 
     --card: #fff;
-    --card-foreground: #222222;
-
+    --card-foreground: #36373b;
     --popover: #fff;
-    --popover-foreground: #222222;
-
-    --primary: #81B29A;
+    --popover-foreground: #36373b;
+    --primary: #1EAEDB;
     --primary-foreground: #fff;
 
-    --secondary: #FEF7CD;
-    --secondary-foreground: #222222;
+    --secondary: #33C3F0;
+    --secondary-foreground: #fff;
 
-    --muted: #F1F0FB;
-    --muted-foreground: #8E9196;
+    --muted: #F4F7FB;
+    --muted-foreground: #9F9EA1;
 
-    --accent: #F1F0FB;
-    --accent-foreground: #222222;
+    --accent: #33C3F0;
+    --accent-foreground: #fff;
 
-    --destructive: #E07A5F;
+    --destructive: #D14343;
     --destructive-foreground: #fff;
 
-    --border: #F1F0FB;
-    --input: #F1F0FB;
-    --ring: #81B29A;
+    --border: #E4E4E7;
+    --input: #E4E4E7;
+    --ring: #1EAEDB;
 
-    --radius: 0.6rem;
+    --radius: 1.1rem;
   }
 
   .dark {
-    --background: #1b1a19;
-    --foreground: #fff;
-
-    --card: #222;
+    --background: #191a1d;
+    --foreground: #f3f3f4;
+    --card: #252528;
     --card-foreground: #fff;
-
-    --popover: #222;
+    --popover: #252528;
     --popover-foreground: #fff;
-
-    --primary: #265946;
-    --primary-foreground: #fff;
-
-    --secondary: #C9B775;
-    --secondary-foreground: #222222;
-
-    --muted: #393a47;
-    --muted-foreground: #cfd2e3;
-
-    --accent: #393a47;
+    --primary: #33C3F0;
+    --primary-foreground: #191a1d;
+    --secondary: #1EAEDB;
+    --secondary-foreground: #fff;
+    --muted: #36373b;
+    --muted-foreground: #d1d5db;
+    --accent: #297ba7;
     --accent-foreground: #fff;
-
-    --destructive: #ab342f;
+    --destructive: #c92a2a;
     --destructive-foreground: #fff;
-
-    --border: #393a47;
-    --input: #393a47;
-    --ring: #265946;
+    --border: #36373b;
+    --input: #36373b;
+    --ring: #33C3F0;
   }
 }
 
@@ -71,47 +61,39 @@
   * {
     @apply border-border;
   }
-
   body {
     @apply bg-background text-foreground antialiased;
   }
 }
 
-/* Correction pour la SearchBar */
 input, .searchbar input {
-  @apply text-darkgray placeholder:text-olive bg-white;
+  @apply text-gray-dark placeholder:text-gray-silver bg-white;
 }
 
+/* Nouvelle apparence pour les cards, inspirée de la maquette */
 @layer components {
   .property-card {
-    @apply relative overflow-hidden rounded-xl bg-card shadow-md transition-all hover:shadow-lg;
+    @apply relative overflow-hidden rounded-lg bg-card shadow transition-all hover:shadow-lg border border-gray-silver;
   }
-  
   .property-card-image {
     @apply aspect-[4/3] w-full object-cover;
   }
-  
   .property-card-content {
     @apply p-4;
   }
-  
   .property-card-price {
-    @apply text-lg font-bold text-olive;
+    @apply text-lg font-bold text-primary;
   }
-  
   .property-card-location {
-    @apply text-sm text-muted-foreground;
+    @apply text-sm text-gray-silver;
   }
-  
   .property-card-stats {
-    @apply mt-2 flex items-center gap-4 text-sm text-muted-foreground;
+    @apply mt-2 flex items-center gap-4 text-sm text-gray-silver;
   }
-  
   .property-card-badge {
-    @apply absolute top-3 left-3 rounded-md bg-olive px-2 py-1 text-xs font-medium text-white;
+    @apply absolute top-3 left-3 rounded-md bg-primary px-2 py-1 text-xs font-medium text-white shadow;
   }
-  
   .property-card-favorite {
-    @apply absolute top-3 right-3 rounded-full bg-background/80 p-1.5 backdrop-blur-sm;
+    @apply absolute top-3 right-3 rounded-full bg-white/80 p-1.5 border border-gray/30 shadow;
   }
 }
