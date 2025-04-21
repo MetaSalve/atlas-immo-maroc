@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -22,18 +23,27 @@ export default {
 				playfair: ['Playfair Display', 'serif'],
 			},
 			colors: {
+				// Couleurs inspirées du salon marocain
+				peach: '#FDE1D3',
+				sand: '#FEF7CD',
+				olive: '#81B29A',
+				darkgray: '#222222',
+				offwhite: '#F1F0FB',
+				textPrimary: '#2c2a27',
+
+				// Anciennes couleurs conservées pour fallback
 				border: 'hsl(var(--border))',
 				input: 'hsl(var(--input))',
 				ring: 'hsl(var(--ring))',
-				background: 'hsl(var(--background))',
-				foreground: 'hsl(var(--foreground))',
+				background: '#FDE1D3',
+				foreground: '#222222',
 				primary: {
-					DEFAULT: 'hsl(var(--primary))',
-					foreground: 'hsl(var(--primary-foreground))'
+					DEFAULT: '#81B29A',
+					foreground: '#fff'
 				},
 				secondary: {
-					DEFAULT: 'hsl(var(--secondary))',
-					foreground: 'hsl(var(--secondary-foreground))'
+					DEFAULT: '#FEF7CD',
+					foreground: '#222222'
 				},
 				destructive: {
 					DEFAULT: 'hsl(var(--destructive))',
@@ -41,19 +51,19 @@ export default {
 				},
 				muted: {
 					DEFAULT: 'hsl(var(--muted))',
-					foreground: 'hsl(var(--muted-foreground))'
+					foreground: '#8E9196'
 				},
 				accent: {
-					DEFAULT: 'hsl(var(--accent))',
-					foreground: 'hsl(var(--accent-foreground))'
+					DEFAULT: '#F1F0FB',
+					foreground: '#222222'
 				},
 				popover: {
 					DEFAULT: 'hsl(var(--popover))',
 					foreground: 'hsl(var(--popover-foreground))'
 				},
 				card: {
-					DEFAULT: 'hsl(var(--card))',
-					foreground: 'hsl(var(--card-foreground))'
+					DEFAULT: '#fff',
+					foreground: '#222222'
 				},
 				sidebar: {
 					DEFAULT: 'hsl(var(--sidebar-background))',
@@ -65,12 +75,6 @@ export default {
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
 				},
-				// Atlas Immo Morocco custom colors
-				terracotta: '#E07A5F',
-				deepblue: '#3D405B',
-				sand: '#F2CC8F',
-				offwhite: '#F4F1DE',
-				olive: '#81B29A'
 			},
 			borderRadius: {
 				lg: 'var(--radius)',

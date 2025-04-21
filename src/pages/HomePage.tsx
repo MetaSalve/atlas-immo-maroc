@@ -1,69 +1,56 @@
-
 import { useProperties } from '@/hooks/useProperties';
 import { useFavorites } from '@/hooks/useFavorites';
 import { SearchBar } from '@/components/search/SearchBar';
 import { PropertyGrid } from '@/components/property/PropertyGrid';
 import { useNavigate } from 'react-router-dom';
-import { Database, Layers3, Globe } from 'lucide-react';
+import { Layers3, Globe } from 'lucide-react';
 
-const ZelligeSVG = () => (
-  <svg
-    viewBox="0 0 300 100"
-    fill="none"
-    className="absolute inset-0 w-full h-full opacity-20 z-0"
-    style={{ objectFit: 'cover' }}
-    aria-hidden="true"
-    focusable="false"
-  >
-    <defs>
-      <pattern id="zellige" width="40" height="40" patternUnits="userSpaceOnUse">
-        <rect x="0" y="0" width="40" height="40" fill="white" />
-        <polygon points="0,0 40,0 20,40" fill="#E07A5F" />
-        <polygon points="0,0 20,40 0,40" fill="#F2CC8F" />
-        <circle cx="20" cy="20" r="10" fill="#81B29A" opacity="0.7"/>
-      </pattern>
-    </defs>
-    <rect width="300" height="100" fill="url(#zellige)" />
-  </svg>
+const MoroccanSalonHeroImage = () => (
+  <img
+    src="/lovable-uploads/photo-1721322800607-8c38375eef04"
+    alt="Salon marocain avec zellige"
+    className="absolute inset-0 w-full h-full object-cover opacity-30 z-0"
+    draggable={false}
+    style={{ objectFit: 'cover', borderRadius: '1.25rem' }}
+  />
 );
 
 const HomePage = () => {
   const navigate = useNavigate();
   const { data: properties = [], isLoading } = useProperties();
   const { favorites, toggleFavorite } = useFavorites();
-  
+
   const featuredProperties = properties.slice(0, 3);
   const recentProperties = properties.slice(3);
-  
+
   return (
     <div className="py-6 space-y-10">
-      <section className="relative py-12 px-4 rounded-2xl bg-gradient-to-br from-deepblue to-deepblue/90 text-white overflow-hidden">
-        {/* Motif Zellige SVG */}
-        <ZelligeSVG />
+      <section className="relative py-12 px-4 rounded-2xl bg-gradient-to-br from-sand to-peach/90 text-textPrimary overflow-hidden min-h-[340px]">
+        <MoroccanSalonHeroImage />
         <div className="relative max-w-2xl mx-auto text-center z-10">
-          <h1 className="text-3xl sm:text-4xl font-bold mb-4 font-playfair text-terracotta drop-shadow">
-            L'agrégateur d'annonces immobilières au Maroc
+          <div className="mb-2 pb-1 font-bold text-lg uppercase tracking-wider text-olive">
+            Agrégateur nouvelle génération&nbsp;: Toutes les annonces du web, au même endroit
+          </div>
+          <h1 className="text-3xl sm:text-4xl font-bold mb-4 font-playfair text-darkgray drop-shadow">
+            Retrouvez en un clic l'ensemble des annonces immobilières du web au Maroc
           </h1>
-          <p className="text-white/90 mb-4">
-            Atlas Immo collecte et centralise les meilleures offres de vente et location 
-            des sites web et réseaux sociaux marocains
+          <p className="mb-4 text-gray-800 font-medium">
+            Atlas Immo n'est pas une agence ! Nous centralisons, trions et mettons à jour en continu les meilleures annonces venues de tous les grands sites marocains et réseaux sociaux.
           </p>
           <div className="flex justify-center gap-8 mb-8">
             <div className="flex flex-col items-center">
-              <div className="w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center mb-2">
-                <Database className="h-6 w-6 text-white" />
-              </div>
-              <p className="text-sm">Annonces centralisées</p>
+              <img src="/lovable-uploads/photo-1721322800607-8c38375eef04" alt="Annonces agrégées" className="w-12 h-12 mb-2 rounded-full object-cover bg-sand p-1 border" />
+              <p className="text-sm">Annonces web centralisées</p>
             </div>
             <div className="flex flex-col items-center">
-              <div className="w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center mb-2">
-                <Layers3 className="h-6 w-6 text-white" />
+              <div className="w-12 h-12 rounded-full bg-peach/60 flex items-center justify-center mb-2">
+                <Layers3 className="h-6 w-6 text-darkgray" />
               </div>
               <p className="text-sm">Filtrage intelligent</p>
             </div>
             <div className="flex flex-col items-center">
-              <div className="w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center mb-2">
-                <Globe className="h-6 w-6 text-white" />
+              <div className="w-12 h-12 rounded-full bg-sand/70 flex items-center justify-center mb-2">
+                <Globe className="h-6 w-6 text-darkgray" />
               </div>
               <p className="text-sm">Sources multiples</p>
             </div>
