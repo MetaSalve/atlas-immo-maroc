@@ -58,6 +58,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   const signInWithGoogle = async () => {
+    // Fix: Using 'google' instead of any other value
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {

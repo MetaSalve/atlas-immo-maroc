@@ -5,55 +5,55 @@
 
 @layer base {
   :root {
-    --background: #F4F7FB;
-    --foreground: #36373b;
+    --background: #F5F2E3;
+    --foreground: #16325C;
 
     --card: #fff;
-    --card-foreground: #36373b;
+    --card-foreground: #16325C;
     --popover: #fff;
-    --popover-foreground: #36373b;
-    --primary: #1EAEDB;
+    --popover-foreground: #16325C;
+    --primary: #4B9CD3;
     --primary-foreground: #fff;
 
-    --secondary: #33C3F0;
+    --secondary: #1A4B94;
     --secondary-foreground: #fff;
 
     --muted: #F4F7FB;
     --muted-foreground: #9F9EA1;
 
-    --accent: #33C3F0;
-    --accent-foreground: #fff;
+    --accent: #D4AF37;
+    --accent-foreground: #16325C;
 
     --destructive: #D14343;
     --destructive-foreground: #fff;
 
     --border: #E4E4E7;
     --input: #E4E4E7;
-    --ring: #1EAEDB;
+    --ring: #4B9CD3;
 
     --radius: 1.1rem;
   }
 
   .dark {
-    --background: #191a1d;
-    --foreground: #f3f3f4;
-    --card: #252528;
+    --background: #16325C;
+    --foreground: #F5F2E3;
+    --card: #1A4B94;
     --card-foreground: #fff;
-    --popover: #252528;
+    --popover: #1A4B94;
     --popover-foreground: #fff;
-    --primary: #33C3F0;
-    --primary-foreground: #191a1d;
-    --secondary: #1EAEDB;
+    --primary: #4B9CD3;
+    --primary-foreground: #16325C;
+    --secondary: #1A4B94;
     --secondary-foreground: #fff;
-    --muted: #36373b;
+    --muted: #1A305A;
     --muted-foreground: #d1d5db;
-    --accent: #297ba7;
-    --accent-foreground: #fff;
+    --accent: #D4AF37;
+    --accent-foreground: #16325C;
     --destructive: #c92a2a;
     --destructive-foreground: #fff;
-    --border: #36373b;
-    --input: #36373b;
-    --ring: #33C3F0;
+    --border: #1A305A;
+    --input: #1A305A;
+    --ring: #4B9CD3;
   }
 }
 
@@ -70,7 +70,7 @@ input, .searchbar input {
   @apply text-gray-dark placeholder:text-gray-silver bg-white;
 }
 
-/* Nouvelle apparence pour les cards, inspirée de la maquette */
+/* Nouvelle apparence pour les cards, inspirée du zellige marocain */
 @layer components {
   .property-card {
     @apply relative overflow-hidden rounded-lg bg-card shadow transition-all hover:shadow-lg border border-gray-silver;

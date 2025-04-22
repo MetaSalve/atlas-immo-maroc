@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { Home, Search, Heart, Map, Menu, UserCircle, Bell, LogOut } from 'lucide-react';
@@ -29,12 +30,12 @@ export const NavBar = () => {
           )}
           <NavLink to="/" className="flex items-center gap-2">
             <img
-              src="/lovable-uploads/user-uploaded-1.jpg"
-              alt="Atlas Immo - logo salon marocain"
-              className="w-8 h-8 rounded-md object-cover border border-sand"
+              src="/lovable-uploads/8f920b64-4b0a-4b83-a337-fca2ea58f64d.png"
+              alt="Atlas Immo - logo zellige"
+              className="w-8 h-8 rounded-md object-cover border border-skyblue"
               draggable={false}
             />
-            <span className="font-bold text-xl text-darkgray font-playfair">Atlas<span className="text-olive">Immo</span></span>
+            <span className="font-bold text-xl text-navy font-playfair">Atlas<span className="text-skyblue">Immo</span></span>
           </NavLink>
         </div>
 
@@ -54,12 +55,12 @@ export const NavBar = () => {
           {user ? (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="sm" className="flex items-center gap-2 text-darkgray">
+                <Button variant="ghost" size="sm" className="flex items-center gap-2 text-navy">
                   <UserCircle className="h-4 w-4" />
                   <span className="hidden md:inline">{user.email?.split('@')[0]}</span>
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-56 bg-sand/70 text-darkgray">
+              <DropdownMenuContent align="end" className="w-56 bg-cream/70 text-navy">
                 <DropdownMenuLabel>Mon compte</DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={() => navigate('/favorites')}>
@@ -79,7 +80,7 @@ export const NavBar = () => {
               <Button 
                 variant="ghost" 
                 size="sm" 
-                className="hidden md:flex items-center gap-2 text-darkgray"
+                className="hidden md:flex items-center gap-2 text-navy"
                 onClick={() => navigate('/auth')}
               >
                 <UserCircle className="h-4 w-4" />
@@ -89,7 +90,7 @@ export const NavBar = () => {
                 <Button 
                   variant="default" 
                   size="sm"
-                  className="bg-olive text-white font-bold hover:bg-olive/90"
+                  className="bg-skyblue text-white font-bold hover:bg-royalblue"
                   onClick={() => navigate('/auth')}
                 >
                   Inscription
@@ -116,8 +117,8 @@ const NavItem = ({ to, icon, label }: NavItemProps) => {
       className={({ isActive }) => 
         cn("flex items-center px-3 py-2 text-sm font-medium rounded-md transition-colors", 
            isActive 
-             ? "bg-peach/60 text-olive" 
-             : "hover:bg-sand/70 text-darkgray/70"
+             ? "bg-skyblue/20 text-skyblue" 
+             : "hover:bg-cream/70 text-navy/70"
         )
       }
     >

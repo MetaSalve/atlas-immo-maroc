@@ -4,15 +4,25 @@ import { useFavorites } from '@/hooks/useFavorites';
 import { SearchBar } from '@/components/search/SearchBar';
 import { PropertyGrid } from '@/components/property/PropertyGrid';
 import { useNavigate } from 'react-router-dom';
-import { Layers3, Globe, Folder } from 'lucide-react'; // Use allowed icons only
+import { Layers3, Globe, Bell } from 'lucide-react';
 
-const MoroccanSalonHeroImage = () => (
+const MoroccanHeroImage = () => (
   <img
-    src="/lovable-uploads/user-uploaded-1.jpg"
-    alt="Salon marocain avec zellige"
+    src="/lovable-uploads/635fe436-a52a-4936-ada5-51afa9b8e997.png"
+    alt="Application immobilière"
     className="absolute inset-0 w-full h-full object-cover opacity-30 z-0"
     draggable={false}
     style={{ objectFit: 'cover', borderRadius: '1.25rem' }}
+  />
+);
+
+const ZelligeBackground = () => (
+  <img
+    src="/lovable-uploads/8f920b64-4b0a-4b83-a337-fca2ea58f64d.png"
+    alt="Motif zellige marocain"
+    className="absolute top-0 left-0 w-full h-full object-cover opacity-15 z-0"
+    draggable={false}
+    style={{ objectFit: 'cover' }}
   />
 );
 
@@ -26,73 +36,69 @@ const HomePage = () => {
 
   return (
     <div className="py-6 space-y-10">
-      <section className="relative py-12 px-4 rounded-2xl bg-gradient-to-br from-sand to-peach/90 text-textPrimary overflow-hidden min-h-[340px]">
-        <MoroccanSalonHeroImage />
+      <section className="relative py-12 px-4 rounded-2xl bg-gradient-to-br from-royalblue/90 to-skyblue/80 text-white overflow-hidden min-h-[340px]">
+        <MoroccanHeroImage />
         <div className="relative max-w-2xl mx-auto text-center z-10">
-          <div className="mb-2 pb-1 font-bold text-lg uppercase tracking-wider text-olive">
-            Agrégateur nouvelle génération&nbsp;: Toutes les annonces du web, au même endroit
+          <div className="mb-2 pb-1 font-bold text-lg uppercase tracking-wider text-gold">
+            Toutes les annonces immobilières du Maroc au même endroit
           </div>
-          <h1 className="text-3xl sm:text-4xl font-bold mb-4 font-playfair text-darkgray drop-shadow">
-            Retrouvez en un clic l'ensemble des annonces immobilières du web au Maroc
+          <h1 className="text-3xl sm:text-4xl font-bold mb-4 font-playfair text-white drop-shadow">
+            Le premier agrégateur d'annonces immobilières au Maroc
           </h1>
-          <p className="mb-4 text-gray-800 font-medium">
-            Atlas Immo n'est pas une agence ! Nous centralisons, trions et mettons à jour en continu les meilleures annonces venues de tous les grands sites marocains et réseaux sociaux.
-          </p>
           <div className="flex justify-center gap-8 mb-8">
             <div className="flex flex-col items-center">
-              <img src="/lovable-uploads/user-uploaded-1.jpg" alt="Annonces agrégées" className="w-12 h-12 mb-2 rounded-full object-cover bg-sand p-1 border" />
-              <p className="text-sm">Annonces web centralisées</p>
+              <div className="w-12 h-12 rounded-full bg-white/20 flex items-center justify-center mb-2">
+                <Globe className="h-6 w-6 text-white" />
+              </div>
+              <p className="text-sm font-medium">Sources multiples</p>
             </div>
             <div className="flex flex-col items-center">
-              <div className="w-12 h-12 rounded-full bg-peach/60 flex items-center justify-center mb-2">
-                <Layers3 className="h-6 w-6 text-darkgray" />
+              <div className="w-12 h-12 rounded-full bg-white/20 flex items-center justify-center mb-2">
+                <Bell className="h-6 w-6 text-white" />
               </div>
-              <p className="text-sm">Filtrage intelligent</p>
-            </div>
-            <div className="flex flex-col items-center">
-              <div className="w-12 h-12 rounded-full bg-sand/70 flex items-center justify-center mb-2">
-                <Globe className="h-6 w-6 text-darkgray" />
-              </div>
-              <p className="text-sm">Sources multiples</p>
+              <p className="text-sm font-medium">Notifications en temps réel</p>
             </div>
           </div>
           <SearchBar className="max-w-xl mx-auto" />
         </div>
       </section>
       
-      <section className="bg-sand/30 p-6 rounded-lg text-center">
-        <h2 className="text-2xl font-bold mb-4 font-playfair text-deepblue">Comment fonctionne Atlas Immo?</h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
-          <div className="bg-white p-6 rounded-md shadow-sm">
-            <div className="w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center mb-4 mx-auto">
-              <Folder className="h-6 w-6 text-primary" />
+      <section className="bg-cream/60 p-6 rounded-lg text-center relative overflow-hidden">
+        <div className="absolute inset-0 opacity-5 z-0"><ZelligeBackground /></div>
+        <div className="relative z-10">
+          <h2 className="text-2xl font-bold mb-4 font-playfair text-navy">Comment fonctionne Atlas Immo?</h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
+            <div className="bg-white p-6 rounded-md shadow-sm">
+              <div className="w-12 h-12 rounded-full bg-skyblue/20 flex items-center justify-center mb-4 mx-auto">
+                <Globe className="h-6 w-6 text-skyblue" />
+              </div>
+              <h3 className="font-bold mb-2">Collecte Intelligente</h3>
+              <p className="text-sm text-muted-foreground">Notre système analyse en continu les sites immobiliers et réseaux sociaux marocains.</p>
             </div>
-            <h3 className="font-bold mb-2">Collecte Automatisée</h3>
-            <p className="text-sm text-muted-foreground">Notre système analyse en continu les sites immobiliers et réseaux sociaux marocains.</p>
-          </div>
-          <div className="bg-white p-6 rounded-md shadow-sm">
-            <div className="w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center mb-4 mx-auto">
-              <Layers3 className="h-6 w-6 text-primary" />
+            <div className="bg-white p-6 rounded-md shadow-sm">
+              <div className="w-12 h-12 rounded-full bg-skyblue/20 flex items-center justify-center mb-4 mx-auto">
+                <Layers3 className="h-6 w-6 text-skyblue" />
+              </div>
+              <h3 className="font-bold mb-2">Centralisation</h3>
+              <p className="text-sm text-muted-foreground">Toutes les annonces sont regroupées et catégorisées pour faciliter votre recherche.</p>
             </div>
-            <h3 className="font-bold mb-2">Traitement Intelligent</h3>
-            <p className="text-sm text-muted-foreground">Les annonces sont traitées, catégorisées et enrichies pour faciliter votre recherche.</p>
-          </div>
-          <div className="bg-white p-6 rounded-md shadow-sm">
-            <div className="w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center mb-4 mx-auto">
-              <Globe className="h-6 w-6 text-primary" />
+            <div className="bg-white p-6 rounded-md shadow-sm">
+              <div className="w-12 h-12 rounded-full bg-skyblue/20 flex items-center justify-center mb-4 mx-auto">
+                <Bell className="h-6 w-6 text-skyblue" />
+              </div>
+              <h3 className="font-bold mb-2">Alertes en temps réel</h3>
+              <p className="text-sm text-muted-foreground">Recevez des notifications instantanées pour les nouvelles annonces qui correspondent à vos critères.</p>
             </div>
-            <h3 className="font-bold mb-2">Résultats Consolidés</h3>
-            <p className="text-sm text-muted-foreground">Trouvez toutes les opportunités immobilières en un seul endroit sans multiplier les recherches.</p>
           </div>
         </div>
       </section>
       
       <section>
         <div className="flex justify-between items-center mb-6">
-          <h2 className="text-2xl font-bold font-playfair text-deepblue">Biens en vedette</h2>
+          <h2 className="text-2xl font-bold font-playfair text-navy">Biens en vedette</h2>
           <button 
             onClick={() => navigate('/search')}
-            className="text-primary hover:underline text-sm"
+            className="text-skyblue hover:underline text-sm"
           >
             Voir tout
           </button>
@@ -107,10 +113,10 @@ const HomePage = () => {
       
       <section>
         <div className="flex justify-between items-center mb-6">
-          <h2 className="text-2xl font-bold font-playfair text-olive">Ajouts récents</h2>
+          <h2 className="text-2xl font-bold font-playfair text-navy">Ajouts récents</h2>
           <button 
             onClick={() => navigate('/search')}
-            className="text-primary hover:underline text-sm"
+            className="text-skyblue hover:underline text-sm"
           >
             Voir tout
           </button>
@@ -123,17 +129,20 @@ const HomePage = () => {
         />
       </section>
       
-      <section className="rounded-xl bg-sand/30 p-6 text-center">
-        <h2 className="text-2xl font-bold mb-2 font-playfair text-olive">Recevez les nouvelles annonces en premier</h2>
-        <p className="text-muted-foreground mb-4 max-w-lg mx-auto">
-          Inscrivez-vous pour recevoir les alertes personnalisées des nouveaux biens correspondant à vos critères de recherche
-        </p>
-        <button 
-          className="bg-olive text-white px-6 py-2 rounded-md hover:bg-olive/90 transition-colors font-bold"
-          onClick={() => navigate('/alerts')}
-        >
-          Créer une alerte
-        </button>
+      <section className="rounded-xl bg-cream/60 p-6 text-center relative overflow-hidden">
+        <div className="absolute inset-0 opacity-5 z-0"><ZelligeBackground /></div>
+        <div className="relative z-10">
+          <h2 className="text-2xl font-bold mb-2 font-playfair text-navy">Recevez les nouvelles annonces en temps réel</h2>
+          <p className="text-muted-foreground mb-4 max-w-lg mx-auto">
+            Inscrivez-vous pour recevoir des notifications personnalisées dès qu'un bien correspondant à vos critères est publié
+          </p>
+          <button 
+            className="bg-skyblue text-white px-6 py-2 rounded-md hover:bg-royalblue transition-colors font-bold"
+            onClick={() => navigate('/alerts')}
+          >
+            Créer une alerte
+          </button>
+        </div>
       </section>
     </div>
   );

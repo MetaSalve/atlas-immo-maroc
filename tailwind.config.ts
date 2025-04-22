@@ -23,31 +23,35 @@ export default {
         playfair: ['Playfair Display', 'serif'],
       },
       colors: {
-        // Palette inspirée du screenshot (Bleu et gris)
-        skyblue: "#33C3F0",        // bleu vif
-        blue: "#1EAEDB",           // bleu principal
+        // Palette inspirée du zellige marocain
+        royalblue: "#1A4B94",     // bleu profond
+        skyblue: "#4B9CD3",      // bleu ciel
+        navy: "#16325C",         // bleu marine foncé
+        gold: "#D4AF37",         // doré
+        cream: "#F5F2E3",        // crème
+        terracotta: "#A0522D",   // terre cuite
         white: "#FFFFFF",
-        gray: "#C8C8C9",           // gris très clair (fond)
-        "gray-silver": "#9F9EA1",  // gris pour les contours
-        "gray-dark": "#36373b",    // foncé pour le texte
-        "main-bg": "#F4F7FB",      // pour le fond général (très clair)
+        gray: "#C8C8C9",           
+        "gray-silver": "#9F9EA1",  
+        "gray-dark": "#36373b",    
+        "main-bg": "#F4F7FB",      // fond général
         border: "#E4E4E7",
-        // Thème principal (remplace peach, olive, etc)
+        // Thème principal
         primary: {
-          DEFAULT: "#1EAEDB",        // bleu principal
+          DEFAULT: "#4B9CD3",      // bleu ciel
           foreground: "#fff"
         },
         secondary: {
-          DEFAULT: "#33C3F0",        // bleu clair
+          DEFAULT: "#1A4B94",      // bleu profond
           foreground: "#fff"
         },
         muted: {
-          DEFAULT: "#F4F7FB",      // gris bleuté fond
+          DEFAULT: "#F4F7FB",      
           foreground: "#9F9EA1"
         },
         accent: {
-          DEFAULT: "#33C3F0",
-          foreground: "#fff"
+          DEFAULT: "#D4AF37",      // doré
+          foreground: "#16325C"    // contraste avec bleu foncé
         },
         card: {
           DEFAULT: "#fff",
