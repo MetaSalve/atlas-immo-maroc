@@ -22,9 +22,9 @@ export const PropertyGrid = ({
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {[1, 2, 3].map((i) => (
           <div key={i} className="space-y-4 animate-pulse">
-            <div className="h-48 bg-muted rounded-lg" />
-            <div className="h-4 bg-muted rounded w-3/4" />
-            <div className="h-4 bg-muted rounded w-1/2" />
+            <div className="h-48 bg-gray-200 rounded-2xl" />
+            <div className="h-4 bg-gray-200 rounded w-3/4" />
+            <div className="h-4 bg-gray-200 rounded w-1/2" />
           </div>
         ))}
       </div>
@@ -34,13 +34,13 @@ export const PropertyGrid = ({
   if (properties.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center py-10">
-        <p className="text-muted-foreground">{emptyMessage}</p>
+        <p className="text-gray-500">{emptyMessage}</p>
       </div>
     );
   }
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
       {properties.map((property) => (
         <PropertyCard
           key={property.id}
