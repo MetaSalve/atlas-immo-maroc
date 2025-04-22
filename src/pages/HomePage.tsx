@@ -1,4 +1,3 @@
-
 import { useProperties } from '@/hooks/useProperties';
 import { useFavorites } from '@/hooks/useFavorites';
 import { SearchBar } from '@/components/search/SearchBar';
@@ -8,21 +7,11 @@ import { Layers3, Globe, Bell } from 'lucide-react';
 
 const MoroccanHeroImage = () => (
   <img
-    src="/lovable-uploads/635fe436-a52a-4936-ada5-51afa9b8e997.png"
-    alt="Application immobilière"
-    className="absolute inset-0 w-full h-full object-cover opacity-30 z-0"
+    src="/lovable-uploads/ed94eaf4-699c-4b4d-b440-4ae06aba60a0.png"
+    alt="Zellige marocain traditionnel"
+    className="absolute inset-0 w-full h-full object-cover opacity-20 z-0"
     draggable={false}
     style={{ objectFit: 'cover', borderRadius: '1.25rem' }}
-  />
-);
-
-const ZelligeBackground = () => (
-  <img
-    src="/lovable-uploads/8f920b64-4b0a-4b83-a337-fca2ea58f64d.png"
-    alt="Motif zellige marocain"
-    className="absolute top-0 left-0 w-full h-full object-cover opacity-15 z-0"
-    draggable={false}
-    style={{ objectFit: 'cover' }}
   />
 );
 
@@ -36,11 +25,11 @@ const HomePage = () => {
 
   return (
     <div className="py-6 space-y-10">
-      <section className="relative py-12 px-4 rounded-2xl bg-gradient-to-br from-royalblue/90 to-skyblue/80 text-white overflow-hidden min-h-[340px]">
+      <section className="relative py-12 px-4 rounded-2xl bg-gradient-to-br from-navy/90 to-skyblue/80 text-white overflow-hidden min-h-[340px]">
         <MoroccanHeroImage />
         <div className="relative max-w-2xl mx-auto text-center z-10">
           <div className="mb-2 pb-1 font-bold text-lg uppercase tracking-wider text-gold">
-            Toutes les annonces immobilières du Maroc au même endroit
+            Notifications en temps réel
           </div>
           <h1 className="text-3xl sm:text-4xl font-bold mb-4 font-playfair text-white drop-shadow">
             Le premier agrégateur d'annonces immobilières au Maroc
