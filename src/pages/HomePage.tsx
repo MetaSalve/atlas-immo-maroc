@@ -15,6 +15,16 @@ const MoroccanHeroImage = () => (
   />
 );
 
+const ZelligeBackground = () => (
+  <img
+    src="/lovable-uploads/8f920b64-4b0a-4b83-a337-fca2ea58f64d.png"
+    alt="Motif zellige marocain"
+    className="absolute top-0 left-0 w-full h-full object-cover opacity-15 z-0"
+    draggable={false}
+    style={{ objectFit: 'cover' }}
+  />
+);
+
 const HomePage = () => {
   const navigate = useNavigate();
   const { data: properties = [], isLoading } = useProperties();
