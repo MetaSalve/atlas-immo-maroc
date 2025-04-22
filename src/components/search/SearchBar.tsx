@@ -1,7 +1,7 @@
 
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Search } from 'lucide-react';
+import { Search, MapPin } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 
@@ -21,6 +21,7 @@ export const SearchBar = ({
   
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
+    
     if (onSearch) {
       onSearch(query);
     } else {
@@ -30,15 +31,25 @@ export const SearchBar = ({
   
   return (
     <form onSubmit={handleSearch} className={`relative ${className}`}>
-      <Input
-        type="text"
-        placeholder="Rechercher une propriété..."
-        className="w-full h-12 pl-12 pr-4 rounded-full bg-gray-100 border-transparent focus:border-skyblue focus:ring-1 focus:ring-skyblue"
-        value={query}
-        onChange={(e) => setQuery(e.target.value)}
-      />
-      <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-        <Search className="h-5 w-5 text-gray-400" />
+      <div className="relative">
+        <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+          <MapPin className="h-4 w-4 text-muted-foreground" />
+        </div>
+        <Input
+          type="text"
+          placeholder="Ville, quartier, adresse..."
+          className="pl-10 pr-20 text-gray-900 dark:text-gray-100"
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+        />
+        <Button 
+          type="submit"
+          size="sm" 
+          className="absolute end-1 top-1/2 -translate-y-1/2 flex items-center gap-1"
+        >
+          <Search className="h-4 w-4" />
+          <span className="hidden sm:inline">Rechercher</span>
+        </Button>
       </div>
     </form>
   );

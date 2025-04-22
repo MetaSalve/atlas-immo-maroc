@@ -1,10 +1,11 @@
 
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Heart } from 'lucide-react';
+import { Home, Bed, Bath, Maximize, Heart } from 'lucide-react';
 import { Property } from '@/types/property';
 import { useToast } from '@/hooks/use-toast';
-import { Card } from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 
 interface PropertyCardProps {
@@ -41,50 +42,72 @@ export const PropertyCard = ({
     }
   };
   
+  const statusLabel = property.status === 'for-sale' ? 'À vendre' : 'À louer';
+  const priceLabel = property.status === 'for-rent' ? '/mois' : '';
+  
   const fallbackImage = 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MzR8fHJlYWwlMjBlc3RhdGV8ZW58MHx8MHx8&auto=format&fit=crop&w=800&q=60';
   
   return (
-    <Card className={cn("overflow-hidden rounded-2xl border-0 shadow-sm hover:shadow-md transition-shadow duration-200", className)}>
-      <Link to={`/properties/${property.id}`} className="block">
-        <div className="relative aspect-[4/3]">
+    <Card className={cn("property-card group", className)}>
+      <Link to={`/properties/${property.id}`}>
+        <div className="relative overflow-hidden">
           <img
             src={imageError ? fallbackImage : property.images[0]}
             alt={property.title}
-            className="w-full h-full object-cover"
+            className="property-card-image transition-transform duration-300 group-hover:scale-105"
             onError={() => setImageError(true)}
           />
-          <button
+          <div className="property-card-badge">{statusLabel}</div>
+          <Button
+            variant="ghost"
+            size="icon"
+            className="property-card-favorite"
             onClick={handleFavoriteClick}
-            className="absolute top-3 right-3 p-2 rounded-full bg-white/80 backdrop-blur-sm shadow-sm hover:bg-white transition-colors"
           >
             <Heart
               className={cn(
-                "h-5 w-5",
-                isFavorite ? "fill-rose-500 text-rose-500" : "text-gray-600"
+                "h-5 w-5 transition-colors",
+                isFavorite ? "fill-destructive text-destructive" : "text-muted-foreground"
               )}
             />
-          </button>
+          </Button>
         </div>
         
-        <div className="p-4">
-          <div className="flex justify-between items-start mb-2">
-            <h3 className="font-medium line-clamp-1">{property.title}</h3>
-            <span className="font-semibold text-skyblue">
-              {formatPrice(property.price)} {property.priceUnit}
-            </span>
+        <CardContent className="property-card-content">
+          <div className="property-card-price">
+            {formatPrice(property.price)} {property.priceUnit} {priceLabel}
           </div>
-          <p className="text-sm text-gray-500 line-clamp-1">
+          <h3 className="font-medium leading-tight mt-1 line-clamp-1">{property.title}</h3>
+          <div className="property-card-location line-clamp-1">
             {property.location.district}, {property.location.city}
-          </p>
+          </div>
           
-          <div className="mt-3 pt-3 border-t flex items-center gap-3">
-            <div className="flex items-center gap-1.5 text-sm text-gray-500">
-              <span>{property.bedrooms} ch.</span>
-              •
+          <div className="property-card-stats">
+            {property.bedrooms > 0 && (
+              <div className="flex items-center gap-1">
+                <Bed className="h-4 w-4" />
+                <span>{property.bedrooms}</span>
+              </div>
+            )}
+            
+            {property.bathrooms > 0 && (
+              <div className="flex items-center gap-1">
+                <Bath className="h-4 w-4" />
+                <span>{property.bathrooms}</span>
+              </div>
+            )}
+            
+            <div className="flex items-center gap-1">
+              <Maximize className="h-4 w-4" />
               <span>{property.area} m²</span>
             </div>
+            
+            <div className="flex items-center gap-1">
+              <Home className="h-4 w-4" />
+              <span>{property.type}</span>
+            </div>
           </div>
-        </div>
+        </CardContent>
       </Link>
     </Card>
   );
