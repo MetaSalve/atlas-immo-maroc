@@ -33,29 +33,41 @@ export default {
         white: "#FFFFFF",
         gray: "#C8C8C9",           
         "gray-silver": "#9F9EA1",  
-        "gray-dark": "#36373b",    
+        "gray-dark": "#36373b",   
         "main-bg": "#F4F7FB",      // fond général
-        border: "#E4E4E7",
+        border: "var(--border)",
+        input: "var(--input)",
+        ring: "var(--ring)",
+        background: "var(--background)",
+        foreground: "var(--foreground)",
         // Thème principal
         primary: {
-          DEFAULT: "#4B9CD3",      // bleu ciel
-          foreground: "#fff"
+          DEFAULT: "var(--primary)",
+          foreground: "var(--primary-foreground)"
         },
         secondary: {
-          DEFAULT: "#1A4B94",      // bleu profond
-          foreground: "#fff"
+          DEFAULT: "var(--secondary)",
+          foreground: "var(--secondary-foreground)"
         },
         muted: {
-          DEFAULT: "#F4F7FB",      
-          foreground: "#9F9EA1"
+          DEFAULT: "var(--muted)",
+          foreground: "var(--muted-foreground)"
         },
         accent: {
-          DEFAULT: "#D4AF37",      // doré
-          foreground: "#16325C"    // contraste avec bleu foncé
+          DEFAULT: "var(--accent)",
+          foreground: "var(--accent-foreground)"
         },
         card: {
-          DEFAULT: "#fff",
-          foreground: "#36373b"
+          DEFAULT: "var(--card)",
+          foreground: "var(--card-foreground)"
+        },
+        popover: {
+          DEFAULT: "var(--popover)",
+          foreground: "var(--popover-foreground)"
+        },
+        destructive: {
+          DEFAULT: "var(--destructive)",
+          foreground: "var(--destructive-foreground)"
         },
       },
       borderRadius: {
