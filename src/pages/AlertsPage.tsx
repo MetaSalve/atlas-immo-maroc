@@ -4,13 +4,20 @@ import { AlertForm } from '@/components/alerts/AlertForm';
 import { AlertsList } from '@/components/alerts/AlertsList';
 import { useAlerts } from '@/hooks/useAlerts';
 import { useAuth } from '@/providers/AuthProvider';
+import { useSubscription } from '@/providers/SubscriptionProvider';
 import { useEffect, useState } from 'react';
 import { SimpleSearchFilters, SimpleSearchFiltersValues } from '@/components/search/SimpleSearchFilters';
 import { Card } from '@/components/ui/card';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { Button } from '@/components/ui/button';
+import { useNavigate } from 'react-router-dom';
+import { FeatureGate } from '@/components/access/FeatureGate';
 
 const AlertsPage = () => {
   const { user } = useAuth();
+  const navigate = useNavigate();
   const { alerts, isLoading, fetchAlerts, createAlert } = useAlerts();
+  const { tier, allowedAlerts } = useSubscription();
   const [filters, setFilters] = useState<SimpleSearchFiltersValues>({
     status: 'all',
     type: 'all',
@@ -49,8 +56,22 @@ const AlertsPage = () => {
     });
   };
 
+  const canCreateAlert = tier === 'premium' || alerts.length < allowedAlerts;
+
   if (!user) {
-    return null; // Will redirect in useEffect in useAlerts hook
+    return (
+      <div className="py-6">
+        <Alert className="mb-4">
+          <AlertTitle>Connexion requise</AlertTitle>
+          <AlertDescription>
+            Vous devez être connecté pour accéder à vos alertes.
+            <div className="mt-3">
+              <Button onClick={() => navigate('/auth')}>Se connecter</Button>
+            </div>
+          </AlertDescription>
+        </Alert>
+      </div>
+    );
   }
   
   return (
@@ -76,26 +97,40 @@ const AlertsPage = () => {
               </p>
             </div>
           )}
+
+          {tier === 'free' && alerts.length > 0 && (
+            <div className="mt-4 text-sm text-muted-foreground">
+              <p>Vous avez utilisé {alerts.length} sur {allowedAlerts} alertes disponibles.</p>
+            </div>
+          )}
         </div>
         
         {/* Create new alert */}
         <div className="space-y-4">
           <h2 className="text-lg font-semibold font-playfair text-terracotta">Nouvelle alerte</h2>
           
-          <Card className="p-4">
-            <SimpleSearchFilters
-              values={filters}
-              onChange={handleFilterChange}
-              onApplyFilters={handleApplyFilters}
-              onResetFilters={handleResetFilters}
-            />
-          </Card>
-          
-          <AlertForm 
-            onSave={fetchAlerts} 
-            createAlert={createAlert} 
-            initialValues={filters}
-          />
+          {!canCreateAlert && (
+            <FeatureGate feature="unlimited_alerts" />
+          )}
+
+          {canCreateAlert && (
+            <>
+              <Card className="p-4">
+                <SimpleSearchFilters
+                  values={filters}
+                  onChange={handleFilterChange}
+                  onApplyFilters={handleApplyFilters}
+                  onResetFilters={handleResetFilters}
+                />
+              </Card>
+              
+              <AlertForm 
+                onSave={fetchAlerts} 
+                createAlert={createAlert} 
+                initialValues={filters}
+              />
+            </>
+          )}
         </div>
       </div>
     </div>
@@ -103,4 +138,3 @@ const AlertsPage = () => {
 };
 
 export default AlertsPage;
-

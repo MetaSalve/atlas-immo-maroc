@@ -2,14 +2,17 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/providers/AuthProvider';
+import { useSubscription } from '@/providers/SubscriptionProvider';
 import { toast } from 'sonner';
-import { Check, Mail } from 'lucide-react';
+import { Check, Mail, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
+import { Badge } from '@/components/ui/badge';
 
 const SubscriptionPage = () => {
   const { user } = useAuth();
+  const { tier } = useSubscription();
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   
@@ -22,19 +25,25 @@ const SubscriptionPage = () => {
           onClick: () => navigate('/auth')
         }
       });
+      navigate('/auth');
       return;
     }
     
     setIsLoading(true);
     
     // Simuler un processus de paiement
+    toast.success("Redirection vers la page de paiement", {
+      description: "Vous allez être redirigé vers notre page de paiement sécurisée."
+    });
+    
+    // Dans une vraie implémentation, on redirigerait vers Stripe ou un autre processeur de paiement
     setTimeout(() => {
-      toast.success(`Merci pour votre abonnement au forfait ${plan}!`, {
-        description: "Vous avez maintenant accès à toutes les fonctionnalités premium."
-      });
       setIsLoading(false);
-    }, 2000);
+      navigate('/payment');
+    }, 1500);
   };
+
+  const isPremiumUser = tier === 'premium';
   
   return (
     <div className="py-10 px-4 md:px-6 lg:px-8 max-w-6xl mx-auto">
@@ -47,8 +56,13 @@ const SubscriptionPage = () => {
       
       <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
         {/* Plan Gratuit */}
-        <Card className="flex flex-col border-2">
+        <Card className={`flex flex-col border-2 ${tier === 'free' ? 'border-primary' : ''}`}>
           <CardHeader>
+            {tier === 'free' && (
+              <div className="py-1 px-3 rounded-full bg-primary text-primary-foreground w-fit text-sm font-medium mb-2">
+                Votre plan actuel
+              </div>
+            )}
             <CardTitle className="text-xl">Offre Gratuite</CardTitle>
             <CardDescription>Pour commencer à explorer</CardDescription>
             <div className="mt-4">
@@ -68,27 +82,38 @@ const SubscriptionPage = () => {
               </li>
               <li className="flex items-center">
                 <Check className="h-4 w-4 mr-2 text-green-500" />
-                <span>Sauvegarde des favoris</span>
+                <span>10 biens en favoris</span>
+              </li>
+              <li className="flex items-center">
+                <Check className="h-4 w-4 mr-2 text-green-500" />
+                <span>3 alertes personnalisées</span>
               </li>
             </ul>
           </CardContent>
           <CardFooter>
             <Button variant="outline" className="w-full" onClick={() => navigate('/')}>
-              C'est gratuit
+              Continuer gratuitement
             </Button>
           </CardFooter>
         </Card>
         
-        {/* Plan Standard */}
-        <Card className="flex flex-col border-2 border-primary">
+        {/* Plan Premium */}
+        <Card className={`flex flex-col border-2 ${isPremiumUser ? 'border-primary' : ''}`}>
           <CardHeader>
-            <div className="py-1 px-3 rounded-full bg-primary text-primary-foreground w-fit text-sm font-medium mb-2">
-              Populaire
-            </div>
-            <CardTitle className="text-xl">Standard</CardTitle>
+            {isPremiumUser ? (
+              <div className="py-1 px-3 rounded-full bg-primary text-primary-foreground w-fit text-sm font-medium mb-2">
+                Votre plan actuel
+              </div>
+            ) : (
+              <div className="py-1 px-3 rounded-full bg-primary/10 text-primary w-fit text-sm font-medium mb-2 flex items-center gap-1">
+                <Sparkles className="h-3 w-3" />
+                <span>Recommandé</span>
+              </div>
+            )}
+            <CardTitle className="text-xl">Premium</CardTitle>
             <CardDescription>Pour une recherche efficace</CardDescription>
             <div className="mt-4">
-              <span className="text-4xl font-bold">149 MAD</span>
+              <span className="text-4xl font-bold">99 MAD</span>
               <span className="text-muted-foreground ml-1">/mois</span>
             </div>
           </CardHeader>
@@ -104,7 +129,11 @@ const SubscriptionPage = () => {
               </li>
               <li className="flex items-center">
                 <Check className="h-4 w-4 mr-2 text-green-500" />
-                <span>5 alertes personnalisées</span>
+                <span>Favoris illimités</span>
+              </li>
+              <li className="flex items-center">
+                <Check className="h-4 w-4 mr-2 text-green-500" />
+                <span>Alertes personnalisées illimitées</span>
               </li>
               <li className="flex items-center">
                 <Check className="h-4 w-4 mr-2 text-green-500" />
@@ -114,11 +143,19 @@ const SubscriptionPage = () => {
                 <Check className="h-4 w-4 mr-2 text-green-500" />
                 <span>Comparaison de biens</span>
               </li>
+              <li className="flex items-center">
+                <Check className="h-4 w-4 mr-2 text-green-500" />
+                <span>Support prioritaire</span>
+              </li>
             </ul>
           </CardContent>
           <CardFooter>
-            <Button className="w-full" onClick={() => handleSubscribe('Standard')} disabled={isLoading}>
-              {isLoading ? "Traitement..." : "S'abonner"}
+            <Button 
+              className="w-full" 
+              onClick={() => handleSubscribe('Premium')} 
+              disabled={isLoading || isPremiumUser}
+            >
+              {isLoading ? "Traitement..." : isPremiumUser ? "Abonnement actif" : "S'abonner"}
             </Button>
           </CardFooter>
         </Card>
@@ -141,8 +178,16 @@ const SubscriptionPage = () => {
               <h3 className="font-semibold">Comment fonctionnent les alertes ?</h3>
               <p className="text-sm text-muted-foreground mt-1">
                 Les alertes vous permettent de recevoir des notifications lorsque de nouveaux biens 
-                correspondant à vos critères sont publiés. Vous pouvez personnaliser vos critères 
-                de recherche et choisir la fréquence des notifications.
+                correspondant à vos critères sont publiés. Avec l'abonnement Premium, vous bénéficiez 
+                d'alertes illimitées et personnalisables.
+              </p>
+            </div>
+            <div>
+              <h3 className="font-semibold">Quelles sont les limitations de l'offre gratuite ?</h3>
+              <p className="text-sm text-muted-foreground mt-1">
+                L'offre gratuite vous permet d'accéder aux fonctionnalités de base avec quelques limitations : 
+                10 annonces par jour, 10 favoris maximum, et 3 alertes personnalisées. Pour plus de liberté, 
+                découvrez notre offre Premium.
               </p>
             </div>
           </div>

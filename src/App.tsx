@@ -7,6 +7,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Layout } from "./components/layout/Layout";
 import { AuthProvider } from "./providers/AuthProvider";
+import { SubscriptionProvider } from "./providers/SubscriptionProvider";
 import HomePage from "./pages/HomePage";
 import SearchPage from "./pages/SearchPage";
 import PropertyDetailPage from "./pages/PropertyDetailPage";
@@ -16,6 +17,7 @@ import AlertsPage from "./pages/AlertsPage";
 import AdminPage from "./pages/AdminPage";
 import AuthPage from "./pages/AuthPage";
 import SubscriptionPage from "./pages/SubscriptionPage";
+import PaymentPage from "./pages/PaymentPage";
 import NotFound from "./pages/NotFound";
 
 // Create a client
@@ -34,22 +36,25 @@ const App = () => (
       <TooltipProvider>
         <BrowserRouter>
           <AuthProvider>
-            <Toaster />
-            <Sonner />
-            <Routes>
-              <Route path="/auth" element={<AuthPage />} />
-              <Route element={<Layout />}>
-                <Route path="/" element={<HomePage />} />
-                <Route path="/search" element={<SearchPage />} />
-                <Route path="/properties/:id" element={<PropertyDetailPage />} />
-                <Route path="/map" element={<MapPage />} />
-                <Route path="/favorites" element={<FavoritesPage />} />
-                <Route path="/alerts" element={<AlertsPage />} />
-                <Route path="/admin" element={<AdminPage />} />
-                <Route path="/subscription" element={<SubscriptionPage />} />
-                <Route path="*" element={<NotFound />} />
-              </Route>
-            </Routes>
+            <SubscriptionProvider>
+              <Toaster />
+              <Sonner />
+              <Routes>
+                <Route path="/auth" element={<AuthPage />} />
+                <Route element={<Layout />}>
+                  <Route path="/" element={<HomePage />} />
+                  <Route path="/search" element={<SearchPage />} />
+                  <Route path="/properties/:id" element={<PropertyDetailPage />} />
+                  <Route path="/map" element={<MapPage />} />
+                  <Route path="/favorites" element={<FavoritesPage />} />
+                  <Route path="/alerts" element={<AlertsPage />} />
+                  <Route path="/admin" element={<AdminPage />} />
+                  <Route path="/subscription" element={<SubscriptionPage />} />
+                  <Route path="/payment" element={<PaymentPage />} />
+                  <Route path="*" element={<NotFound />} />
+                </Route>
+              </Routes>
+            </SubscriptionProvider>
           </AuthProvider>
         </BrowserRouter>
       </TooltipProvider>
