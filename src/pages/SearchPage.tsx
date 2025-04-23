@@ -12,7 +12,6 @@ import { SearchSidebar } from '@/components/search/SearchSidebar';
 import { SearchResults } from '@/components/search/SearchResults';
 import { AlertDialog } from '@/components/search/AlertDialog';
 import { SimpleSearchFiltersValues } from '@/components/search/SimpleSearchFilters';
-import { SearchFiltersValues } from '@/components/search/SearchFilters';
 
 const SearchPage = () => {
   const location = useLocation();
@@ -125,18 +124,6 @@ const SearchPage = () => {
     setShowAlertDialog(true);
   };
   
-  // Convert SimpleSearchFiltersValues to SearchFiltersValues for the AlertDialog
-  const convertToSearchFiltersValues = (simpleFilters: SimpleSearchFiltersValues): SearchFiltersValues => {
-    return {
-      ...simpleFilters,
-      status: simpleFilters.status === 'for_sale' 
-        ? 'for-sale' 
-        : simpleFilters.status === 'for_rent' 
-          ? 'for-rent' 
-          : 'all' as 'for-sale' | 'for-rent' | 'all'
-    };
-  };
-  
   return (
     <div className="py-6">
       <SearchHeader
@@ -168,7 +155,7 @@ const SearchPage = () => {
 
       <AlertDialog
         open={showAlertDialog}
-        filters={convertToSearchFiltersValues(filters)}
+        filters={filters}
         onOpenChange={setShowAlertDialog}
         createAlert={createAlert}
       />
