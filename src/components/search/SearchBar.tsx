@@ -42,21 +42,31 @@ export const SearchBar = ({
       });
 
       // Ajouter une tâche à la file d'attente avec priorité élevée
-      const { error: queueError } = await supabase
+      const { data: queueData, error: queueError } = await supabase
         .from('scraping_queue')
         .insert({
-          source_id: null, // null pour scraper toutes les sources actives
           scheduled_for: new Date().toISOString(),
           priority: 10,
           status: 'pending'
-        });
+        })
+        .select();
 
-      if (queueError) throw queueError;
+      if (queueError) {
+        console.error('Erreur lors de l\'ajout à la file d\'attente:', queueError);
+        throw queueError;
+      }
+      
+      console.log('Tâche ajoutée à la file d\'attente:', queueData);
 
       // Appeler la fonction Edge pour démarrer le traitement
-      const { error } = await supabase.functions.invoke('process-scraping-queue');
+      const { data, error } = await supabase.functions.invoke('process-scraping-queue');
       
-      if (error) throw error;
+      if (error) {
+        console.error('Erreur lors de l\'appel de la fonction:', error);
+        throw error;
+      }
+      
+      console.log('Résultat de l\'appel à la fonction:', data);
 
       toast({
         title: "Scraping déclenché",

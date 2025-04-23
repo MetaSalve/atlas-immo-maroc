@@ -2,7 +2,7 @@
 import { Property } from '@/types/property';
 import { PropertyCard } from './PropertyCard';
 import { Button } from '@/components/ui/button';
-import { AlertTriangle } from 'lucide-react';
+import { AlertTriangle, RefreshCw } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { useState } from 'react';
@@ -33,9 +33,15 @@ export const PropertyGrid = ({
         description: "Tentative de déclenchement du processus de notification d'alertes...",
       });
 
-      const { error } = await supabase.functions.invoke('process-alert-notifications');
+      // Appel direct de la fonction Edge
+      const { data, error } = await supabase.functions.invoke('process-alert-notifications');
       
-      if (error) throw error;
+      console.log('Résultat du test d\'alertes:', data);
+      
+      if (error) {
+        console.error('Erreur lors du test d\'alertes:', error);
+        throw error;
+      }
 
       toast({
         title: "Test d'alertes réussi",
@@ -88,7 +94,9 @@ export const PropertyGrid = ({
             variant="outline" 
             onClick={testAlertNotifications}
             disabled={isTestingAlerts}
+            className="flex items-center gap-2"
           >
+            <RefreshCw className={`h-4 w-4 ${isTestingAlerts ? 'animate-spin' : ''}`} />
             Tester les notifications d'alertes
           </Button>
         </div>

@@ -242,7 +242,7 @@ export type Database = {
           id: string
           priority: number | null
           scheduled_for: string | null
-          source_id: string
+          source_id: string | null
           started_at: string | null
           status: string | null
         }
@@ -252,7 +252,7 @@ export type Database = {
           id?: string
           priority?: number | null
           scheduled_for?: string | null
-          source_id: string
+          source_id?: string | null
           started_at?: string | null
           status?: string | null
         }
@@ -262,7 +262,7 @@ export type Database = {
           id?: string
           priority?: number | null
           scheduled_for?: string | null
-          source_id?: string
+          source_id?: string | null
           started_at?: string | null
           status?: string | null
         }
