@@ -25,6 +25,21 @@ export const AlertDialog = ({
   const handleClose = () => {
     onOpenChange(false);
   };
+  
+  // Convert SimpleSearchFiltersValues to the format expected by createAlert
+  const handleCreateAlert = async (data: {name: string, filters: any, is_active: boolean}) => {
+    // Preserve the original filters but allow them to be overridden
+    const mergedFilters = {
+      ...filters,
+      ...data.filters,
+    };
+    
+    return createAlert({
+      name: data.name,
+      filters: mergedFilters,
+      is_active: data.is_active
+    });
+  };
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -39,7 +54,7 @@ export const AlertDialog = ({
         <AlertForm 
           initialValues={filters} 
           onSave={handleClose}
-          createAlert={createAlert}
+          createAlert={handleCreateAlert}
         />
       </DialogContent>
     </Dialog>
