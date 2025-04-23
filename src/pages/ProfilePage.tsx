@@ -1,12 +1,13 @@
-import React, { useState } from 'react';
+
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/providers/AuthProvider';
 import { useSubscription } from '@/providers/SubscriptionProvider';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
-import { format } from 'date-fns';
+import { format, addDays } from 'date-fns';
 import { fr } from 'date-fns/locale';
-import { User, Heart, Bell, CreditCard, KeyRound, LogOut, Settings, Info, Mail } from 'lucide-react';
+import { User, Heart, Bell, CreditCard, KeyRound, LogOut, Settings, Info, Mail, Calendar, Shield } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -14,6 +15,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Separator } from '@/components/ui/separator';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
+import { Progress } from '@/components/ui/progress';
 
 const ProfilePage = () => {
   const { user, signOut } = useAuth();
@@ -27,13 +29,51 @@ const ProfilePage = () => {
   const [confirmPassword, setConfirmPassword] = useState('');
   
   const isPremium = tier === 'premium';
-
+  const isFree = tier === 'free';
+  
+  // Calculate trial period for free users (14 days)
+  const trialDays = 14;
+  const signUpDate = new Date(user?.created_at || Date.now() - 5 * 24 * 60 * 60 * 1000); // Default to 5 days ago if no date
+  const trialEndDate = addDays(signUpDate, trialDays);
+  const today = new Date();
+  const daysRemaining = Math.max(0, Math.ceil((trialEndDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24)));
+  const trialProgress = Math.min(100, ((trialDays - daysRemaining) / trialDays) * 100);
+  
+  // For premium users - subscription details
   const subscriptionData = {
     status: isPremium ? 'active' : 'not_active',
-    currentPeriodEnd: isPremium ? new Date(Date.now() + 30 * 24 * 60 * 60 * 1000) : null,
-    createdAt: isPremium ? new Date(Date.now() - 60 * 24 * 60 * 60 * 1000) : null,
+    currentPeriodEnd: isPremium ? addDays(today, 30) : null,
+    createdAt: isPremium ? addDays(today, -30) : null,
     priceId: isPremium ? 'price_premium_monthly' : null,
+    renewalDate: isPremium ? addDays(today, 30) : null,
+    price: '99 MAD',
+    periodicity: 'mensuel'
   };
+
+  useEffect(() => {
+    if (user) {
+      // Fetch user profile from Supabase
+      const fetchProfile = async () => {
+        try {
+          const { data, error } = await supabase
+            .from('profiles')
+            .select('*')
+            .eq('id', user.id)
+            .single();
+          
+          if (error) throw error;
+          
+          if (data) {
+            setFullName(data.full_name || '');
+          }
+        } catch (error) {
+          console.error('Error fetching profile:', error);
+        }
+      };
+      
+      fetchProfile();
+    }
+  }, [user]);
 
   const handleUpdateProfile = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -112,16 +152,8 @@ const ProfilePage = () => {
     }
   };
   
-  const handleCancelSubscription = async () => {
-    if (!isPremium) {
-      toast.info('Vous n\'avez pas d\'abonnement actif');
-      return;
-    }
-    
-    toast.info('Redirection vers la page d\'annulation d\'abonnement...');
-    setTimeout(() => {
-      navigate('/subscription');
-    }, 1000);
+  const handleUpgradeSubscription = async () => {
+    navigate('/subscription');
   };
   
   if (!user) {
@@ -145,6 +177,11 @@ const ProfilePage = () => {
             </CardTitle>
             <CardDescription className="text-navy/60">
               {isPremium ? 'Abonné Premium' : 'Compte Gratuit'}
+              {isFree && (
+                <Badge variant="outline" className="ml-2 bg-orange-100 text-orange-700 border-orange-200">
+                  Essai
+                </Badge>
+              )}
             </CardDescription>
           </CardHeader>
           <Separator />
@@ -192,21 +229,213 @@ const ProfilePage = () => {
         <div className="flex-1">
           <h1 className="text-3xl font-bold tracking-tight mb-6 text-navy">Mon compte</h1>
           
-          <Tabs defaultValue="profile" className="w-full">
+          <Tabs defaultValue="subscription" className="w-full">
             <TabsList className="mb-4">
-              <TabsTrigger value="profile" className="flex items-center gap-2">
-                <User className="h-4 w-4" />
-                <span>Profil</span>
-              </TabsTrigger>
               <TabsTrigger value="subscription" className="flex items-center gap-2">
                 <CreditCard className="h-4 w-4" />
                 <span>Abonnement</span>
               </TabsTrigger>
+              <TabsTrigger value="profile" className="flex items-center gap-2">
+                <User className="h-4 w-4" />
+                <span>Profil</span>
+              </TabsTrigger>
               <TabsTrigger value="security" className="flex items-center gap-2">
-                <KeyRound className="h-4 w-4" />
+                <Shield className="h-4 w-4" />
                 <span>Sécurité</span>
               </TabsTrigger>
             </TabsList>
+            
+            <TabsContent value="subscription">
+              {isFree ? (
+                <Card>
+                  <CardHeader>
+                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
+                      <div>
+                        <CardTitle>Période d'essai gratuite</CardTitle>
+                        <CardDescription className="mt-1">
+                          Votre période d'essai expire dans {daysRemaining} jours
+                        </CardDescription>
+                      </div>
+                      <Badge variant="outline" className="mt-2 sm:mt-0 bg-orange-100 text-orange-700 border-orange-200 w-fit">
+                        <Calendar className="h-3 w-3 mr-1" />
+                        {format(trialEndDate, 'dd MMM yyyy', { locale: fr })}
+                      </Badge>
+                    </div>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <div className="space-y-2">
+                      <div className="flex justify-between text-sm">
+                        <span>Progression de votre essai</span>
+                        <span>{Math.round(trialProgress)}%</span>
+                      </div>
+                      <Progress value={trialProgress} />
+                    </div>
+                    
+                    <div className="rounded-lg border p-4 bg-cream/20 space-y-3">
+                      <h3 className="font-medium">Limitations du compte gratuit</h3>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-2 text-sm">
+                        <div className="flex items-center justify-between">
+                          <span>Favoris</span>
+                          <span className="font-medium">{maxFavorites} maximum</span>
+                        </div>
+                        <div className="flex items-center justify-between">
+                          <span>Alertes</span>
+                          <span className="font-medium">{allowedAlerts} maximum</span>
+                        </div>
+                        <div className="flex items-center justify-between">
+                          <span>Filtres avancés</span>
+                          <span className="text-red-500">Non disponible</span>
+                        </div>
+                        <div className="flex items-center justify-between">
+                          <span>Notifications par email</span>
+                          <span className="text-red-500">Non disponible</span>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div className="bg-blue-50 border border-blue-100 rounded-lg p-4 text-sm text-blue-700">
+                      <div className="flex items-start">
+                        <Info className="h-5 w-5 mr-2 flex-shrink-0 mt-0.5" />
+                        <div>
+                          <p className="font-medium">Passez à l'offre Premium</p>
+                          <p className="mt-1">Votre période d'essai se termine bientôt. Passez à l'offre premium pour avoir un accès illimité à toutes les fonctionnalités.</p>
+                        </div>
+                      </div>
+                    </div>
+                  </CardContent>
+                  <CardFooter>
+                    <Button 
+                      className="w-full" 
+                      onClick={handleUpgradeSubscription}
+                    >
+                      <CreditCard className="h-4 w-4 mr-2" />
+                      Passer à l'offre Premium
+                    </Button>
+                  </CardFooter>
+                </Card>
+              ) : (
+                <Card>
+                  <CardHeader>
+                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
+                      <div>
+                        <div className="flex items-center">
+                          <CardTitle>Abonnement Premium</CardTitle>
+                          <Badge variant="default" className="ml-2 bg-green-500">
+                            Actif
+                          </Badge>
+                        </div>
+                        <CardDescription className="mt-1">
+                          {subscriptionData.price} • {subscriptionData.periodicity}
+                        </CardDescription>
+                      </div>
+                    </div>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <div className="rounded-lg border p-4 bg-cream/20">
+                      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-3">
+                        <h3 className="font-medium">Détails de l'abonnement</h3>
+                        <Badge variant="outline" className="w-fit mt-1 sm:mt-0 bg-blue-50 text-blue-700 border-blue-200">
+                          <Calendar className="h-3 w-3 mr-1" />
+                          Prochain prélèvement le {format(subscriptionData.renewalDate, 'dd MMMM yyyy', { locale: fr })}
+                        </Badge>
+                      </div>
+                      
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
+                        <div className="space-y-1">
+                          <p className="font-medium">Fonctionnalités incluses</p>
+                          <ul className="space-y-1 text-muted-foreground">
+                            <li className="flex items-center">
+                              <span className="inline-block w-4 h-4 rounded-full bg-green-500/20 text-green-600 text-center text-xs mr-2">✓</span>
+                              Favoris illimités
+                            </li>
+                            <li className="flex items-center">
+                              <span className="inline-block w-4 h-4 rounded-full bg-green-500/20 text-green-600 text-center text-xs mr-2">✓</span>
+                              Alertes illimitées
+                            </li>
+                            <li className="flex items-center">
+                              <span className="inline-block w-4 h-4 rounded-full bg-green-500/20 text-green-600 text-center text-xs mr-2">✓</span>
+                              Filtres avancés
+                            </li>
+                            <li className="flex items-center">
+                              <span className="inline-block w-4 h-4 rounded-full bg-green-500/20 text-green-600 text-center text-xs mr-2">✓</span>
+                              Notifications par email
+                            </li>
+                          </ul>
+                        </div>
+                        
+                        <div className="space-y-1">
+                          <p className="font-medium">Informations de paiement</p>
+                          <div className="text-muted-foreground">
+                            <p>Carte •••• 4242</p>
+                            <p>Expire le 12/25</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div className="bg-amber-50 border border-amber-100 rounded-lg p-4 text-amber-700">
+                      <div className="flex items-start">
+                        <Info className="h-5 w-5 mr-2 flex-shrink-0 mt-0.5" />
+                        <p>Votre abonnement se renouvellera automatiquement le {format(subscriptionData.renewalDate, 'dd MMMM yyyy', { locale: fr })}. Vous pouvez le gérer à tout moment.</p>
+                      </div>
+                    </div>
+                  </CardContent>
+                  <CardFooter className="flex flex-col sm:flex-row gap-3">
+                    <Button 
+                      variant="outline"
+                      className="w-full sm:w-auto"
+                      onClick={handleManageSubscription}
+                    >
+                      <Settings className="h-4 w-4 mr-2" />
+                      Gérer le paiement
+                    </Button>
+                    <Button
+                      variant="outline" 
+                      className="w-full sm:w-auto text-destructive hover:text-destructive hover:bg-destructive/10 border-destructive/30"
+                      onClick={() => navigate('/subscription')}
+                    >
+                      Annuler l'abonnement
+                    </Button>
+                  </CardFooter>
+                </Card>
+              )}
+              
+              <Card className="mt-6">
+                <CardHeader>
+                  <CardTitle className="text-lg">Historique des paiements</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  {isPremium ? (
+                    <div className="border rounded-md">
+                      <div className="grid grid-cols-4 gap-4 p-4 border-b bg-muted/50 font-medium text-sm">
+                        <div>Date</div>
+                        <div>Montant</div>
+                        <div>Statut</div>
+                        <div className="text-right">Facture</div>
+                      </div>
+                      <div className="grid grid-cols-4 gap-4 p-4 text-sm items-center">
+                        <div>{format(subscriptionData.createdAt || new Date(), 'dd/MM/yyyy', { locale: fr })}</div>
+                        <div>99 MAD</div>
+                        <div>
+                          <Badge variant="outline" className="bg-green-50 text-green-700 border-green-200">
+                            Payé
+                          </Badge>
+                        </div>
+                        <div className="text-right">
+                          <Button variant="ghost" size="sm" className="h-8 px-2">
+                            Télécharger
+                          </Button>
+                        </div>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="text-center py-8 text-muted-foreground">
+                      <p>Aucun historique de paiement disponible</p>
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+            </TabsContent>
             
             <TabsContent value="profile">
               <Card>
@@ -258,95 +487,6 @@ const ProfilePage = () => {
                     {isUpdating ? "Mise à jour..." : "Sauvegarder"}
                   </Button>
                 </CardFooter>
-              </Card>
-            </TabsContent>
-            
-            <TabsContent value="subscription">
-              <Card>
-                <CardHeader>
-                  <div className="flex items-center justify-between">
-                    <CardTitle>Détails de l'abonnement</CardTitle>
-                    {isPremium && (
-                      <Badge variant="outline" className="bg-green-50 text-green-700 border-green-200">
-                        Actif
-                      </Badge>
-                    )}
-                  </div>
-                  <CardDescription>
-                    Gérez votre abonnement et les détails de paiement.
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  {isPremium ? (
-                    <>
-                      <div className="rounded-lg border p-4 bg-cream/20">
-                        <h3 className="text-lg font-medium mb-2">Abonnement Premium</h3>
-                        <div className="text-sm text-muted-foreground space-y-1">
-                          <p><span className="font-medium">Prix:</span> 99 MAD/mois</p>
-                          {subscriptionData.currentPeriodEnd && (
-                            <p>
-                              <span className="font-medium">Prochain paiement:</span>{' '}
-                              {format(subscriptionData.currentPeriodEnd, 'dd MMMM yyyy', { locale: fr })}
-                            </p>
-                          )}
-                          {subscriptionData.createdAt && (
-                            <p>
-                              <span className="font-medium">Date d'inscription:</span>{' '}
-                              {format(subscriptionData.createdAt, 'dd MMMM yyyy', { locale: fr })}
-                            </p>
-                          )}
-                        </div>
-                      </div>
-                      
-                      <div className="flex flex-col sm:flex-row gap-4">
-                        <Button 
-                          onClick={handleManageSubscription}
-                          variant="outline"
-                          className="flex-1"
-                        >
-                          <Settings className="h-4 w-4 mr-2" />
-                          Gérer l'abonnement
-                        </Button>
-                        <Button 
-                          onClick={handleCancelSubscription}
-                          variant="destructive"
-                          className="flex-1"
-                        >
-                          Annuler l'abonnement
-                        </Button>
-                      </div>
-                    </>
-                  ) : (
-                    <div className="text-center py-6 space-y-4">
-                      <div className="mb-4 text-center">
-                        <Info className="h-10 w-10 text-navy/50 mx-auto mb-2" />
-                        <h3 className="text-lg font-medium">Aucun abonnement actif</h3>
-                        <p className="text-sm text-muted-foreground mt-1">
-                          Vous utilisez actuellement la version gratuite.
-                        </p>
-                      </div>
-                      
-                      <div className="space-y-2 text-sm text-left">
-                        <div className="flex items-center">
-                          <span className="w-32">Favoris:</span>
-                          <span>{maxFavorites === Infinity ? 'Illimités' : maxFavorites}</span>
-                        </div>
-                        <div className="flex items-center">
-                          <span className="w-32">Alertes:</span>
-                          <span>{allowedAlerts === Infinity ? 'Illimitées' : allowedAlerts}</span>
-                        </div>
-                      </div>
-                      
-                      <Button 
-                        onClick={() => navigate('/subscription')}
-                        className="mt-4"
-                      >
-                        <CreditCard className="h-4 w-4 mr-2" />
-                        S'abonner maintenant
-                      </Button>
-                    </div>
-                  )}
-                </CardContent>
               </Card>
             </TabsContent>
             
