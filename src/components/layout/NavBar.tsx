@@ -30,8 +30,8 @@ export const NavBar = () => {
           )}
           <NavLink to="/" className="flex items-center gap-2">
             <img
-              src="/lovable-uploads/8f920b64-4b0a-4b83-a337-fca2ea58f64d.png"
-              alt="AlertImmo - logo zellige"
+              src="/lovable-uploads/ba556c6a-9c08-49fd-8bec-9255f57322dc.png"
+              alt="AlertImmo - logo"
               className="w-8 h-8 rounded-md object-cover border border-skyblue"
               draggable={false}
             />
