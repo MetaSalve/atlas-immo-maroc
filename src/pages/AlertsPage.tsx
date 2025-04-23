@@ -5,7 +5,7 @@ import { useAuth } from '@/providers/AuthProvider';
 import { useSubscription } from '@/providers/SubscriptionProvider';
 import { useAlerts } from '@/hooks/useAlerts';
 import { AlertsList } from '@/components/alerts/AlertsList';
-import { InfoCircle } from 'lucide-react';
+import { Info } from 'lucide-react';
 import { SimpleSearchFilters } from '@/components/search/SimpleSearchFilters';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -65,7 +65,7 @@ const AlertsPage = () => {
           />
 
           <div className="mt-4 p-4 bg-background/80 border rounded-lg flex items-start gap-3">
-            <InfoCircle className="h-5 w-5 text-muted-foreground mt-0.5 flex-shrink-0" />
+            <Info className="h-5 w-5 text-muted-foreground mt-0.5 flex-shrink-0" />
             <p className="text-sm text-muted-foreground">
               Les notifications sont envoyées par email lorsque de nouveaux biens correspondant à vos critères sont ajoutés. 
               Vous pouvez activer ou désactiver chaque alerte selon vos besoins.
