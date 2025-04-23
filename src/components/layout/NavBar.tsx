@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
-import { Home, Search, Heart, Map, Menu, UserCircle, Bell, LogOut } from 'lucide-react';
+import { Home, Search, Heart, Map, Menu, UserCircle, Bell, LogOut, User } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { useIsMobile } from '@/hooks/use-mobile';
@@ -64,6 +64,9 @@ export const NavBar = () => {
               <DropdownMenuContent align="end" className="w-56 bg-cream/70 text-navy">
                 <DropdownMenuLabel>Mon compte</DropdownMenuLabel>
                 <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={() => navigate('/profile')}>
+                  <User className="h-4 w-4 mr-2" /> Profil
+                </DropdownMenuItem>
                 <DropdownMenuItem onClick={() => navigate('/favorites')}>
                   <Heart className="h-4 w-4 mr-2" /> Favoris
                 </DropdownMenuItem>

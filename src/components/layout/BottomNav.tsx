@@ -1,5 +1,5 @@
 
-import { Home, Search, Heart, Map, Menu } from 'lucide-react';
+import { Home, Search, Heart, Map, User } from 'lucide-react';
 import { NavLink } from 'react-router-dom';
 import { cn } from '@/lib/utils';
 
@@ -11,7 +11,7 @@ export const BottomNav = () => {
         <NavItem to="/search" icon={<Search />} label="Recherche" />
         <NavItem to="/map" icon={<Map />} label="Carte" />
         <NavItem to="/favorites" icon={<Heart />} label="Favoris" />
-        <NavItem to="/menu" icon={<Menu />} label="Menu" />
+        <NavItem to="/profile" icon={<User />} label="Compte" />
       </div>
     </div>
   );

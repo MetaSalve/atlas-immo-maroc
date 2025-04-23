@@ -18,6 +18,7 @@ import AdminPage from "./pages/AdminPage";
 import AuthPage from "./pages/AuthPage";
 import SubscriptionPage from "./pages/SubscriptionPage";
 import PaymentPage from "./pages/PaymentPage";
+import ProfilePage from "./pages/ProfilePage";
 import NotFound from "./pages/NotFound";
 
 // Create a client
@@ -51,6 +52,7 @@ const App = () => (
                   <Route path="/admin" element={<AdminPage />} />
                   <Route path="/subscription" element={<SubscriptionPage />} />
                   <Route path="/payment" element={<PaymentPage />} />
+                  <Route path="/profile" element={<ProfilePage />} />
                   <Route path="*" element={<NotFound />} />
                 </Route>
               </Routes>
