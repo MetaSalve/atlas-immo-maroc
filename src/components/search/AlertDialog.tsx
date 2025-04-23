@@ -1,6 +1,7 @@
 
 import { AlertForm } from '@/components/alerts/AlertForm';
 import { SimpleSearchFiltersValues } from './SimpleSearchFilters';
+import { SearchFiltersValues } from './SearchFilters';
 import {
   Dialog,
   DialogContent,
@@ -41,6 +42,15 @@ export const AlertDialog = ({
     });
   };
 
+  // Convert SimpleSearchFiltersValues to SearchFiltersValues to match the expected type
+  const convertedFilters: SearchFiltersValues = {
+    ...filters,
+    // Ensure status is properly typed as "for-sale" | "for-rent" | "all"
+    status: (filters.status === 'for_sale' ? 'for-sale' : 
+             filters.status === 'for_rent' ? 'for-rent' : 
+             'all') as 'for-sale' | 'for-rent' | 'all',
+  };
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent>
@@ -52,7 +62,7 @@ export const AlertDialog = ({
         </DialogHeader>
         
         <AlertForm 
-          initialValues={filters} 
+          initialValues={convertedFilters} 
           onSave={handleClose}
           createAlert={handleCreateAlert}
         />
