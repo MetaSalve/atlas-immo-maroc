@@ -13,7 +13,7 @@ interface AlertDialogProps {
   open: boolean;
   filters: SimpleSearchFiltersValues;
   onOpenChange: (open: boolean) => void;
-  createAlert: (values: any) => void;
+  createAlert: (data: {name: string, filters: any, is_active: boolean}) => Promise<boolean>;
 }
 
 export const AlertDialog = ({

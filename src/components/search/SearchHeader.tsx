@@ -1,5 +1,5 @@
 
-import { SimpleSearchBar } from '@/components/search/SimpleSearchBar';
+import { SimpleSearchBar } from './SimpleSearchBar';
 import { Button } from '@/components/ui/button';
 import { List, MapPin } from 'lucide-react';
 
