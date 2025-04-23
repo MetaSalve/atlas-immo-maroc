@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/providers/AuthProvider';
@@ -39,19 +40,20 @@ const SubscriptionPage = () => {
   };
 
   const freePlanFeatures = [
-    { text: "Agrégation des annonces du marché immobilier marocain" },
-    { text: "Accès limité aux redirections" },
-    { text: "Nombre limité de favoris" },
+    { text: "Période d'essai de 15 jours" },
+    { text: "Accès aux annonces de base" },
     { text: "3 alertes personnalisées" },
-    { text: "Période d'essai de 15 jours" }
+    { text: "10 favoris maximum" },
+    { text: "Filtres de recherche basiques" }
   ];
 
   const premiumPlanFeatures = [
-    { text: "Agrégation complète du marché immobilier marocain" },
-    { text: "Accès illimité aux redirections" },
-    { text: "Favoris illimités" },
     { text: "Alertes personnalisées illimitées" },
-    { text: "Notifications push et email" }
+    { text: "Favoris illimités" },
+    { text: "Notifications par email" },
+    { text: "Filtres de recherche avancés" },
+    { text: "Comparaison de biens" },
+    { text: "Support prioritaire" }
   ];
 
   const isPremiumUser = tier === 'premium';
