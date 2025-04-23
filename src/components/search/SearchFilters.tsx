@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { 
   Filter, X, ChevronDown, 
@@ -94,7 +95,7 @@ export const SearchFilters = ({
   };
   
   const FiltersContent = () => (
-    <div className="space-y-6" onClick={(e) => e.stopPropagation()}>
+    <div className="space-y-6">
       <div>
         <Label>Type d'annonce</Label>
         <div className="grid grid-cols-3 gap-2 mt-2">
@@ -125,7 +126,7 @@ export const SearchFilters = ({
         </div>
       </div>
       
-      <div onClick={(e) => e.stopPropagation()}>
+      <div>
         <Label htmlFor="location">Ville ou quartier</Label>
         <Input
           id="location"
@@ -133,21 +134,16 @@ export const SearchFilters = ({
           className="mt-2"
           value={filters.location}
           onChange={(e) => handleFilterChange('location', e.target.value)}
-          onClick={(e) => e.stopPropagation()}
         />
       </div>
       
-      <div onClick={(e) => e.stopPropagation()}>
+      <div>
         <Label htmlFor="type">Type de bien</Label>
         <Select
           value={filters.type}
           onValueChange={(value) => handleFilterChange('type', value)}
         >
-          <SelectTrigger 
-            id="type" 
-            className="mt-2"
-            onClick={(e) => e.stopPropagation()}
-          >
+          <SelectTrigger id="type" className="mt-2">
             <SelectValue placeholder="Tous types" />
           </SelectTrigger>
           <SelectContent>
@@ -162,7 +158,7 @@ export const SearchFilters = ({
         </Select>
       </div>
       
-      <Accordion type="single" collapsible className="w-full" onClick={(e) => e.stopPropagation()}>
+      <Accordion type="single" collapsible className="w-full">
         <AccordionItem value="price">
           <AccordionTrigger>
             <div className="flex items-center gap-2">
@@ -172,7 +168,7 @@ export const SearchFilters = ({
               </span>
             </div>
           </AccordionTrigger>
-          <AccordionContent onClick={(e) => e.stopPropagation()}>
+          <AccordionContent>
             <div className="space-y-6 pt-2">
               <div>
                 <div className="flex justify-between">
@@ -222,7 +218,7 @@ export const SearchFilters = ({
               </span>
             </div>
           </AccordionTrigger>
-          <AccordionContent onClick={(e) => e.stopPropagation()}>
+          <AccordionContent>
             <div className="space-y-6 pt-2">
               <div>
                 <div className="flex justify-between">
@@ -272,7 +268,7 @@ export const SearchFilters = ({
               </span>
             </div>
           </AccordionTrigger>
-          <AccordionContent onClick={(e) => e.stopPropagation()}>
+          <AccordionContent>
             <div className="pt-2">
               <div className="flex justify-between">
                 <Label htmlFor="areaMin">Surface minimum</Label>
@@ -355,7 +351,7 @@ export const SearchFilters = ({
             <span>{filter}</span>
             <button
               onClick={(e) => {
-                e.stopPropagation();
+                e.preventDefault();
                 // In a real application, we would clear the specific filter here
               }}
               className="text-muted-foreground hover:text-foreground"
@@ -368,7 +364,7 @@ export const SearchFilters = ({
         {activeFilters.length > 0 && (
           <button
             onClick={(e) => {
-              e.stopPropagation();
+              e.preventDefault();
               handleResetFilters();
             }}
             className="text-primary hover:text-primary/80 text-xs underline"
@@ -409,7 +405,7 @@ export const SearchFilters = ({
   }
   
   return (
-    <div className="border rounded-lg p-4 space-y-4" onClick={(e) => e.stopPropagation()}>
+    <div className="border rounded-lg p-4 space-y-4">
       <div className="flex items-center justify-between">
         <h3 className="font-medium">Filtres</h3>
         <Button

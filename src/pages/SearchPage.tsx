@@ -1,10 +1,11 @@
+
 import { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { SearchBar } from '@/components/search/SearchBar';
 import { SearchFilters, SearchFiltersValues } from '@/components/search/SearchFilters';
 import { PropertyGrid } from '@/components/property/PropertyGrid';
 import { PropertyMap } from '@/components/map/PropertyMap';
-import { MapPin, List, Bell, BookmarkPlus } from 'lucide-react';
+import { MapPin, List, BookmarkPlus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Property } from '@/types/property';
 import { useProperties } from '@/hooks/useProperties';
@@ -18,7 +19,6 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
 import { useAlerts } from '@/hooks/useAlerts';
 
