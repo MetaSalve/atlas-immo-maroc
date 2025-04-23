@@ -7,7 +7,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { format } from 'date-fns';
 import { fr } from 'date-fns/locale';
-import { User, Heart, Bell, CreditCard, KeyRound, LogOut, Settings, InfoCircle, Mail } from 'lucide-react';
+import { User, Heart, Bell, CreditCard, KeyRound, LogOut, Settings, Info, Mail } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
