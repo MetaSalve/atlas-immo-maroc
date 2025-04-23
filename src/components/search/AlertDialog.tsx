@@ -1,7 +1,6 @@
 
 import { AlertForm } from '@/components/alerts/AlertForm';
-import { SimpleSearchFilters, SimpleSearchFiltersValues } from './SimpleSearchFilters';
-import { SearchFiltersValues } from './SearchFilters';
+import { SearchFilters, SearchFiltersValues } from './SearchFilters';
 import {
   Dialog,
   DialogContent,
@@ -13,7 +12,7 @@ import { useState } from 'react';
 
 interface AlertDialogProps {
   open: boolean;
-  filters: SimpleSearchFiltersValues;
+  filters: SearchFiltersValues;
   onOpenChange: (open: boolean) => void;
   createAlert: (data: {name: string, filters: any, is_active: boolean}) => Promise<boolean>;
 }
@@ -24,7 +23,7 @@ export const AlertDialog = ({
   onOpenChange,
   createAlert
 }: AlertDialogProps) => {
-  const [filters, setFilters] = useState<SimpleSearchFiltersValues>(initialFilters);
+  const [filters, setFilters] = useState<SearchFiltersValues>(initialFilters);
 
   const handleClose = () => {
     onOpenChange(false);
@@ -43,33 +42,8 @@ export const AlertDialog = ({
     });
   };
 
-  const handleFilterChange = (newFilters: Partial<SimpleSearchFiltersValues>) => {
-    setFilters(prev => ({ ...prev, ...newFilters }));
-  };
-
-  const handleApplyFilters = () => {
-    // Nothing to do here since filters are automatically applied
-  };
-
-  const handleResetFilters = () => {
-    setFilters({
-      status: 'all',
-      type: 'all',
-      location: '',
-      priceMin: 0,
-      priceMax: 10000000,
-      bedroomsMin: 0,
-      bathroomsMin: 0,
-      areaMin: 0,
-    });
-  };
-
-  // Convert SimpleSearchFiltersValues to SearchFiltersValues
-  const convertedFilters: SearchFiltersValues = {
-    ...filters,
-    // Convert the status field to the correct format
-    status: filters.status === 'for_sale' ? 'for-sale' :
-            filters.status === 'for_rent' ? 'for-rent' : 'all',
+  const handleFilterChange = (newFilters: SearchFiltersValues) => {
+    setFilters(newFilters);
   };
 
   return (
@@ -83,15 +57,13 @@ export const AlertDialog = ({
         </DialogHeader>
         
         <div className="grid grid-cols-1 lg:grid-cols-[300px_1fr] gap-6">
-          <SimpleSearchFilters
-            values={filters}
-            onChange={handleFilterChange}
-            onApplyFilters={handleApplyFilters}
-            onResetFilters={handleResetFilters}
+          <SearchFilters
+            initialValues={filters}
+            onFilterChange={handleFilterChange}
           />
           
           <AlertForm 
-            initialValues={convertedFilters}
+            initialValues={filters}
             onSave={handleClose}
             createAlert={handleCreateAlert}
           />
