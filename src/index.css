@@ -12,14 +12,14 @@
     --card-foreground: #16325C;
     --popover: #fff;
     --popover-foreground: #16325C;
-    --primary: #4B9CD3;
+    --primary: #1A4B94;
     --primary-foreground: #fff;
 
-    --secondary: #1A4B94;
+    --secondary: #4B9CD3;
     --secondary-foreground: #fff;
 
     --muted: #F4F7FB;
-    --muted-foreground: #9F9EA1;
+    --muted-foreground: #64748b;
 
     --accent: #D4AF37;
     --accent-foreground: #16325C;
@@ -63,6 +63,10 @@
   }
   body {
     @apply bg-background text-foreground antialiased;
+    font-family: 'Inter', sans-serif;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Montserrat', sans-serif;
   }
 }
 
