@@ -10,10 +10,11 @@ import { SimpleSearchFiltersValues } from '@/components/search/SimpleSearchFilte
 import { Bell } from 'lucide-react';
 import { Json } from '@/integrations/supabase/types';
 
-interface AlertFormProps {
+export interface AlertFormProps {
   initialValues?: SimpleSearchFiltersValues;
   onSave?: () => void;
-  createAlert?: (data: {name: string, filters: any, is_active: boolean}) => Promise<boolean>;
+  onCreate?: (data: {name: string, filters: any, is_active: boolean}) => Promise<boolean>;
+  onCancel?: () => void;
   className?: string;
   containerComponent?: "card" | "div";
 }
@@ -21,7 +22,8 @@ interface AlertFormProps {
 export const AlertForm = ({ 
   initialValues, 
   onSave, 
-  createAlert,
+  onCreate,
+  onCancel,
   className = "",
   containerComponent = "card"
 }: AlertFormProps) => {
@@ -55,8 +57,8 @@ export const AlertForm = ({
     try {
       setIsSaving(true);
       
-      if (createAlert) {
-        const success = await createAlert({
+      if (onCreate) {
+        const success = await onCreate({
           name: finalAlertName,
           filters: filters as unknown as Json,
           is_active: isEnabled
@@ -125,7 +127,16 @@ export const AlertForm = ({
         </div>
       </div>
       
-      <div className="pt-4 flex justify-end">
+      <div className="pt-4 flex justify-end space-x-2">
+        {onCancel && (
+          <Button
+            variant="outline"
+            onClick={onCancel}
+            disabled={isSaving}
+          >
+            Annuler
+          </Button>
+        )}
         <Button
           onClick={saveAlert}
           disabled={isSaving}

@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/providers/AuthProvider';
@@ -72,7 +73,10 @@ const AlertsPage = () => {
         </div>
 
         {isCreating && (
-          <AlertForm onCreate={createAlert} onCancel={() => setIsCreating(false)} />
+          <AlertForm 
+            onCreate={createAlert} 
+            onCancel={() => setIsCreating(false)} 
+          />
         )}
       </div>
     </div>

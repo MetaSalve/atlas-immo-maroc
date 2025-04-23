@@ -44,14 +44,15 @@ export const SubscriptionProvider = ({ children }: { children: React.ReactNode }
     try {
       const { data, error } = await supabase
         .from('profiles')
-        .select('subscription_tier')
+        .select('*')
         .eq('id', user.id)
         .single();
 
       if (error) throw error;
       
       // Ensure the subscription_tier is cast as SubscriptionTier type
-      const userTier = (data?.subscription_tier || 'free') as SubscriptionTier;
+      // Use a type assertion to handle the fact that the field might not be recognized in types
+      const userTier = ((data as any)?.subscription_tier || 'free') as SubscriptionTier;
       setTier(userTier);
     } catch (error) {
       console.error('Error checking subscription status:', error);
@@ -135,4 +136,3 @@ export const SubscriptionProvider = ({ children }: { children: React.ReactNode }
     </SubscriptionContext.Provider>
   );
 };
-
