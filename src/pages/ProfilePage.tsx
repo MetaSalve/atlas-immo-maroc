@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/providers/AuthProvider';
@@ -29,7 +28,6 @@ const ProfilePage = () => {
   
   const isPremium = tier === 'premium';
 
-  // Simulation de données d'abonnement pour l'interface
   const subscriptionData = {
     status: isPremium ? 'active' : 'not_active',
     currentPeriodEnd: isPremium ? new Date(Date.now() + 30 * 24 * 60 * 60 * 1000) : null,
@@ -45,7 +43,6 @@ const ProfilePage = () => {
     try {
       setIsUpdating(true);
       
-      // Mise à jour du profil dans Supabase
       const { error } = await supabase
         .from('profiles')
         .update({ 
@@ -104,8 +101,6 @@ const ProfilePage = () => {
       
       toast.info('Redirection vers le portail de gestion des abonnements...');
       
-      // On simule la redirection vers un portail de paiement
-      // Dans une implémentation réelle, on ferait appel à une fonction Edge Supabase qui génèrerait une URL de portail Stripe
       setTimeout(() => {
         navigate('/subscription');
       }, 1000);
@@ -123,7 +118,6 @@ const ProfilePage = () => {
       return;
     }
     
-    // Dans une implémentation réelle, on ferait appel à une fonction Edge Supabase qui annulerait l'abonnement via Stripe
     toast.info('Redirection vers la page d\'annulation d\'abonnement...');
     setTimeout(() => {
       navigate('/subscription');
@@ -140,7 +134,6 @@ const ProfilePage = () => {
   return (
     <div className="py-10 px-4 md:px-6 lg:px-8 max-w-5xl mx-auto">
       <div className="flex flex-col md:flex-row gap-8 items-start">
-        {/* Sidebar */}
         <Card className="w-full md:w-64 bg-cream/30">
           <CardHeader className="text-center pb-2">
             <Avatar className="w-20 h-20 mx-auto mb-2">
@@ -196,7 +189,6 @@ const ProfilePage = () => {
           </CardFooter>
         </Card>
         
-        {/* Main Content */}
         <div className="flex-1">
           <h1 className="text-3xl font-bold tracking-tight mb-6 text-navy">Mon compte</h1>
           
@@ -216,7 +208,6 @@ const ProfilePage = () => {
               </TabsTrigger>
             </TabsList>
             
-            {/* Profil Tab */}
             <TabsContent value="profile">
               <Card>
                 <CardHeader>
@@ -270,7 +261,6 @@ const ProfilePage = () => {
               </Card>
             </TabsContent>
             
-            {/* Abonnement Tab */}
             <TabsContent value="subscription">
               <Card>
                 <CardHeader>
@@ -329,7 +319,7 @@ const ProfilePage = () => {
                   ) : (
                     <div className="text-center py-6 space-y-4">
                       <div className="mb-4 text-center">
-                        <InfoCircle className="h-10 w-10 text-navy/50 mx-auto mb-2" />
+                        <Info className="h-10 w-10 text-navy/50 mx-auto mb-2" />
                         <h3 className="text-lg font-medium">Aucun abonnement actif</h3>
                         <p className="text-sm text-muted-foreground mt-1">
                           Vous utilisez actuellement la version gratuite.
@@ -360,7 +350,6 @@ const ProfilePage = () => {
               </Card>
             </TabsContent>
             
-            {/* Sécurité Tab */}
             <TabsContent value="security">
               <Card>
                 <CardHeader>
