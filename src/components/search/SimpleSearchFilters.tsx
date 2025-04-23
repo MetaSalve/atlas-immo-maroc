@@ -120,6 +120,7 @@ export const SimpleSearchFilters = ({
               value={priceRange}
               onValueChange={handlePriceChange}
               onValueCommit={handlePriceApply}
+              className="mt-2"
             />
           </div>
           
