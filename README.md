@@ -1,10 +1,10 @@
-# Welcome to your Lovable project
+# AlertImmo - Agrégateur d'annonces immobilières
 
-## Project info
+## Informations du projet
 
 **URL**: https://lovable.dev/projects/4f35bd8e-b135-4b90-97aa-4ff98bbabe59
 
-## How can I edit this code?
+## Comment puis-je éditer ce code ?
 
 There are several ways of editing your application.
 
@@ -50,9 +50,13 @@ npm run dev
 - Click on "New codespace" to launch a new Codespace environment.
 - Edit files directly within the Codespace and commit and push your changes once you're done.
 
-## What technologies are used for this project?
+## Ce que fait AlertImmo
 
-This project is built with:
+AlertImmo est un agrégateur intelligent d'annonces immobilières au Maroc, qui collecte et centralise les offres de différentes sources.
+
+## Quels technologies sont utilisés pour ce projet ?
+
+Cette application est construite avec :
 
 - Vite
 - TypeScript
@@ -60,14 +64,14 @@ This project is built with:
 - shadcn-ui
 - Tailwind CSS
 
-## How can I deploy this project?
+## Comment puis-je déployer ce projet ?
 
-Simply open [Lovable](https://lovable.dev/projects/4f35bd8e-b135-4b90-97aa-4ff98bbabe59) and click on Share -> Publish.
+Pour déployer votre projet, rendez-vous sur [Lovable](https://lovable.dev/projects/4f35bd8e-b135-4b90-97aa-4ff98bbabe59) et cliquez sur "Partager" -> "Publier".
 
-## Can I connect a custom domain to my Lovable project?
+## Peut-je connecter une domaine personnalisée à mon projet Lovable ?
 
-Yes, you can!
+Oui, vous pouvez !
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+Pour connecter une domaine, naviguez dans "Projet" -> "Paramètres" -> "Domaines" et cliquez sur "Connecter un domaine".
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+Lisez plus ici : [Configuration d'un domaine personnalisé](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)

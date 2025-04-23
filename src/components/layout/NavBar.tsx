@@ -31,11 +31,11 @@ export const NavBar = () => {
           <NavLink to="/" className="flex items-center gap-2">
             <img
               src="/lovable-uploads/8f920b64-4b0a-4b83-a337-fca2ea58f64d.png"
-              alt="Atlas Immo - logo zellige"
+              alt="AlertImmo - logo zellige"
               className="w-8 h-8 rounded-md object-cover border border-skyblue"
               draggable={false}
             />
-            <span className="font-bold text-xl text-navy font-playfair">Atlas<span className="text-skyblue">Immo</span></span>
+            <span className="font-bold text-xl text-navy font-playfair">Alert<span className="text-skyblue">Immo</span></span>
           </NavLink>
         </div>
 
