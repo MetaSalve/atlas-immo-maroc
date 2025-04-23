@@ -6,7 +6,6 @@ import { useAlerts } from '@/hooks/useAlerts';
 import { useAuth } from '@/providers/AuthProvider';
 import { useEffect, useState } from 'react';
 import { SearchFilters, SearchFiltersValues } from '@/components/search/SearchFilters';
-import { Card } from '@/components/ui/card';
 
 const AlertsPage = () => {
   const { user } = useAuth();
@@ -40,9 +39,27 @@ const AlertsPage = () => {
     <div className="py-6">
       <h1 className="text-2xl font-bold mb-6 font-playfair text-deepblue">Mes alertes</h1>
       
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-[1fr_300px] gap-6">
+        {/* Create new alert */}
+        <div className="space-y-4 order-2 lg:order-1">
+          <h2 className="text-lg font-semibold font-playfair text-terracotta">Nouvelle alerte</h2>
+          
+          <div className="border rounded-lg p-4 space-y-4">
+            <SearchFilters
+              initialValues={filters}
+              onFilterChange={handleFilterChange}
+            />
+            
+            <AlertForm 
+              onSave={fetchAlerts} 
+              createAlert={createAlert} 
+              initialValues={filters}
+            />
+          </div>
+        </div>
+
         {/* Alerts list */}
-        <div className="lg:col-span-2">
+        <div className="order-1 lg:order-2">
           <AlertsList 
             alerts={alerts}
             isLoading={isLoading}
@@ -59,25 +76,6 @@ const AlertsPage = () => {
               </p>
             </div>
           )}
-        </div>
-        
-        {/* Create new alert */}
-        <div className="space-y-4">
-          <h2 className="text-lg font-semibold font-playfair text-terracotta">Nouvelle alerte</h2>
-          
-          <Card className="p-4">
-            <h3 className="font-medium mb-3">Filtres</h3>
-            <SearchFilters
-              initialValues={filters}
-              onFilterChange={handleFilterChange}
-            />
-          </Card>
-          
-          <AlertForm 
-            onSave={fetchAlerts} 
-            createAlert={createAlert} 
-            initialValues={filters}
-          />
         </div>
       </div>
     </div>
