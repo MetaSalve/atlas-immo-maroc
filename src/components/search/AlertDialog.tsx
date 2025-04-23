@@ -50,6 +50,19 @@ export const AlertDialog = ({
     });
   };
 
+  const handleCreateAlert = async (data: {name: string, filters: any, is_active: boolean}) => {
+    const success = await createAlert({
+      ...data,
+      filters: filters // Use the current filters state
+    });
+    
+    if (success) {
+      handleClose();
+    }
+    
+    return success;
+  };
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-4xl">
@@ -71,7 +84,7 @@ export const AlertDialog = ({
           <AlertForm 
             initialValues={filters}
             onSave={handleClose}
-            createAlert={createAlert}
+            createAlert={handleCreateAlert}
           />
         </div>
       </DialogContent>

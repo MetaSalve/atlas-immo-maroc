@@ -1,11 +1,12 @@
 
 import { useState } from 'react';
 import { UserAlert } from '@/types/alerts';
-import { Card, CardContent, CardHeader } from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Switch } from '@/components/ui/switch';
-import { Bell, Trash2 } from 'lucide-react';
+import { Bell, Trash2, Edit } from 'lucide-react';
 import { SimpleSearchFiltersValues } from '@/components/search/SimpleSearchFilters';
+import { useNavigate } from 'react-router-dom';
 
 interface AlertItemProps {
   alert: UserAlert;
@@ -17,6 +18,7 @@ export const AlertItem = ({ alert, onUpdate, onDelete }: AlertItemProps) => {
   const [isDeleteLoading, setIsDeleteLoading] = useState(false);
   const [isUpdateLoading, setIsUpdateLoading] = useState(false);
   const [isActive, setIsActive] = useState(alert.is_active);
+  const navigate = useNavigate();
 
   // Parse the filters from the alert
   const filters = alert.filters as unknown as SimpleSearchFiltersValues;
@@ -42,63 +44,60 @@ export const AlertItem = ({ alert, onUpdate, onDelete }: AlertItemProps) => {
       setIsDeleteLoading(false);
     }
   };
+
+  const handleEdit = () => {
+    navigate('/search', { state: { filters } });
+  };
   
-  const formatFilters = (filters: SimpleSearchFiltersValues) => {
-    const parts = [];
-    
-    if (filters.location) parts.push(`À ${filters.location}`);
-    if (filters.type !== 'all') parts.push(`Type: ${filters.type === 'apartment' ? 'Appartement' : 
-                                                 filters.type === 'house' ? 'Maison' : 
-                                                 filters.type === 'land' ? 'Terrain' : 
-                                                 filters.type === 'commercial' ? 'Commerce' : filters.type}`);
-    if (filters.status !== 'all') parts.push(`Statut: ${filters.status === 'for_sale' ? 'À vendre' : 'À louer'}`);
-    
-    if (filters.priceMin > 0 || filters.priceMax < 10000000) {
-      const priceRange = [];
-      if (filters.priceMin > 0) priceRange.push(`min ${filters.priceMin.toLocaleString('fr-FR')} MAD`);
-      if (filters.priceMax < 10000000) priceRange.push(`max ${filters.priceMax.toLocaleString('fr-FR')} MAD`);
-      parts.push(`Prix: ${priceRange.join(' - ')}`);
-    }
-    
-    if (filters.bedroomsMin > 0) parts.push(`Min ${filters.bedroomsMin} chambres`);
-    if (filters.bathroomsMin > 0) parts.push(`Min ${filters.bathroomsMin} salles de bains`);
-    if (filters.areaMin > 0) parts.push(`Min ${filters.areaMin} m²`);
-    
-    return parts.join(' • ');
+  const formatDate = (dateString: string | null) => {
+    if (!dateString) return 'Jamais';
+    return new Date(dateString).toLocaleDateString('fr-FR');
   };
 
   return (
     <Card>
-      <CardHeader className="flex flex-row items-center justify-between pb-2">
-        <div className="flex items-center space-x-2">
-          <Bell className={`h-5 w-5 ${isActive ? 'text-terracotta' : 'text-muted-foreground'}`} />
-          <h3 className="font-medium text-lg">{alert.name}</h3>
-        </div>
-        <div className="flex items-center space-x-2">
+      <CardContent className="p-4">
+        <div className="grid grid-cols-[1fr_auto_auto] gap-3 items-center">
+          <div>
+            <div className="font-medium flex items-center gap-2">
+              <Bell className={`h-4 w-4 ${isActive ? 'text-terracotta' : 'text-muted-foreground'}`} />
+              {alert.name}
+            </div>
+            <div className="text-xs text-muted-foreground mt-1">
+              {alert.last_notification_at && (
+                <>
+                  {alert.last_notification_count} nouveaux biens le {formatDate(alert.last_notification_at)}
+                </>
+              )}
+            </div>
+          </div>
+          
           <Switch 
             checked={isActive} 
             onCheckedChange={handleToggleActive} 
             disabled={isUpdateLoading}
           />
-          <Button 
-            variant="destructive" 
-            size="icon"
-            onClick={handleDelete}
-            disabled={isDeleteLoading}
-          >
-            <Trash2 className="h-4 w-4" />
-          </Button>
-        </div>
-      </CardHeader>
-      <CardContent>
-        <div className="text-sm text-muted-foreground">
-          {formatFilters(filters)}
-        </div>
-        {alert.last_notification_at && (
-          <div className="text-xs text-muted-foreground mt-2">
-            {alert.last_notification_count} nouveaux biens trouvés le {new Date(alert.last_notification_at).toLocaleDateString()}
+          
+          <div className="flex space-x-1">
+            <Button 
+              variant="ghost" 
+              size="icon"
+              onClick={handleEdit}
+              disabled={isUpdateLoading}
+            >
+              <Edit className="h-4 w-4" />
+            </Button>
+            <Button 
+              variant="ghost" 
+              size="icon"
+              onClick={handleDelete}
+              disabled={isDeleteLoading}
+              className="text-destructive"
+            >
+              <Trash2 className="h-4 w-4" />
+            </Button>
           </div>
-        )}
+        </div>
       </CardContent>
     </Card>
   );
