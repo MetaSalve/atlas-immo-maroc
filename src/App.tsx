@@ -15,6 +15,7 @@ import FavoritesPage from "./pages/FavoritesPage";
 import AlertsPage from "./pages/AlertsPage";
 import AdminPage from "./pages/AdminPage";
 import AuthPage from "./pages/AuthPage";
+import SubscriptionPage from "./pages/SubscriptionPage";
 import NotFound from "./pages/NotFound";
 
 // Create a client
@@ -45,6 +46,7 @@ const App = () => (
                 <Route path="/favorites" element={<FavoritesPage />} />
                 <Route path="/alerts" element={<AlertsPage />} />
                 <Route path="/admin" element={<AdminPage />} />
+                <Route path="/subscription" element={<SubscriptionPage />} />
                 <Route path="*" element={<NotFound />} />
               </Route>
             </Routes>

@@ -1,8 +1,7 @@
 
 import { useState } from 'react';
 import { 
-  Filter, X, ChevronDown, ChevronUp, 
-  Home, Bed, Bath, Maximize
+  Filter, X, ChevronDown, 
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -27,7 +26,6 @@ import {
   SheetHeader,
   SheetTitle,
   SheetTrigger,
-  SheetFooter,
 } from '@/components/ui/sheet';
 import { useIsMobile } from '@/hooks/use-mobile';
 
@@ -69,6 +67,11 @@ export const SearchFilters = ({
   });
   const [isOpen, setIsOpen] = useState(false);
   
+  // Cette fonction empêche la propagation de l'événement lors du focus
+  const handleInputClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+  };
+  
   const handleFilterChange = <K extends keyof SearchFiltersValues>(
     key: K,
     value: SearchFiltersValues[K]
@@ -105,6 +108,7 @@ export const SearchFilters = ({
             variant={filters.status === 'all' ? 'default' : 'outline'}
             className="w-full"
             onClick={() => handleFilterChange('status', 'all')}
+            type="button"
           >
             Tous
           </Button>
@@ -112,6 +116,7 @@ export const SearchFilters = ({
             variant={filters.status === 'for-sale' ? 'default' : 'outline'}
             className="w-full"
             onClick={() => handleFilterChange('status', 'for-sale')}
+            type="button"
           >
             À vendre
           </Button>
@@ -119,6 +124,7 @@ export const SearchFilters = ({
             variant={filters.status === 'for-rent' ? 'default' : 'outline'}
             className="w-full"
             onClick={() => handleFilterChange('status', 'for-rent')}
+            type="button"
           >
             À louer
           </Button>
@@ -133,6 +139,8 @@ export const SearchFilters = ({
           className="mt-2"
           value={filters.location}
           onChange={(e) => handleFilterChange('location', e.target.value)}
+          onClick={handleInputClick}
+          onFocus={(e) => e.stopPropagation()}
         />
       </div>
       
@@ -142,7 +150,12 @@ export const SearchFilters = ({
           value={filters.type}
           onValueChange={(value) => handleFilterChange('type', value)}
         >
-          <SelectTrigger id="type" className="mt-2">
+          <SelectTrigger 
+            id="type" 
+            className="mt-2"
+            onClick={handleInputClick}
+            onFocus={(e) => e.stopPropagation()}
+          >
             <SelectValue placeholder="Tous types" />
           </SelectTrigger>
           <SelectContent>
@@ -294,12 +307,14 @@ export const SearchFilters = ({
           variant="outline"
           className="flex-1"
           onClick={handleResetFilters}
+          type="button"
         >
           Réinitialiser
         </Button>
         <Button
           className="flex-1"
           onClick={handleApplyFilters}
+          type="button"
         >
           Appliquer
         </Button>
@@ -365,6 +380,7 @@ export const SearchFilters = ({
               handleResetFilters();
             }}
             className="text-primary hover:text-primary/80 text-xs underline"
+            type="button"
           >
             Réinitialiser tout
           </button>
@@ -378,7 +394,7 @@ export const SearchFilters = ({
       <div>
         <Sheet open={isOpen} onOpenChange={setIsOpen}>
           <SheetTrigger asChild>
-            <Button variant="outline" className="w-full flex justify-between">
+            <Button variant="outline" className="w-full flex justify-between" type="button">
               <div className="flex items-center gap-2">
                 <Filter className="h-4 w-4" />
                 <span>Filtres</span>
@@ -409,6 +425,7 @@ export const SearchFilters = ({
           size="sm"
           className="text-primary"
           onClick={handleResetFilters}
+          type="button"
         >
           Réinitialiser
         </Button>

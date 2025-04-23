@@ -2,10 +2,7 @@
 import { Property } from '@/types/property';
 import { PropertyCard } from './PropertyCard';
 import { Button } from '@/components/ui/button';
-import { AlertTriangle, RefreshCw } from 'lucide-react';
-import { supabase } from '@/integrations/supabase/client';
-import { useToast } from '@/hooks/use-toast';
-import { useState } from 'react';
+import { AlertTriangle } from 'lucide-react';
 
 interface PropertyGridProps {
   properties: Property[];
@@ -22,43 +19,6 @@ export const PropertyGrid = ({
   emptyMessage = "Aucun bien immobilier trouvé",
   isLoading = false,
 }: PropertyGridProps) => {
-  const { toast } = useToast();
-  const [isTestingAlerts, setIsTestingAlerts] = useState(false);
-
-  const testAlertNotifications = async () => {
-    try {
-      setIsTestingAlerts(true);
-      toast({
-        title: "Test des alertes",
-        description: "Tentative de déclenchement du processus de notification d'alertes...",
-      });
-
-      // Appel direct de la fonction Edge
-      const { data, error } = await supabase.functions.invoke('process-alert-notifications');
-      
-      console.log('Résultat du test d\'alertes:', data);
-      
-      if (error) {
-        console.error('Erreur lors du test d\'alertes:', error);
-        throw error;
-      }
-
-      toast({
-        title: "Test d'alertes réussi",
-        description: "Le processus de notification a été exécuté avec succès. Vérifiez les logs dans Supabase.",
-      });
-    } catch (error) {
-      console.error('Erreur lors du test des alertes:', error);
-      toast({
-        variant: "destructive",
-        title: "Erreur",
-        description: "Impossible de tester les notifications d'alertes. Vérifiez la console pour plus de détails.",
-      });
-    } finally {
-      setIsTestingAlerts(false);
-    }
-  };
-
   if (isLoading) {
     return (
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -81,24 +41,12 @@ export const PropertyGrid = ({
           <div className="flex items-start gap-3">
             <AlertTriangle className="h-5 w-5 text-amber-500 mt-0.5 flex-shrink-0" />
             <div>
-              <h3 className="font-medium text-amber-800">Mode test</h3>
+              <h3 className="font-medium text-amber-800">Mode production</h3>
               <p className="text-sm text-amber-700">
-                Vous pouvez tester les fonctionnalités de scraping et d'alertes pour vérifier que tout fonctionne correctement.
+                Aucun résultat disponible pour le moment. Les biens immobiliers seront affichés dès qu'ils seront disponibles.
               </p>
             </div>
           </div>
-        </div>
-        
-        <div className="flex flex-col sm:flex-row gap-3">
-          <Button 
-            variant="outline" 
-            onClick={testAlertNotifications}
-            disabled={isTestingAlerts}
-            className="flex items-center gap-2"
-          >
-            <RefreshCw className={`h-4 w-4 ${isTestingAlerts ? 'animate-spin' : ''}`} />
-            Tester les notifications d'alertes
-          </Button>
         </div>
       </div>
     );
