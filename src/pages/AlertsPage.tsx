@@ -6,6 +6,7 @@ import { useAlerts } from '@/hooks/useAlerts';
 import { useAuth } from '@/providers/AuthProvider';
 import { useEffect, useState } from 'react';
 import { SimpleSearchFilters, SimpleSearchFiltersValues } from '@/components/search/SimpleSearchFilters';
+import { SearchFiltersValues } from '@/components/search/SearchFilters';
 
 const AlertsPage = () => {
   const { user } = useAuth();
@@ -46,6 +47,22 @@ const AlertsPage = () => {
       bathroomsMin: 0,
       areaMin: 0,
     });
+  };
+  
+  // Convert SimpleSearchFiltersValues to SearchFiltersValues
+  const convertToSearchFiltersValues = (simpleFilters: SimpleSearchFiltersValues): SearchFiltersValues => {
+    // Map the status from string to the expected union type
+    let status: "all" | "for-sale" | "for-rent" = "all";
+    if (simpleFilters.status === "for_sale") {
+      status = "for-sale";
+    } else if (simpleFilters.status === "for_rent") {
+      status = "for-rent";
+    }
+    
+    return {
+      ...simpleFilters,
+      status
+    };
   };
 
   if (!user) {
@@ -92,7 +109,7 @@ const AlertsPage = () => {
             <AlertForm 
               onSave={fetchAlerts} 
               createAlert={createAlert} 
-              initialValues={filters}
+              initialValues={convertToSearchFiltersValues(filters)}
             />
           </div>
         </div>
