@@ -6,12 +6,12 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Switch } from '@/components/ui/switch';
-import { SearchFiltersValues } from '@/components/search/SearchFilters';
+import { SimpleSearchFiltersValues } from '@/components/search/SimpleSearchFilters';
 import { Bell } from 'lucide-react';
 import { Json } from '@/integrations/supabase/types';
 
 interface AlertFormProps {
-  initialValues?: SearchFiltersValues;
+  initialValues?: SimpleSearchFiltersValues;
   onSave?: () => void;
   createAlert?: (data: {name: string, filters: any, is_active: boolean}) => Promise<boolean>;
   className?: string;
@@ -28,7 +28,7 @@ export const AlertForm = ({
   const { user } = useAuth();
   
   const [alertName, setAlertName] = useState('');
-  const [filters] = useState<SearchFiltersValues>(initialValues || {
+  const [filters] = useState<SimpleSearchFiltersValues>(initialValues || {
     status: 'all',
     type: 'all',
     location: '',
@@ -81,12 +81,12 @@ export const AlertForm = ({
     }
   };
   
-  const getSummary = (filters: SearchFiltersValues) => {
+  const getSummary = (filters: SimpleSearchFiltersValues) => {
     const parts = [];
     
     if (filters.location) parts.push(`À ${filters.location}`);
     if (filters.type !== 'all') parts.push(`Type: ${filters.type}`);
-    if (filters.status !== 'all') parts.push(`Statut: ${filters.status === 'for-sale' ? 'À vendre' : 'À louer'}`);
+    if (filters.status !== 'all') parts.push(`Statut: ${filters.status === 'for_sale' ? 'À vendre' : 'À louer'}`);
     
     if (filters.priceMin > 0 || filters.priceMax < 10000000) {
       const priceRange = [];

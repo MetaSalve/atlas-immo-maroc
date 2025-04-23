@@ -5,7 +5,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { UserAlert } from '@/types/alerts';
 import { useNavigate } from 'react-router-dom';
-import { SearchFiltersValues } from '@/components/search/SearchFilters';
+import { SimpleSearchFiltersValues } from '@/components/search/SimpleSearchFilters';
 
 export const useAlerts = () => {
   const { user } = useAuth();
@@ -49,7 +49,7 @@ export const useAlerts = () => {
   };
 
   // Créer une nouvelle alerte
-  const createAlert = async (alertData: {name: string, filters: SearchFiltersValues, is_active: boolean}) => {
+  const createAlert = async (alertData: {name: string, filters: SimpleSearchFiltersValues, is_active: boolean}) => {
     if (!user) {
       navigate('/auth');
       return false;

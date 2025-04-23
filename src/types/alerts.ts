@@ -1,11 +1,11 @@
 
 import { Json } from '@/integrations/supabase/types';
-import { SearchFiltersValues } from '@/components/search/SearchFilters';
+import { SimpleSearchFiltersValues } from '@/components/search/SimpleSearchFilters';
 
 export interface UserAlert {
   id: string;
   name: string;
-  filters: SearchFiltersValues;
+  filters: SimpleSearchFiltersValues;
   is_active: boolean;
   created_at: string;
   last_notification_at: string | null;
