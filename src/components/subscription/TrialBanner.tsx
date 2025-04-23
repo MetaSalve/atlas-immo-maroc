@@ -14,9 +14,9 @@ export const TrialBanner = () => {
   if (daysRemaining <= 0) return null
   
   return (
-    <Alert variant="default" className="bg-primary/10 border-primary text-primary mb-8">
+    <Alert variant="default" className="bg-primary/15 border-primary text-primary mb-8">
       <Bell className="h-5 w-5" />
-      <AlertDescription className="text-primary">
+      <AlertDescription className="text-primary font-medium">
         {daysRemaining === 1 ? (
           "Votre période d'essai se termine demain. Passez à l'offre Premium pour continuer à profiter de toutes les fonctionnalités."
         ) : (
