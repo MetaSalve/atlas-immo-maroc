@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/providers/AuthProvider';
@@ -49,7 +48,7 @@ const SubscriptionPage = () => {
 
   const premiumPlanFeatures = [
     { text: "Agrégation complète du marché immobilier marocain" },
-    { text: "Accès illimité aux annonces" },
+    { text: "Accès illimité aux redirections" },
     { text: "Favoris illimités" },
     { text: "Alertes personnalisées illimitées" },
     { text: "Notifications push et email" }
