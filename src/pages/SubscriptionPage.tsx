@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/providers/AuthProvider';
 import { toast } from 'sonner';
-import { Check, Mail, Euro } from 'lucide-react';
+import { Check, Mail } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
@@ -45,7 +45,7 @@ const SubscriptionPage = () => {
         </p>
       </div>
       
-      <div className="grid md:grid-cols-3 gap-8">
+      <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
         {/* Plan Gratuit */}
         <Card className="flex flex-col border-2">
           <CardHeader>
@@ -122,56 +122,11 @@ const SubscriptionPage = () => {
             </Button>
           </CardFooter>
         </Card>
-        
-        {/* Plan Premium */}
-        <Card className="flex flex-col border-2">
-          <CardHeader>
-            <CardTitle className="text-xl">Premium</CardTitle>
-            <CardDescription>Pour les professionnels</CardDescription>
-            <div className="mt-4">
-              <span className="text-4xl font-bold">299 MAD</span>
-              <span className="text-muted-foreground ml-1">/mois</span>
-            </div>
-          </CardHeader>
-          <CardContent className="flex-grow">
-            <ul className="space-y-2">
-              <li className="flex items-center">
-                <Check className="h-4 w-4 mr-2 text-green-500" />
-                <span>Tout le plan Standard</span>
-              </li>
-              <li className="flex items-center">
-                <Check className="h-4 w-4 mr-2 text-green-500" />
-                <span>Alertes illimitées</span>
-              </li>
-              <li className="flex items-center">
-                <Check className="h-4 w-4 mr-2 text-green-500" />
-                <span>Contact direct avec les vendeurs</span>
-              </li>
-              <li className="flex items-center">
-                <Check className="h-4 w-4 mr-2 text-green-500" />
-                <span>Rapports de marché exclusifs</span>
-              </li>
-              <li className="flex items-center">
-                <Check className="h-4 w-4 mr-2 text-green-500" />
-                <span>Assistance personnalisée</span>
-              </li>
-              <li className="flex items-center">
-                <Check className="h-4 w-4 mr-2 text-green-500" />
-                <span>Accès API professionnel</span>
-              </li>
-            </ul>
-          </CardContent>
-          <CardFooter>
-            <Button variant="outline" className="w-full" onClick={() => handleSubscribe('Premium')} disabled={isLoading}>
-              {isLoading ? "Traitement..." : "S'abonner"}
-            </Button>
-          </CardFooter>
-        </Card>
       </div>
       
       <Separator className="my-16" />
       
-      <div className="grid md:grid-cols-2 gap-8">
+      <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
         <div>
           <h2 className="text-2xl font-bold mb-4">Questions fréquentes</h2>
           <div className="space-y-4">
@@ -190,33 +145,20 @@ const SubscriptionPage = () => {
                 de recherche et choisir la fréquence des notifications.
               </p>
             </div>
-            <div>
-              <h3 className="font-semibold">Y a-t-il des frais supplémentaires ?</h3>
-              <p className="text-sm text-muted-foreground mt-1">
-                Non, tous les prix affichés sont TTC et il n'y a aucun frais caché. 
-                Le prix indiqué est celui que vous payerez.
-              </p>
-            </div>
           </div>
         </div>
         
         <div>
           <div className="bg-muted rounded-lg p-6">
-            <h2 className="text-2xl font-bold mb-4">Besoin d'aide pour choisir ?</h2>
+            <h2 className="text-2xl font-bold mb-4">Besoin d'aide ?</h2>
             <p className="text-muted-foreground mb-6">
               Notre équipe est à votre disposition pour vous aider à choisir la formule qui correspond 
-              le mieux à vos besoins immobiliers.
+              le mieux à vos besoins.
             </p>
-            <div className="flex gap-4">
-              <Button variant="outline" className="flex items-center gap-2">
-                <Mail className="h-4 w-4" />
-                Nous contacter
-              </Button>
-              <Button className="flex items-center gap-2">
-                <Euro className="h-4 w-4" />
-                Offre entreprise
-              </Button>
-            </div>
+            <Button variant="outline" className="flex items-center gap-2">
+              <Mail className="h-4 w-4" />
+              Nous contacter
+            </Button>
           </div>
         </div>
       </div>
