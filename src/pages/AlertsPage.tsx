@@ -110,7 +110,10 @@ const AlertsPage = () => {
           <h2 className="text-lg font-semibold font-playfair text-terracotta">Nouvelle alerte</h2>
           
           {!canCreateAlert && (
-            <FeatureGate feature="unlimited_alerts" />
+            <FeatureGate feature="unlimited_alerts">
+              {/* Pass empty element to satisfy the children prop requirement */}
+              <></>
+            </FeatureGate>
           )}
 
           {canCreateAlert && (

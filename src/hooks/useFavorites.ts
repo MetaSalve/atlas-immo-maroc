@@ -108,6 +108,15 @@ export const useFavorites = () => {
     return favorites.includes(propertyId);
   };
 
+  // Toggle favorite status
+  const toggleFavorite = async (propertyId: string) => {
+    if (isFavorite(propertyId)) {
+      return await removeFavorite(propertyId);
+    } else {
+      return await addFavorite(propertyId);
+    }
+  };
+
   // Load favorites when the user changes
   useEffect(() => {
     loadFavorites();
@@ -116,9 +125,11 @@ export const useFavorites = () => {
   return {
     favorites,
     loading,
+    isLoading: loading, // Alias for loading to match other hooks
     isFavorite,
     addFavorite,
     removeFavorite,
+    toggleFavorite, // Exported toggle function
     refreshFavorites: loadFavorites,
     hasReachedLimit: tier === 'free' && favorites.length >= maxFavorites
   };

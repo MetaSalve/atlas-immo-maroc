@@ -43,16 +43,17 @@ export const SubscriptionProvider = ({ children }: { children: React.ReactNode }
 
     try {
       // In a real implementation, you would check the subscription status in your database
-      // For now, we'll simulate this with a hardcoded check
       const { data, error } = await supabase
         .from('profiles')
-        .select('subscription_tier')
+        .select('*')
         .eq('id', user.id)
         .single();
 
       if (error) throw error;
       
-      setTier(data?.subscription_tier as SubscriptionTier || 'free');
+      // Check if subscription_tier exists, default to free if it doesn't
+      const userTier = data?.subscription_tier as SubscriptionTier || 'free';
+      setTier(userTier);
     } catch (error) {
       console.error('Error checking subscription status:', error);
       // Default to free tier if there's an error
