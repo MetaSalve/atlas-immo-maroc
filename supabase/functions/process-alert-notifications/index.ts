@@ -19,24 +19,68 @@ serve(async (req) => {
     console.log("Starting process-alert-notifications function")
     const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY)
     
-    // For testing purposes, let's log the current date
-    console.log("Test run at:", new Date().toISOString())
+    // Get all active alerts
+    const { data: alerts, error: alertsError } = await supabase
+      .from('user_alerts')
+      .select('*')
+      .eq('is_active', true)
+    
+    if (alertsError) {
+      console.error('Error fetching alerts:', alertsError)
+      throw alertsError
+    }
 
-    // Simulate processing alerts
-    console.log("Processing alerts (simulation)")
+    console.log(`Found ${alerts?.length || 0} active alerts`)
     
-    // In a real implementation, we would:
-    // 1. Get all active alerts
-    // 2. For each alert, find properties that match its filters
-    // 3. Find properties created since last notification
-    // 4. Send notifications for any matches
+    // Get properties added in the last 24 hours
+    const yesterday = new Date()
+    yesterday.setDate(yesterday.getDate() - 1)
     
-    // For now, just log success
-    console.log("Alert processing completed successfully")
+    const { data: newProperties, error: propertiesError } = await supabase
+      .from('properties')
+      .select('*')
+      .gte('created_at', yesterday.toISOString())
+    
+    if (propertiesError) {
+      console.error('Error fetching new properties:', propertiesError)
+      throw propertiesError
+    }
+
+    console.log(`Found ${newProperties?.length || 0} new properties`)
+    
+    // For each alert, find matching properties
+    let notificationCount = 0
+    
+    if (alerts && alerts.length > 0 && newProperties && newProperties.length > 0) {
+      for (const alert of alerts) {
+        const matchingProperties = findMatchingProperties(alert, newProperties)
+        
+        if (matchingProperties.length > 0) {
+          console.log(`Alert ${alert.id} has ${matchingProperties.length} matching properties`)
+          notificationCount += matchingProperties.length
+          
+          // Update the alert with notification info
+          await supabase
+            .from('user_alerts')
+            .update({
+              last_notification_at: new Date().toISOString(),
+              last_notification_count: matchingProperties.length
+            })
+            .eq('id', alert.id)
+            
+          // In a real implementation, would send email or push notification here
+        }
+      }
+    } else {
+      console.log("No alerts or new properties to process")
+    }
 
     return new Response(JSON.stringify({
       success: true,
       message: "Alert notifications processed successfully",
+      alerts_processed: alerts?.length || 0,
+      properties_checked: newProperties?.length || 0,
+      notifications_generated: notificationCount,
       processed_at: new Date().toISOString()
     }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
@@ -50,3 +94,51 @@ serve(async (req) => {
     })
   }
 })
+
+// Helper function to determine if a property matches an alert criteria
+function findMatchingProperties(alert: any, properties: any[]) {
+  const filters = alert.filters
+  
+  return properties.filter((property) => {
+    // Match location if specified
+    if (filters.location && filters.location.trim() !== '') {
+      const locationString = `${property.city} ${property.district} ${property.address}`.toLowerCase()
+      if (!locationString.includes(filters.location.toLowerCase())) {
+        return false
+      }
+    }
+    
+    // Match status
+    if (filters.status !== 'all' && property.status !== filters.status) {
+      return false
+    }
+    
+    // Match property type
+    if (filters.type !== 'all' && property.type !== filters.type) {
+      return false
+    }
+    
+    // Match price range
+    if (property.price < filters.priceMin || property.price > filters.priceMax) {
+      return false
+    }
+    
+    // Match bedrooms
+    if (filters.bedroomsMin > 0 && property.bedrooms < filters.bedroomsMin) {
+      return false
+    }
+    
+    // Match bathrooms
+    if (filters.bathroomsMin > 0 && property.bathrooms < filters.bathroomsMin) {
+      return false
+    }
+    
+    // Match area
+    if (filters.areaMin > 0 && property.area < filters.areaMin) {
+      return false
+    }
+    
+    // If passed all filters, it's a match
+    return true
+  })
+}
