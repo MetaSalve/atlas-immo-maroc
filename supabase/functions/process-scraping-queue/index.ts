@@ -35,14 +35,27 @@ serve(async (req) => {
 
     console.log(`Found ${queueItems?.length || 0} queue items to process`)
     
-    if (!queueItems || queueItems.length === 0) {
-      // For demo purposes, let's add some mock property data
+    // Pour les tests, on ajoute directement des propriétés
+    // même s'il n'y a pas d'items dans la queue
+    // Compter combien de propriétés existent déjà
+    const { count, error: countError } = await supabase
+      .from('properties')
+      .select('*', { count: 'exact', head: true })
+
+    if (countError) {
+      console.error('Error counting existing properties:', countError)
+    } else {
+      console.log(`Found ${count} existing properties in database`)
+    }
+
+    // Si moins de 3 propriétés ou si pas d'items dans la queue, ajoutons-en quelques-unes
+    if (!count || count < 3 || !queueItems || queueItems.length === 0) {
+      console.log("Adding mock properties since we have few or no properties")
       await addMockProperties(supabase)
-      console.log("No pending queue items. Added mock properties instead.")
       
       return new Response(JSON.stringify({ 
         success: true,
-        message: "No pending queue items. Mock properties added."
+        message: "Mock properties added successfully."
       }), {
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       })
@@ -135,7 +148,7 @@ serve(async (req) => {
 
     return new Response(JSON.stringify({ 
       success: true,
-      processed: queueItems.length
+      processed: queueItems?.length || 0
     }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     })
@@ -171,7 +184,8 @@ async function addMockProperties(supabase: any) {
       features: ["Balcon", "Parking", "Ascenseur"],
       source_name: "Atlas Immo",
       source_url: "https://exemple.com/propriete/1",
-      contact_name: "Ahmed Hassan"
+      contact_name: "Ahmed Hassan",
+      contact_phone: "+212 600 112233"
     },
     {
       title: "Villa de luxe avec piscine",
@@ -192,7 +206,8 @@ async function addMockProperties(supabase: any) {
       features: ["Piscine", "Jardin", "Garage", "Sécurité"],
       source_name: "Atlas Immo",
       source_url: "https://exemple.com/propriete/2",
-      contact_name: "Fatima Zahra"
+      contact_name: "Fatima Zahra",
+      contact_phone: "+212 600 445566"
     },
     {
       title: "Studio meublé pour location",
@@ -213,12 +228,58 @@ async function addMockProperties(supabase: any) {
       features: ["Meublé", "Internet", "Climatisation"],
       source_name: "Atlas Immo",
       source_url: "https://exemple.com/propriete/3",
-      contact_name: "Karim Idrissi"
+      contact_name: "Karim Idrissi",
+      contact_phone: "+212 600 778899"
+    },
+    {
+      title: "Terrain constructible à Agadir",
+      description: "Beau terrain plat avec vue sur la montagne, prêt à construire.",
+      price: 1200000,
+      price_unit: "MAD",
+      area: 450,
+      bedrooms: 0,
+      bathrooms: 0,
+      address: "Route de Taroudant",
+      city: "Agadir",
+      district: "Externe",
+      lat: 30.4278,
+      lng: -9.5982,
+      images: ["https://picsum.photos/seed/terrain1/800/600"],
+      type: "land",
+      status: "for-sale",
+      features: ["Vue dégagée", "Titre foncier", "Accès route"],
+      source_name: "Agadir Immobilier",
+      source_url: "https://exemple.com/propriete/4",
+      contact_name: "Hassan Bennani",
+      contact_phone: "+212 662 334455"
+    },
+    {
+      title: "Appartement de luxe à Tanger",
+      description: "Appartement haut standing avec vue sur le détroit, finition de qualité.",
+      price: 1800000,
+      price_unit: "MAD",
+      area: 120,
+      bedrooms: 3,
+      bathrooms: 2,
+      address: "Boulevard Mohammed VI",
+      city: "Tanger",
+      district: "Malabata",
+      lat: 35.7673,
+      lng: -5.8336,
+      images: ["https://picsum.photos/seed/tanger1/800/600", "https://picsum.photos/seed/tanger2/800/600"],
+      type: "apartment",
+      status: "for-sale",
+      features: ["Vue mer", "Ascenseur", "Parking", "Sécurité 24/7"],
+      source_name: "Tanger Immobilier",
+      source_url: "https://exemple.com/propriete/5",
+      contact_name: "Nadia Alaoui",
+      contact_phone: "+212 661 223344"
     }
   ];
 
   console.log("Adding mock properties...")
 
+  let addedCount = 0;
   // Check if properties already exist
   for (const prop of mockProperties) {
     const { data: existing } = await supabase
@@ -236,11 +297,14 @@ async function addMockProperties(supabase: any) {
         console.error('Error adding mock property:', error)
       } else {
         console.log('Added mock property:', prop.title)
+        addedCount++;
       }
     } else {
       console.log('Property already exists:', prop.title)
     }
   }
+  
+  return addedCount;
 }
 
 // Function to process mock social source data
@@ -252,17 +316,17 @@ async function processMockSocialSource(supabase: any, item: any, logId: string) 
       title: "Appartement avec vue sur mer",
       description: "Bel appartement à vendre avec vue imprenable sur l'océan",
       price: 920000,
-      location: { city: "Tanger", address: "Boulevard Mohammed VI" },
+      location: { city: "Tanger", address: "Boulevard Mohammed VI", district: "Centre" },
       images: ["https://picsum.photos/seed/social1/800/600"],
-      seller: { name: "Immobilier Méditerranée" }
+      seller: { name: "Immobilier Méditerranée", phone: "+212 539 123456" }
     },
     {
       title: "Petit riad à rénover",
       description: "Riad traditionnel avec beaucoup de potentiel, nécessite rénovation",
       price: 650000,
-      location: { city: "Fès", address: "Médina" },
+      location: { city: "Fès", address: "Médina", district: "Médina" },
       images: ["https://picsum.photos/seed/social2/800/600"],
-      seller: { name: "Patrimoine Marocain" }
+      seller: { name: "Patrimoine Marocain", phone: "+212 535 987654" }
     }
   ];
   
@@ -290,13 +354,18 @@ async function processMockSocialSource(supabase: any, item: any, logId: string) 
           source_name: 'Facebook Marketplace',
           source_url: `https://facebook.com/marketplace/item/${Math.random().toString(36).substring(2, 15)}`,
           images: listing.images,
-          type: 'other',
+          type: 'apartment',
           status: 'for-sale',
           address: listing.location?.address || '',
           city: listing.location?.city || 'Unknown',
-          district: listing.location?.city || 'Unknown',
+          district: listing.location?.district || 'Unknown',
           contact_name: listing.seller?.name || 'Unknown',
-          area: Math.floor(Math.random() * 100) + 50
+          contact_phone: listing.seller?.phone || 'Unknown',
+          area: Math.floor(Math.random() * 100) + 50,
+          bedrooms: Math.floor(Math.random() * 3) + 1,
+          bathrooms: Math.floor(Math.random() * 2) + 1,
+          lat: Math.random() * 2 + 32,
+          lng: Math.random() * 2 - 8
         })
       
       if (error) {
@@ -331,21 +400,33 @@ async function processMockWebsiteSource(supabase: any, item: any, logId: string)
       price: 780000,
       city: "Agadir",
       district: "Centre",
-      type: "apartment"
+      type: "apartment",
+      status: "for-sale",
+      bedrooms: 2,
+      bathrooms: 1,
+      area: 75
     },
     {
       title: "Local commercial bien situé",
       price: 1200000,
       city: "Casablanca",
       district: "Maarif",
-      type: "commercial"
+      type: "commercial",
+      status: "for-sale",
+      bedrooms: 0,
+      bathrooms: 1,
+      area: 120
     },
     {
       title: "Terrain constructible 500m²",
       price: 950000,
       city: "Marrakech",
       district: "Route de l'Ourika",
-      type: "land"
+      type: "land",
+      status: "for-sale",
+      bedrooms: 0,
+      bathrooms: 0,
+      area: 500
     }
   ];
   
@@ -366,23 +447,29 @@ async function processMockWebsiteSource(supabase: any, item: any, logId: string)
         .from('properties')
         .insert({
           title: prop.title,
-          description: `Découvrez ce bien immobilier exceptionnel à ${prop.city}.`,
+          description: `Découvrez ce bien immobilier exceptionnel à ${prop.city}. L'une des meilleures offres du marché actuellement.`,
           price: prop.price,
           price_unit: 'MAD',
-          area: Math.floor(Math.random() * 150) + 50,
-          bedrooms: Math.floor(Math.random() * 4) + 1,
-          bathrooms: Math.floor(Math.random() * 3) + 1,
-          address: `Rue ${Math.floor(Math.random() * 100) + 1}`,
+          area: prop.area,
+          bedrooms: prop.bedrooms,
+          bathrooms: prop.bathrooms,
+          address: `Rue ${Math.floor(Math.random() * 100) + 1}, ${prop.district}`,
           city: prop.city,
           district: prop.district,
-          images: [`https://picsum.photos/seed/${prop.title.replace(/\s+/g, '')}/800/600`],
+          lat: Math.random() * 5 + 30,
+          lng: Math.random() * 5 - 10,
+          images: [
+            `https://picsum.photos/seed/${prop.title.replace(/\s+/g, '')}/800/600`,
+            `https://picsum.photos/seed/${prop.title.replace(/\s+/g, '')}2/800/600`
+          ],
           type: prop.type,
-          status: Math.random() > 0.3 ? 'for-sale' : 'for-rent',
-          features: ['Climatisation', 'Sécurité'],
+          status: prop.status,
+          features: ['Climatisation', 'Sécurité', 'Cuisine équipée'].slice(0, Math.floor(Math.random() * 3) + 1),
           source_name: item.property_sources?.name || 'Atlas Immo',
           source_url: `https://exemple.com/propriete/${Math.random().toString(36).substring(2, 8)}`,
           contact_name: 'Service Commercial',
-          contact_email: 'contact@atlasimmo.ma'
+          contact_email: 'contact@atlasimmo.ma',
+          contact_phone: `+212 ${Math.floor(Math.random() * 900) + 600} ${Math.floor(Math.random() * 900000) + 100000}`
         })
       
       if (error) {
