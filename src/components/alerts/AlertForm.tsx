@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { useAuth } from '@/providers/AuthProvider';
 import { toast } from 'sonner';
@@ -17,6 +16,7 @@ export interface AlertFormProps {
   onCancel?: () => void;
   className?: string;
   containerComponent?: "card" | "div";
+  createAlert?: (data: {name: string, filters: any, is_active: boolean}) => Promise<boolean>;
 }
 
 export const AlertForm = ({ 
@@ -25,7 +25,8 @@ export const AlertForm = ({
   onCreate,
   onCancel,
   className = "",
-  containerComponent = "card"
+  containerComponent = "card",
+  createAlert
 }: AlertFormProps) => {
   const { user } = useAuth();
   
@@ -57,8 +58,10 @@ export const AlertForm = ({
     try {
       setIsSaving(true);
       
-      if (onCreate) {
-        const success = await onCreate({
+      const saveFunction = createAlert || onCreate;
+      
+      if (saveFunction) {
+        const success = await saveFunction({
           name: finalAlertName,
           filters: filters as unknown as Json,
           is_active: isEnabled

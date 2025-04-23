@@ -29,19 +29,6 @@ export const AlertDialog = ({
     onOpenChange(false);
   };
   
-  const handleCreateAlert = async (data: {name: string, filters: any, is_active: boolean}) => {
-    const mergedFilters = {
-      ...filters,
-      ...data.filters,
-    };
-    
-    return createAlert({
-      name: data.name,
-      filters: mergedFilters,
-      is_active: data.is_active
-    });
-  };
-
   const handleFilterChange = (newFilters: Partial<SimpleSearchFiltersValues>) => {
     setFilters(prev => ({ ...prev, ...newFilters }));
   };
@@ -84,7 +71,7 @@ export const AlertDialog = ({
           <AlertForm 
             initialValues={filters}
             onSave={handleClose}
-            createAlert={handleCreateAlert}
+            createAlert={createAlert}
           />
         </div>
       </DialogContent>
