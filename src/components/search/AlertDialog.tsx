@@ -1,7 +1,6 @@
 
 import { AlertForm } from '@/components/alerts/AlertForm';
-import { SimpleSearchFiltersValues } from './SimpleSearchFilters';
-import { SearchFiltersValues } from './SearchFilters';
+import { SimpleSearchFilters, SimpleSearchFiltersValues } from './SimpleSearchFilters';
 import {
   Dialog,
   DialogContent,
@@ -9,6 +8,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { useState } from 'react';
 
 interface AlertDialogProps {
   open: boolean;
@@ -19,17 +19,17 @@ interface AlertDialogProps {
 
 export const AlertDialog = ({
   open,
-  filters,
+  filters: initialFilters,
   onOpenChange,
   createAlert
 }: AlertDialogProps) => {
+  const [filters, setFilters] = useState<SimpleSearchFiltersValues>(initialFilters);
+
   const handleClose = () => {
     onOpenChange(false);
   };
   
-  // Convert SimpleSearchFiltersValues to the format expected by createAlert
   const handleCreateAlert = async (data: {name: string, filters: any, is_active: boolean}) => {
-    // Preserve the original filters but allow them to be overridden
     const mergedFilters = {
       ...filters,
       ...data.filters,
@@ -42,18 +42,30 @@ export const AlertDialog = ({
     });
   };
 
-  // Convert SimpleSearchFiltersValues to SearchFiltersValues to match the expected type
-  const convertedFilters: SearchFiltersValues = {
-    ...filters,
-    // Ensure status is properly typed as "for-sale" | "for-rent" | "all"
-    status: (filters.status === 'for_sale' ? 'for-sale' : 
-             filters.status === 'for_rent' ? 'for-rent' : 
-             'all') as 'for-sale' | 'for-rent' | 'all',
+  const handleFilterChange = (newFilters: Partial<SimpleSearchFiltersValues>) => {
+    setFilters(prev => ({ ...prev, ...newFilters }));
+  };
+
+  const handleApplyFilters = () => {
+    // Nothing to do here since filters are automatically applied
+  };
+
+  const handleResetFilters = () => {
+    setFilters({
+      status: 'all',
+      type: 'all',
+      location: '',
+      priceMin: 0,
+      priceMax: 10000000,
+      bedroomsMin: 0,
+      bathroomsMin: 0,
+      areaMin: 0,
+    });
   };
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent>
+      <DialogContent className="max-w-4xl">
         <DialogHeader>
           <DialogTitle>Créer une alerte</DialogTitle>
           <DialogDescription>
@@ -61,11 +73,20 @@ export const AlertDialog = ({
           </DialogDescription>
         </DialogHeader>
         
-        <AlertForm 
-          initialValues={convertedFilters} 
-          onSave={handleClose}
-          createAlert={handleCreateAlert}
-        />
+        <div className="grid grid-cols-1 lg:grid-cols-[300px_1fr] gap-6">
+          <SimpleSearchFilters
+            values={filters}
+            onChange={handleFilterChange}
+            onApplyFilters={handleApplyFilters}
+            onResetFilters={handleResetFilters}
+          />
+          
+          <AlertForm 
+            initialValues={filters}
+            onSave={handleClose}
+            createAlert={handleCreateAlert}
+          />
+        </div>
       </DialogContent>
     </Dialog>
   );
