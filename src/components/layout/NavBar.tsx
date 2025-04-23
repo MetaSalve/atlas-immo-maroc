@@ -49,6 +49,7 @@ export const NavBar = () => {
               <NavItem to="/alerts" icon={<Bell className="h-4 w-4 mr-2" />} label="Alertes" />
             </>
           )}
+          <NavItem to="/subscription" icon={null} label="Abonnements" />
         </div>
 
         <div className="flex items-center gap-2">
@@ -68,6 +69,9 @@ export const NavBar = () => {
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={() => navigate('/alerts')}>
                   <Bell className="h-4 w-4 mr-2" /> Alertes
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => navigate('/subscription')}>
+                  Abonnements
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={() => signOut()}>
