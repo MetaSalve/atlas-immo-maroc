@@ -4,7 +4,7 @@ import { UserAlert } from '@/types/alerts';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Switch } from '@/components/ui/switch';
-import { Bell, Trash2, Edit } from 'lucide-react';
+import { Bell, Trash2 } from 'lucide-react';
 import { SimpleSearchFiltersValues } from '@/components/search/SimpleSearchFilters';
 
 interface AlertItemProps {

@@ -1,5 +1,5 @@
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useAuth } from '@/providers/AuthProvider';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
@@ -47,6 +47,13 @@ export const useAlerts = () => {
       setIsLoading(false);
     }
   };
+
+  // Effect to fetch alerts when component mounts
+  useEffect(() => {
+    if (user) {
+      fetchAlerts();
+    }
+  }, [user]);
 
   // Créer une nouvelle alerte
   const createAlert = async (alertData: {name: string, filters: SimpleSearchFiltersValues, is_active: boolean}) => {
