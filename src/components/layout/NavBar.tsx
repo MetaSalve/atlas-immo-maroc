@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
-import { Home, Search, Heart, Map, Menu, UserCircle, Bell, LogOut, User, CreditCard } from 'lucide-react';
+import { Home, Search, Heart, Map, Menu, UserCircle, Bell, LogOut, User } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { useIsMobile } from '@/hooks/use-mobile';
@@ -67,9 +67,6 @@ export const NavBar = () => {
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={() => navigate('/alerts')}>
                   <Bell className="h-4 w-4 mr-2" /> Alertes ({allowedAlerts})
-                </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => navigate('/subscription')}>
-                  <CreditCard className="h-4 w-4 mr-2" /> Abonnement
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={() => signOut()} className="text-red-600">
