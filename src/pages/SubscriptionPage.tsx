@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/providers/AuthProvider';
@@ -7,6 +6,7 @@ import { toast } from 'sonner';
 import { PlanCard } from '@/components/subscription/PlanCard';
 import { FaqSection } from '@/components/subscription/FaqSection';
 import { Separator } from '@/components/ui/separator';
+import { TrialBanner } from '@/components/subscription/TrialBanner';
 
 const SubscriptionPage = () => {
   const { user } = useAuth();
@@ -65,6 +65,8 @@ const SubscriptionPage = () => {
           Trouvez le bien immobilier idéal grâce à nos outils de recherche avancés et nos notifications en temps réel.
         </p>
       </div>
+      
+      <TrialBanner />
       
       <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
         <PlanCard

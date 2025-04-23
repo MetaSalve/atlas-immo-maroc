@@ -10,6 +10,7 @@ interface SubscriptionContextType {
   loading: boolean;
   allowedAlerts: number;
   maxFavorites: number;
+  trialEndsAt: string | null;
   isFeatureEnabled: (feature: 'unlimited_alerts' | 'advanced_filters' | 'unlimited_favorites' | 'email_notifications' | 'property_comparisons') => boolean;
   checkFeatureAccess: (feature: string) => { allowed: boolean; message?: string };
 }
@@ -28,15 +29,17 @@ export const SubscriptionProvider = ({ children }: { children: React.ReactNode }
   const { user } = useAuth();
   const [tier, setTier] = useState<SubscriptionTier>('free');
   const [loading, setLoading] = useState(true);
+  const [trialEndsAt, setTrialEndsAt] = useState<string | null>(null);
 
   // Define access limits based on subscription tier
   const allowedAlerts = tier === 'premium' ? Infinity : 3;
   const maxFavorites = tier === 'premium' ? Infinity : 10;
 
-  // Check if the user has a premium subscription
+  // Check if the user has a premium subscription and set trial end date
   const checkSubscriptionStatus = async () => {
     if (!user) {
       setTier('free');
+      setTrialEndsAt(null);
       setLoading(false);
       return;
     }
@@ -44,20 +47,27 @@ export const SubscriptionProvider = ({ children }: { children: React.ReactNode }
     try {
       const { data, error } = await supabase
         .from('profiles')
-        .select('*')
+        .select('subscription_tier, created_at')
         .eq('id', user.id)
         .single();
 
       if (error) throw error;
       
-      // Ensure the subscription_tier is cast as SubscriptionTier type
-      // Use a type assertion to handle the fact that the field might not be recognized in types
       const userTier = ((data as any)?.subscription_tier || 'free') as SubscriptionTier;
       setTier(userTier);
+      
+      if (userTier === 'free') {
+        // Set trial end date to 15 days after account creation
+        const createdAt = new Date(data.created_at);
+        const trialEnd = new Date(createdAt.getTime() + 15 * 24 * 60 * 60 * 1000); // 15 days
+        setTrialEndsAt(trialEnd.toISOString());
+      } else {
+        setTrialEndsAt(null);
+      }
     } catch (error) {
       console.error('Error checking subscription status:', error);
-      // Default to free tier if there's an error
       setTier('free');
+      setTrialEndsAt(null);
     } finally {
       setLoading(false);
     }
@@ -124,13 +134,14 @@ export const SubscriptionProvider = ({ children }: { children: React.ReactNode }
   };
 
   return (
-    <SubscriptionContext.Provider value={{
-      tier,
+    <SubscriptionContext.Provider value={{ 
+      tier, 
       loading,
       allowedAlerts,
       maxFavorites,
+      trialEndsAt,
       isFeatureEnabled,
-      checkFeatureAccess
+      checkFeatureAccess 
     }}>
       {children}
     </SubscriptionContext.Provider>
