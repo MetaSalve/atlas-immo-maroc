@@ -1,5 +1,5 @@
 
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { 
   Filter, X, ChevronDown, 
 } from 'lucide-react';
@@ -66,20 +66,31 @@ export const SearchFilters = ({
     ...initialValues
   });
   const [isOpen, setIsOpen] = useState(false);
+  const [debouncedFilters, setDebouncedFilters] = useState(filters);
+  const debounceTimeout = useRef<NodeJS.Timeout | null>(null);
+  
+  // Utiliser useEffect pour débouncer les changements de filtre
+  useEffect(() => {
+    if (debounceTimeout.current) {
+      clearTimeout(debounceTimeout.current);
+    }
+    
+    debounceTimeout.current = setTimeout(() => {
+      onFilterChange(filters);
+    }, 300);
+    
+    return () => {
+      if (debounceTimeout.current) {
+        clearTimeout(debounceTimeout.current);
+      }
+    };
+  }, [filters, onFilterChange]);
   
   const handleFilterChange = <K extends keyof SearchFiltersValues>(
     key: K,
     value: SearchFiltersValues[K]
   ) => {
-    const newFilters = { ...filters, [key]: value };
-    setFilters(newFilters);
-  };
-  
-  const handleApplyFilters = () => {
-    onFilterChange(filters);
-    if (isMobile) {
-      setIsOpen(false);
-    }
+    setFilters(prevFilters => ({ ...prevFilters, [key]: value }));
   };
   
   const handleResetFilters = () => {
@@ -301,7 +312,12 @@ export const SearchFilters = ({
         </Button>
         <Button
           className="flex-1"
-          onClick={handleApplyFilters}
+          onClick={() => {
+            onFilterChange(filters);
+            if (isMobile) {
+              setIsOpen(false);
+            }
+          }}
           type="button"
         >
           Appliquer
