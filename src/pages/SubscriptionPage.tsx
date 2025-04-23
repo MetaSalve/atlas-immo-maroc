@@ -39,7 +39,7 @@ const SubscriptionPage = () => {
   };
 
   const freePlanFeatures = [
-    { text: "Agrégation des annonces immobilières" },
+    { text: "Agrégation des annonces du marché immobilier marocain" },
     { text: "Accès limité aux redirections" },
     { text: "Nombre limité de favoris" },
     { text: "3 alertes personnalisées" },
