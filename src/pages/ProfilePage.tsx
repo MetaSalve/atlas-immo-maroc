@@ -2,13 +2,13 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { User, Heart, Bell, CreditCard, Shield } from 'lucide-react';
+import { User, CreditCard, Shield } from 'lucide-react';
 import { useAuth } from '@/providers/AuthProvider';
 
-import { SubscriptionTab } from './components/SubscriptionTab';
-import { ProfileTab } from './components/ProfileTab';
-import { SecurityTab } from './components/SecurityTab';
-import { useProfilePage } from './hooks/useProfilePage';
+import { SubscriptionTab } from './ProfilePage/components/SubscriptionTab';
+import { ProfileTab } from './ProfilePage/components/ProfileTab';
+import { SecurityTab } from './ProfilePage/components/SecurityTab';
+import { useProfilePage } from './ProfilePage/hooks/useProfilePage';
 
 const ProfilePage = () => {
   const { user } = useAuth();
