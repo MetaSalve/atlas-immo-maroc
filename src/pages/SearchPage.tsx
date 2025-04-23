@@ -46,6 +46,7 @@ const SearchPage = () => {
   
   const [filteredProperties, setFilteredProperties] = useState<Property[]>(allProperties);
   
+  // Parse query string on load
   useEffect(() => {
     const queryParams = new URLSearchParams(location.search);
     const q = queryParams.get('q');
@@ -55,6 +56,7 @@ const SearchPage = () => {
     }
   }, [location.search]);
   
+  // Apply filters when filter state or properties change
   useEffect(() => {
     let results = allProperties;
     
@@ -90,7 +92,7 @@ const SearchPage = () => {
   };
   
   const handlePropertyClick = (property: Property) => {
-    window.location.href = `/properties/${property.id}`;
+    navigate(`/properties/${property.id}`);
   };
 
   const handleSaveAlert = () => {

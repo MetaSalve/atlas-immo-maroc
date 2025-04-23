@@ -66,31 +66,51 @@ export const SearchFilters = ({
     ...initialValues
   });
   const [isOpen, setIsOpen] = useState(false);
-  const [debouncedFilters, setDebouncedFilters] = useState(filters);
   const debounceTimeout = useRef<NodeJS.Timeout | null>(null);
   
-  // Utiliser useEffect pour débouncer les changements de filtre
-  useEffect(() => {
+  // Apply filter changes with debounce
+  const applyFilterChanges = (newFilters: SearchFiltersValues) => {
     if (debounceTimeout.current) {
       clearTimeout(debounceTimeout.current);
     }
     
     debounceTimeout.current = setTimeout(() => {
-      onFilterChange(filters);
-    }, 300);
-    
-    return () => {
-      if (debounceTimeout.current) {
-        clearTimeout(debounceTimeout.current);
-      }
-    };
-  }, [filters, onFilterChange]);
+      onFilterChange(newFilters);
+    }, 500); // Increased debounce time for better performance
+  };
   
+  // Update a single filter
   const handleFilterChange = <K extends keyof SearchFiltersValues>(
     key: K,
     value: SearchFiltersValues[K]
   ) => {
-    setFilters(prevFilters => ({ ...prevFilters, [key]: value }));
+    const newFilters = { ...filters, [key]: value };
+    setFilters(newFilters);
+    
+    // Don't apply filter changes immediately for location changes
+    // to prevent search while typing
+    if (key !== 'location') {
+      applyFilterChanges(newFilters);
+    }
+  };
+  
+  // Special handler for location input to avoid premature search
+  const handleLocationChange = (value: string) => {
+    const newFilters = { ...filters, location: value };
+    setFilters(newFilters);
+  };
+  
+  // Handle location input blur to apply filter
+  const handleLocationBlur = () => {
+    applyFilterChanges(filters);
+  };
+  
+  // Handle manual filter application (for mobile view)
+  const handleApplyFilters = () => {
+    onFilterChange(filters);
+    if (isMobile) {
+      setIsOpen(false);
+    }
   };
   
   const handleResetFilters = () => {
@@ -101,19 +121,31 @@ export const SearchFilters = ({
     }
   };
   
+  // Cleanup debounce on unmount
+  useEffect(() => {
+    return () => {
+      if (debounceTimeout.current) {
+        clearTimeout(debounceTimeout.current);
+      }
+    };
+  }, []);
+  
   const formatPrice = (price: number) => {
     return `${new Intl.NumberFormat('fr-FR').format(price)} MAD`;
   };
   
   const FiltersContent = () => (
-    <div className="space-y-6">
+    <div className="space-y-6" onClick={(e) => e.stopPropagation()}>
       <div>
         <Label>Type d'annonce</Label>
         <div className="grid grid-cols-3 gap-2 mt-2">
           <Button
             variant={filters.status === 'all' ? 'default' : 'outline'}
             className="w-full"
-            onClick={() => handleFilterChange('status', 'all')}
+            onClick={(e) => {
+              e.stopPropagation();
+              handleFilterChange('status', 'all');
+            }}
             type="button"
           >
             Tous
@@ -121,7 +153,10 @@ export const SearchFilters = ({
           <Button
             variant={filters.status === 'for-sale' ? 'default' : 'outline'}
             className="w-full"
-            onClick={() => handleFilterChange('status', 'for-sale')}
+            onClick={(e) => {
+              e.stopPropagation();
+              handleFilterChange('status', 'for-sale');
+            }}
             type="button"
           >
             À vendre
@@ -129,7 +164,10 @@ export const SearchFilters = ({
           <Button
             variant={filters.status === 'for-rent' ? 'default' : 'outline'}
             className="w-full"
-            onClick={() => handleFilterChange('status', 'for-rent')}
+            onClick={(e) => {
+              e.stopPropagation();
+              handleFilterChange('status', 'for-rent');
+            }}
             type="button"
           >
             À louer
@@ -144,7 +182,9 @@ export const SearchFilters = ({
           placeholder="Casablanca, Marrakech, Agdal..."
           className="mt-2"
           value={filters.location}
-          onChange={(e) => handleFilterChange('location', e.target.value)}
+          onChange={(e) => handleLocationChange(e.target.value)}
+          onBlur={handleLocationBlur}
+          onClick={(e) => e.stopPropagation()}
         />
       </div>
       
@@ -154,7 +194,7 @@ export const SearchFilters = ({
           value={filters.type}
           onValueChange={(value) => handleFilterChange('type', value)}
         >
-          <SelectTrigger id="type" className="mt-2">
+          <SelectTrigger id="type" className="mt-2" onClick={(e) => e.stopPropagation()}>
             <SelectValue placeholder="Tous types" />
           </SelectTrigger>
           <SelectContent>
@@ -171,7 +211,7 @@ export const SearchFilters = ({
       
       <Accordion type="single" collapsible className="w-full">
         <AccordionItem value="price">
-          <AccordionTrigger>
+          <AccordionTrigger onClick={(e) => e.stopPropagation()}>
             <div className="flex items-center gap-2">
               <span>Prix</span>
               <span className="text-xs text-muted-foreground">
@@ -180,7 +220,7 @@ export const SearchFilters = ({
             </div>
           </AccordionTrigger>
           <AccordionContent>
-            <div className="space-y-6 pt-2">
+            <div className="space-y-6 pt-2" onClick={(e) => e.stopPropagation()}>
               <div>
                 <div className="flex justify-between">
                   <Label htmlFor="priceMin">Prix minimum</Label>
@@ -196,6 +236,8 @@ export const SearchFilters = ({
                   value={[filters.priceMin]}
                   onValueChange={(value) => handleFilterChange('priceMin', value[0])}
                   className="mt-2"
+                  onMouseDown={(e) => e.stopPropagation()}
+                  onTouchStart={(e) => e.stopPropagation()}
                 />
               </div>
               
@@ -214,6 +256,8 @@ export const SearchFilters = ({
                   value={[filters.priceMax]}
                   onValueChange={(value) => handleFilterChange('priceMax', value[0])}
                   className="mt-2"
+                  onMouseDown={(e) => e.stopPropagation()}
+                  onTouchStart={(e) => e.stopPropagation()}
                 />
               </div>
             </div>
@@ -221,7 +265,7 @@ export const SearchFilters = ({
         </AccordionItem>
         
         <AccordionItem value="rooms">
-          <AccordionTrigger>
+          <AccordionTrigger onClick={(e) => e.stopPropagation()}>
             <div className="flex items-center gap-2">
               <span>Chambres & Salles de bain</span>
               <span className="text-xs text-muted-foreground">
@@ -230,7 +274,7 @@ export const SearchFilters = ({
             </div>
           </AccordionTrigger>
           <AccordionContent>
-            <div className="space-y-6 pt-2">
+            <div className="space-y-6 pt-2" onClick={(e) => e.stopPropagation()}>
               <div>
                 <div className="flex justify-between">
                   <Label htmlFor="bedroomsMin">Chambres min.</Label>
@@ -246,6 +290,8 @@ export const SearchFilters = ({
                   value={[filters.bedroomsMin]}
                   onValueChange={(value) => handleFilterChange('bedroomsMin', value[0])}
                   className="mt-2"
+                  onMouseDown={(e) => e.stopPropagation()}
+                  onTouchStart={(e) => e.stopPropagation()}
                 />
               </div>
               
@@ -264,6 +310,8 @@ export const SearchFilters = ({
                   value={[filters.bathroomsMin]}
                   onValueChange={(value) => handleFilterChange('bathroomsMin', value[0])}
                   className="mt-2"
+                  onMouseDown={(e) => e.stopPropagation()}
+                  onTouchStart={(e) => e.stopPropagation()}
                 />
               </div>
             </div>
@@ -271,7 +319,7 @@ export const SearchFilters = ({
         </AccordionItem>
         
         <AccordionItem value="area">
-          <AccordionTrigger>
+          <AccordionTrigger onClick={(e) => e.stopPropagation()}>
             <div className="flex items-center gap-2">
               <span>Surface</span>
               <span className="text-xs text-muted-foreground">
@@ -280,7 +328,7 @@ export const SearchFilters = ({
             </div>
           </AccordionTrigger>
           <AccordionContent>
-            <div className="pt-2">
+            <div className="pt-2" onClick={(e) => e.stopPropagation()}>
               <div className="flex justify-between">
                 <Label htmlFor="areaMin">Surface minimum</Label>
                 <span className="text-xs text-muted-foreground">
@@ -295,6 +343,8 @@ export const SearchFilters = ({
                 value={[filters.areaMin]}
                 onValueChange={(value) => handleFilterChange('areaMin', value[0])}
                 className="mt-2"
+                onMouseDown={(e) => e.stopPropagation()}
+                onTouchStart={(e) => e.stopPropagation()}
               />
             </div>
           </AccordionContent>
@@ -305,18 +355,19 @@ export const SearchFilters = ({
         <Button
           variant="outline"
           className="flex-1"
-          onClick={handleResetFilters}
+          onClick={(e) => {
+            e.stopPropagation();
+            handleResetFilters();
+          }}
           type="button"
         >
           Réinitialiser
         </Button>
         <Button
           className="flex-1"
-          onClick={() => {
-            onFilterChange(filters);
-            if (isMobile) {
-              setIsOpen(false);
-            }
+          onClick={(e) => {
+            e.stopPropagation();
+            handleApplyFilters();
           }}
           type="button"
         >
@@ -368,6 +419,7 @@ export const SearchFilters = ({
             <button
               onClick={(e) => {
                 e.preventDefault();
+                e.stopPropagation();
                 // In a real application, we would clear the specific filter here
               }}
               className="text-muted-foreground hover:text-foreground"
@@ -381,6 +433,7 @@ export const SearchFilters = ({
           <button
             onClick={(e) => {
               e.preventDefault();
+              e.stopPropagation();
               handleResetFilters();
             }}
             className="text-primary hover:text-primary/80 text-xs underline"
@@ -428,7 +481,11 @@ export const SearchFilters = ({
           variant="ghost"
           size="sm"
           className="text-primary"
-          onClick={handleResetFilters}
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            handleResetFilters();
+          }}
           type="button"
         >
           Réinitialiser
