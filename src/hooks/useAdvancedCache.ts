@@ -1,6 +1,6 @@
 
 import { useState, useEffect, useCallback } from 'react';
-import { useQueryClient, QueryOptions, QueryKey } from '@tanstack/react-query';
+import { useQueryClient, QueryKey } from '@tanstack/react-query';
 import { optimizedQueryKeys, cacheConfig } from './useCacheConfig';
 import { useNetwork } from './useNetwork';
 
@@ -123,8 +123,10 @@ export const useAdvancedCache = () => {
         misses++;
       } else if (query.state.status === 'success') {
         hits++;
-        // Safely extract staleTime, defaulting to 0 if not available
-        const staleTime = (query.options as QueryOptions<unknown, Error, unknown, QueryKey>).staleTime ?? 0;
+        // Correction: Accéder à staleTime de façon sûre avec une conversion de type
+        const options = query.options as any;  // Utiliser any pour contourner les limitations de TypeScript
+        const staleTime = options?.staleTime || 0;
+        
         if (query.state.dataUpdatedAt < Date.now() - staleTime) {
           stale++;
         }
@@ -176,4 +178,3 @@ export const useAdvancedCache = () => {
     cacheStats,
   };
 };
-
