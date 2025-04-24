@@ -108,7 +108,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   const updatePassword = async (password: string) => {
-    const { error, data } = await supabase.auth.updateUser({ password });
+    const { error } = await supabase.auth.updateUser({ password });
     if (error) throw error;
     
     // Si la mise à jour du mot de passe est réussie et que nous sommes sur la page de réinitialisation
@@ -116,8 +116,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       toast.success('Mot de passe défini avec succès, vous pouvez maintenant vous connecter');
       navigate('/auth');
     }
-    
-    return data;
   };
 
   return (

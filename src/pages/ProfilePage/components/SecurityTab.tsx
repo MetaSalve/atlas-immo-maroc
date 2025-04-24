@@ -1,9 +1,13 @@
+
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { DeleteAccountDialog } from '@/components/account/DeleteAccountDialog';
 import { useProfilePage } from '../hooks/useProfilePage';
 import { Input } from '@/components/ui/input';
+import { Alert, AlertDescription } from '@/components/ui/alert';
+import { Separator } from '@/components/ui/separator';
+import TwoFactorSetup from '@/components/auth/TwoFactorSetup';
 
 export const SecurityTab = () => {
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
@@ -15,7 +19,9 @@ export const SecurityTab = () => {
     setNewPassword,
     setConfirmPassword,
     handleUpdatePassword,
-    isUpdating 
+    isUpdating,
+    csrfToken,
+    hasCSRFProtection
   } = useProfilePage();
 
   return (
@@ -29,6 +35,10 @@ export const SecurityTab = () => {
         </CardHeader>
         <CardContent>
           <form onSubmit={handleUpdatePassword} className="space-y-4">
+            {hasCSRFProtection && csrfToken && (
+              <input type="hidden" name="csrf_token" value={csrfToken} />
+            )}
+            
             <div className="space-y-2">
               <label htmlFor="currentPassword" className="text-sm font-medium">
                 Mot de passe actuel
@@ -39,6 +49,8 @@ export const SecurityTab = () => {
                 placeholder="Mot de passe actuel"
                 value={currentPassword}
                 onChange={(e) => setCurrentPassword(e.target.value)}
+                required
+                minLength={8}
               />
             </div>
             
@@ -52,7 +64,14 @@ export const SecurityTab = () => {
                 placeholder="Nouveau mot de passe"
                 value={newPassword}
                 onChange={(e) => setNewPassword(e.target.value)}
+                required
+                minLength={8}
+                pattern="^(?=.*[A-Z])(?=.*[0-9]).{8,}$"
+                title="Le mot de passe doit contenir au moins 8 caractères, dont une majuscule et un chiffre"
               />
+              <p className="text-xs text-muted-foreground">
+                Minimum 8 caractères, avec au moins une majuscule et un chiffre
+              </p>
             </div>
             
             <div className="space-y-2">
@@ -65,22 +84,31 @@ export const SecurityTab = () => {
                 placeholder="Confirmer le nouveau mot de passe"
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
+                required
+                minLength={8}
               />
             </div>
           </form>
         </CardContent>
         <CardFooter className="flex justify-between">
-          <Button variant="outline" onClick={() => window.location.href = '/'}>
+          <Button variant="outline" type="button">
             Annuler
           </Button>
           <Button 
             onClick={handleUpdatePassword} 
             disabled={isUpdating}
+            type="button"
           >
             {isUpdating ? "Mise à jour..." : "Sauvegarder"}
           </Button>
         </CardFooter>
       </Card>
+      
+      <Separator />
+      
+      <TwoFactorSetup />
+      
+      <Separator />
 
       <Card>
         <CardHeader>
@@ -90,6 +118,11 @@ export const SecurityTab = () => {
           </CardDescription>
         </CardHeader>
         <CardContent>
+          <Alert variant="destructive" className="mb-4">
+            <AlertDescription>
+              Cette action est irréversible. Toutes vos données personnelles, favoris, alertes et historique seront définitivement supprimés.
+            </AlertDescription>
+          </Alert>
           <Button 
             variant="destructive"
             onClick={() => setShowDeleteDialog(true)}
