@@ -24,10 +24,6 @@ export const createQueryClient = () => {
         staleTime: 1000 * 60, // Default stale time: 1 minute
         retry: 1,
         refetchOnWindowFocus: false,
-        onError: (error) => {
-          console.error('Query error:', error);
-          // On pourrait implémenter une logique de notification d'erreur ici
-        },
       },
     },
   });

@@ -122,11 +122,13 @@ export const useProperties = (filters?: PropertyFilters) => {
     gcTime: cacheConfig.properties.cacheTime,
     refetchOnWindowFocus: false,
     retry: 1,
-    onError: (error) => {
-      handleError(error, { 
-        showToast: true, 
-        logToConsole: true 
-      });
+    meta: {
+      onError: (error: Error) => {
+        handleError(error, { 
+          showToast: true, 
+          logToConsole: true 
+        });
+      }
     }
   });
 };
