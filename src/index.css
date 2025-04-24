@@ -55,6 +55,26 @@
     --input: #1A305A;
     --ring: #4B9CD3;
   }
+  
+  .high-contrast {
+    --background: #FFFFFF;
+    --foreground: #000000;
+    --card: #FFFFFF;
+    --card-foreground: #000000;
+    --primary: #0000FF;
+    --primary-foreground: #FFFFFF;
+    --secondary: #000000;
+    --secondary-foreground: #FFFFFF;
+    --muted: #F0F0F0;
+    --muted-foreground: #444444;
+    --accent: #FF0000;
+    --accent-foreground: #FFFFFF;
+    --destructive: #FF0000;
+    --destructive-foreground: #FFFFFF;
+    --border: #000000;
+    --input: #000000;
+    --ring: #0000FF;
+  }
 }
 
 @layer base {
@@ -96,4 +116,32 @@ input, .searchbar input {
   .property-card-favorite {
     @apply absolute top-3 right-3 rounded-full bg-white/80 p-1.5 border border-gray/30 shadow;
   }
+  
+  /* Classes d'animation */
+  .animate-fade-in {
+    @apply animate-[fade-in_0.3s_ease-out];
+  }
+  
+  .animate-fade-out {
+    @apply animate-[fade-out_0.3s_ease-out];
+  }
+  
+  .animate-scale-in {
+    @apply animate-[scale-in_0.2s_ease-out];
+  }
+  
+  /* Classes d'accessibilité */
+  .focus-visible {
+    @apply outline-none ring-2 ring-offset-2 ring-primary;
+  }
+}
+
+/* Accessibilité: Meilleur focus visible */
+:focus-visible {
+  @apply outline-none ring-2 ring-offset-2 ring-primary;
+}
+
+/* Skip link hidden until focused */
+.skip-to-content {
+  @apply sr-only focus:not-sr-only focus:absolute focus:z-50 focus:bg-background focus:p-4 focus:shadow-md;
 }

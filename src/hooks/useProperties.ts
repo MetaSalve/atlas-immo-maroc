@@ -1,9 +1,10 @@
 
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { Property } from '@/types/property';
 import { optimizedQueryKeys, cacheConfig } from './useCacheConfig';
 import { useErrorHandler } from './useErrorHandler';
+import { useCallback, useMemo } from 'react';
 
 export interface PropertyFilters {
   city?: string;
@@ -15,64 +16,81 @@ export interface PropertyFilters {
   bathrooms?: number;
 }
 
-export const useProperties = (filters?: PropertyFilters) => {
-  const { handleError } = useErrorHandler();
+const PROPERTIES_PER_PAGE = 12;
 
-  const fetchProperties = async () => {
-    console.log('Récupération des propriétés depuis Supabase...');
+export const useProperties = (
+  filters?: PropertyFilters, 
+  page: number = 1,
+  enablePrefetching: boolean = true
+) => {
+  const { handleError } = useErrorHandler();
+  const queryClient = useQueryClient();
+  
+  const queryKey = useMemo(() => 
+    optimizedQueryKeys.properties.list({ ...filters, page }), 
+    [filters, page]
+  );
+
+  // Fonction de préchargement pour la pagination
+  const prefetchNextPage = useCallback(() => {
+    if (!enablePrefetching) return;
+    
+    queryClient.prefetchQuery({
+      queryKey: optimizedQueryKeys.properties.list({ ...filters, page: page + 1 }),
+      queryFn: () => fetchProperties(filters, page + 1),
+      staleTime: cacheConfig.properties.staleTime,
+    });
+  }, [queryClient, filters, page, enablePrefetching]);
+
+  const fetchProperties = async (currentFilters?: PropertyFilters, currentPage: number = 1) => {
+    console.log(`Récupération des propriétés depuis Supabase - Page ${currentPage}...`);
+    
+    // Calcul des limites pour la pagination
+    const from = (currentPage - 1) * PROPERTIES_PER_PAGE;
+    const to = from + PROPERTIES_PER_PAGE - 1;
     
     let query = supabase
       .from('properties')
-      .select('*')
-      .order('created_at', { ascending: false });
+      .select('*', { count: 'exact' })
+      .order('created_at', { ascending: false })
+      .range(from, to);
 
     // Appliquer les filtres si présents
-    if (filters) {
-      if (filters.city) {
-        query = query.ilike('city', `%${filters.city}%`);
+    if (currentFilters) {
+      if (currentFilters.city) {
+        query = query.ilike('city', `%${currentFilters.city}%`);
       }
-      if (filters.type) {
-        query = query.eq('type', filters.type);
+      if (currentFilters.type) {
+        query = query.eq('type', currentFilters.type);
       }
-      if (filters.status) {
-        query = query.eq('status', filters.status);
+      if (currentFilters.status) {
+        query = query.eq('status', currentFilters.status);
       }
-      if (filters.minPrice !== undefined) {
-        query = query.gte('price', filters.minPrice);
+      if (currentFilters.minPrice !== undefined) {
+        query = query.gte('price', currentFilters.minPrice);
       }
-      if (filters.maxPrice !== undefined) {
-        query = query.lte('price', filters.maxPrice);
+      if (currentFilters.maxPrice !== undefined) {
+        query = query.lte('price', currentFilters.maxPrice);
       }
-      if (filters.bedrooms !== undefined) {
-        query = query.gte('bedrooms', filters.bedrooms);
+      if (currentFilters.bedrooms !== undefined) {
+        query = query.gte('bedrooms', currentFilters.bedrooms);
       }
-      if (filters.bathrooms !== undefined) {
-        query = query.gte('bathrooms', filters.bathrooms);
+      if (currentFilters.bathrooms !== undefined) {
+        query = query.gte('bathrooms', currentFilters.bathrooms);
       }
     }
 
-    const { data, error } = await query;
+    const { data, error, count } = await query;
     
     if (error) {
       console.error('Erreur lors de la récupération des propriétés:', error);
       throw error;
     }
     
-    console.log(`${data?.length || 0} propriétés récupérées`);
+    console.log(`${data?.length || 0} propriétés récupérées sur un total de ${count || 'inconnu'}`);
     
     if (!data || data.length === 0) {
-      // Vérifier s'il y a des données dans la table
-      const { count, error: countError } = await supabase
-        .from('properties')
-        .select('*', { count: 'exact', head: true });
-      
-      if (countError) {
-        console.error('Erreur lors du comptage des propriétés:', countError);
-      } else {
-        console.log(`Nombre total de propriétés dans la base: ${count}`);
-      }
-      
-      return [];
+      return { properties: [], total: count || 0, page: currentPage };
     }
     
     const properties = data.map((property): Property => ({
@@ -112,12 +130,12 @@ export const useProperties = (filters?: PropertyFilters) => {
     }));
     
     console.log(`${properties.length} propriétés transformées et prêtes à afficher`);
-    return properties;
+    return { properties, total: count || 0, page: currentPage };
   };
 
-  return useQuery({
-    queryKey: optimizedQueryKeys.properties.list(filters || {}),
-    queryFn: fetchProperties,
+  const result = useQuery({
+    queryKey,
+    queryFn: () => fetchProperties(filters, page),
     staleTime: cacheConfig.properties.staleTime,
     gcTime: cacheConfig.properties.cacheTime,
     refetchOnWindowFocus: false,
@@ -131,4 +149,19 @@ export const useProperties = (filters?: PropertyFilters) => {
       }
     }
   });
+
+  // Précharger la page suivante lorsque les données actuelles sont chargées
+  React.useEffect(() => {
+    if (result.isSuccess && !result.isLoading) {
+      prefetchNextPage();
+    }
+  }, [result.isSuccess, result.isLoading, prefetchNextPage]);
+
+  return {
+    ...result,
+    data: result.data?.properties || [],
+    totalCount: result.data?.total || 0,
+    currentPage: result.data?.page || page,
+    prefetchNextPage,
+  };
 };

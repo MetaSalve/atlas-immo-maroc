@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { HelmetProvider } from 'react-helmet-async';
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter } from "react-router-dom";
@@ -8,7 +8,8 @@ import { AuthProvider } from "./AuthProvider";
 import { SubscriptionProvider } from "./SubscriptionProvider";
 import { NotificationsProvider } from "./NotificationsProvider";
 import { ErrorBoundary } from "@/components/common/ErrorBoundary";
-import { createQueryClient } from "@/hooks/useCacheConfig";
+import { createQueryClient, preloadCommonQueries } from "@/hooks/useCacheConfig";
+import { AccessibilityProvider } from "./AccessibilityProvider";
 
 interface AppProvidersProps {
   children: React.ReactNode;
@@ -17,6 +18,11 @@ interface AppProvidersProps {
 const queryClient = createQueryClient();
 
 export const AppProviders = ({ children }: AppProvidersProps) => {
+  useEffect(() => {
+    // Précharger les données communes au démarrage de l'application
+    preloadCommonQueries(queryClient);
+  }, []);
+
   return (
     <React.StrictMode>
       <ErrorBoundary>
@@ -27,7 +33,9 @@ export const AppProviders = ({ children }: AppProvidersProps) => {
                 <AuthProvider>
                   <SubscriptionProvider>
                     <NotificationsProvider>
-                      {children}
+                      <AccessibilityProvider>
+                        {children}
+                      </AccessibilityProvider>
                     </NotificationsProvider>
                   </SubscriptionProvider>
                 </AuthProvider>

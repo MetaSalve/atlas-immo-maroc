@@ -5,6 +5,8 @@ import { BottomNav } from './BottomNav';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { Database } from 'lucide-react';
 import { FadeIn } from '../ui/animations';
+import { AccessibilityBar } from '../common/AccessibilityBar';
+import { withPageTransition } from '../hoc/WithPageTransition';
 
 export const Layout = () => {
   const isMobile = useIsMobile();
@@ -27,7 +29,11 @@ export const Layout = () => {
           <a href="/privacy" className="hover:underline">Politique de confidentialité</a>
         </div>
       </footer>
+      {!isMobile && <AccessibilityBar />} 
       {isMobile && <BottomNav />}
     </div>
   );
 };
+
+// Exporter avec la transition de page
+export default withPageTransition(Layout);
