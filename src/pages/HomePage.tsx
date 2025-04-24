@@ -65,7 +65,7 @@ const HomePage = () => {
       <section className="bg-cream/60 p-6 rounded-lg text-center relative overflow-hidden">
         <div className="absolute inset-0 opacity-5 z-0"><ZelligeBackground /></div>
         <div className="relative z-10">
-          <h2 className="text-2xl font-bold mb-4 font-playfair text-navy">Comment fonctionne Alerte Immo?</h2>
+          <h2 className="text-2xl font-bold mb-4 font-playfair text-navy">Comment fonctionne Alert Immo?</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
             <div className="bg-white p-6 rounded-md shadow-sm">
               <div className="w-12 h-12 rounded-full bg-skyblue/20 flex items-center justify-center mb-4 mx-auto">
