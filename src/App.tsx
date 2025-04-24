@@ -78,83 +78,85 @@ const updateDocumentMeta = (title: string, description: string) => {
   metaDescription.setAttribute('content', description);
 };
 
-// Configuration de la sécurité et des métadonnées
-React.useEffect(() => {
-  // Exécuter toutes les vérifications de sécurité
-  runSecurityChecks();
-  
-  // Définir les métadonnées par défaut du site
-  updateDocumentMeta(
-    'AlertImmo - Alertes immobilières en temps réel au Maroc',
-    'Trouvez votre bien immobilier idéal au Maroc grâce à nos alertes personnalisées en temps réel. Appartements, maisons, villas et riads dans tout le Maroc.'
-  );
-}, []);
+const App = () => {
+  // Move the useEffect hook inside the component function
+  useEffect(() => {
+    // Exécuter toutes les vérifications de sécurité
+    runSecurityChecks();
+    
+    // Définir les métadonnées par défaut du site
+    updateDocumentMeta(
+      'AlertImmo - Alertes immobilières en temps réel au Maroc',
+      'Trouvez votre bien immobilier idéal au Maroc grâce à nos alertes personnalisées en temps réel. Appartements, maisons, villas et riads dans tout le Maroc.'
+    );
+  }, []);
 
-const App = () => (
-  <React.StrictMode>
-    <QueryClientProvider client={queryClient}>
-      <TooltipProvider>
-        <BrowserRouter>
-          <AuthProvider>
-            <SubscriptionProvider>
-              <NotificationsProvider>
-                <Toaster />
-                <Sonner />
-                <Routes>
-                  <Route path="/" element={<Navigate to="/home" replace />} />
-                  <Route 
-                    path="/auth" 
-                    element={<ProtectedRoute element={<AuthPage />} requiresAuth={false} />} 
-                  />
-                  <Route 
-                    path="/auth/reset-password" 
-                    element={<ProtectedRoute element={<ResetPasswordPage />} requiresAuth={false} />} 
-                  />
-                  <Route 
-                    path="/auth/callback" 
-                    element={<ProtectedRoute element={<div>Redirection en cours...</div>} requiresAuth={false} />} 
-                  />
-                  <Route element={<Layout />}>
-                    <Route path="/home" element={<HomePage />} />
-                    <Route path="/search" element={<SearchPage />} />
+  return (
+    <React.StrictMode>
+      <QueryClientProvider client={queryClient}>
+        <TooltipProvider>
+          <BrowserRouter>
+            <AuthProvider>
+              <SubscriptionProvider>
+                <NotificationsProvider>
+                  <Toaster />
+                  <Sonner />
+                  <Routes>
+                    <Route path="/" element={<Navigate to="/home" replace />} />
                     <Route 
-                      path="/properties/:id" 
-                      element={<ProtectedRoute element={<PropertyDetailPage />} />} 
+                      path="/auth" 
+                      element={<ProtectedRoute element={<AuthPage />} requiresAuth={false} />} 
                     />
                     <Route 
-                      path="/favorites" 
-                      element={<ProtectedRoute element={<FavoritesPage />} />} 
+                      path="/auth/reset-password" 
+                      element={<ProtectedRoute element={<ResetPasswordPage />} requiresAuth={false} />} 
                     />
                     <Route 
-                      path="/alerts" 
-                      element={<ProtectedRoute element={<AlertsPage />} />} 
+                      path="/auth/callback" 
+                      element={<ProtectedRoute element={<div>Redirection en cours...</div>} requiresAuth={false} />} 
                     />
-                    <Route 
-                      path="/admin" 
-                      element={<ProtectedRoute element={<AdminPage />} />} 
-                    />
-                    <Route 
-                      path="/subscription" 
-                      element={<ProtectedRoute element={<SubscriptionPage />} />} 
-                    />
-                    <Route 
-                      path="/payment" 
-                      element={<ProtectedRoute element={<PaymentPage />} />} 
-                    />
-                    <Route 
-                      path="/profile" 
-                      element={<ProtectedRoute element={<ProfilePage />} />} 
-                    />
-                    <Route path="*" element={<NotFound />} />
-                  </Route>
-                </Routes>
-              </NotificationsProvider>
-            </SubscriptionProvider>
-          </AuthProvider>
-        </BrowserRouter>
-      </TooltipProvider>
-    </QueryClientProvider>
-  </React.StrictMode>
-);
+                    <Route element={<Layout />}>
+                      <Route path="/home" element={<HomePage />} />
+                      <Route path="/search" element={<SearchPage />} />
+                      <Route 
+                        path="/properties/:id" 
+                        element={<ProtectedRoute element={<PropertyDetailPage />} />} 
+                      />
+                      <Route 
+                        path="/favorites" 
+                        element={<ProtectedRoute element={<FavoritesPage />} />} 
+                      />
+                      <Route 
+                        path="/alerts" 
+                        element={<ProtectedRoute element={<AlertsPage />} />} 
+                      />
+                      <Route 
+                        path="/admin" 
+                        element={<ProtectedRoute element={<AdminPage />} />} 
+                      />
+                      <Route 
+                        path="/subscription" 
+                        element={<ProtectedRoute element={<SubscriptionPage />} />} 
+                      />
+                      <Route 
+                        path="/payment" 
+                        element={<ProtectedRoute element={<PaymentPage />} />} 
+                      />
+                      <Route 
+                        path="/profile" 
+                        element={<ProtectedRoute element={<ProfilePage />} />} 
+                      />
+                      <Route path="*" element={<NotFound />} />
+                    </Route>
+                  </Routes>
+                </NotificationsProvider>
+              </SubscriptionProvider>
+            </AuthProvider>
+          </BrowserRouter>
+        </TooltipProvider>
+      </QueryClientProvider>
+    </React.StrictMode>
+  );
+};
 
 export default App;
