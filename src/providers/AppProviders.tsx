@@ -10,6 +10,7 @@ import { NotificationsProvider } from "./NotificationsProvider";
 import { ErrorBoundary } from "@/components/common/ErrorBoundary";
 import { createQueryClient, preloadCommonQueries } from "@/hooks/useCacheConfig";
 import { AccessibilityProvider } from "./AccessibilityProvider";
+import { CacheProvider } from "./CacheProvider";
 
 interface AppProvidersProps {
   children: React.ReactNode;
@@ -34,7 +35,9 @@ export const AppProviders = ({ children }: AppProvidersProps) => {
                   <SubscriptionProvider>
                     <NotificationsProvider>
                       <AccessibilityProvider>
-                        {children}
+                        <CacheProvider>
+                          {children}
+                        </CacheProvider>
                       </AccessibilityProvider>
                     </NotificationsProvider>
                   </SubscriptionProvider>
