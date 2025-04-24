@@ -4,10 +4,10 @@ import { useNotifications } from '@/hooks/useNotifications';
 import { useAuth } from '@/providers/AuthProvider';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
-import { Tables } from '@/integrations/supabase/types';
+import { Database } from '@/integrations/supabase/types';
 
-// Explicitly define the Notification type based on the table schema
-type Notification = Tables<'notifications'>['Row'];
+// Define the Notification type directly from the Database type
+type Notification = Database['public']['Tables']['notifications']['Row'];
 
 interface NotificationsContextType {
   hasPermission: boolean;
