@@ -1,7 +1,8 @@
+
 import { lazy } from 'react';
 import { LazyComponent } from '@/components/common/LazyComponent';
 import { PageTransition } from '@/components/common/PageTransition';
-import { RouteObject } from 'react-router-dom';
+import { CustomRouteObject } from './types';
 
 // Lazy load les pages
 const HomePage = lazy(() => import('@/pages/HomePage'));
@@ -12,11 +13,11 @@ const ProfilePage = lazy(() => import('@/pages/ProfilePage'));
 const FavoritesPage = lazy(() => import('@/pages/FavoritesPage'));
 const AlertsPage = lazy(() => import('@/pages/AlertsPage'));
 const SubscriptionPage = lazy(() => import('@/pages/SubscriptionPage'));
-const ContactPage = lazy(() => import('@/pages/ContactPage'));
-const TwoFactorAuthPage = lazy(() => import('@/pages/TwoFactorAuthPage'));
-const AccountDeletionPage = lazy(() => import('@/pages/AccountDeletionPage'));
 
-export const routes: RouteObject[] = [
+// Nous retirons les références aux pages non existantes
+// Plus tard, si ces pages sont nécessaires, nous pourrons les créer
+
+export const routes: CustomRouteObject[] = [
   {
     path: '/',
     element: (
@@ -66,6 +67,7 @@ export const routes: RouteObject[] = [
         </PageTransition>
       </LazyComponent>
     ),
+    authRequired: true,
   },
   {
     path: '/favorites',
@@ -76,6 +78,7 @@ export const routes: RouteObject[] = [
         </PageTransition>
       </LazyComponent>
     ),
+    authRequired: true,
   },
   {
     path: '/alerts',
@@ -86,6 +89,7 @@ export const routes: RouteObject[] = [
         </PageTransition>
       </LazyComponent>
     ),
+    authRequired: true,
   },
   {
     path: '/subscription',
@@ -96,35 +100,6 @@ export const routes: RouteObject[] = [
         </PageTransition>
       </LazyComponent>
     ),
-  },
-  {
-    path: '/contact',
-    element: (
-      <LazyComponent>
-        <PageTransition>
-          <ContactPage />
-        </PageTransition>
-      </LazyComponent>
-    ),
-  },
-  {
-    path: '/two-factor-auth',
-    element: (
-      <LazyComponent>
-        <PageTransition>
-          <TwoFactorAuthPage />
-        </PageTransition>
-      </LazyComponent>
-    ),
-  },
-  {
-    path: '/account-deletion',
-    element: (
-      <LazyComponent>
-        <PageTransition>
-          <AccountDeletionPage />
-        </PageTransition>
-      </LazyComponent>
-    ),
+    authRequired: true,
   },
 ];

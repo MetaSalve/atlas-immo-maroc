@@ -9,6 +9,7 @@ import { AppProviders } from "./providers/AppProviders";
 import { routes } from "./routes/routes";
 import { ProtectedRoute } from "./components/auth/ProtectedRoute";
 import { configureSecurityHeaders, runSecurityChecks } from "./utils/securityHeaders";
+import { CustomRouteObject } from "./routes/types";
 
 const App = () => {
   useEffect(() => {
