@@ -40,6 +40,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         } else if (event === 'PASSWORD_RECOVERY') {
           // Rediriger vers la page de réinitialisation
           navigate('/auth/reset-password');
+          toast.info('Veuillez définir votre nouveau mot de passe');
+        } else if (event === 'USER_UPDATED') {
+          toast.success('Profil mis à jour avec succès');
         }
         
         setLoading(false);
@@ -105,8 +108,16 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   const updatePassword = async (password: string) => {
-    const { error } = await supabase.auth.updateUser({ password });
+    const { error, data } = await supabase.auth.updateUser({ password });
     if (error) throw error;
+    
+    // Si la mise à jour du mot de passe est réussie et que nous sommes sur la page de réinitialisation
+    if (window.location.pathname.includes('/auth/reset-password')) {
+      toast.success('Mot de passe défini avec succès, vous pouvez maintenant vous connecter');
+      navigate('/auth');
+    }
+    
+    return data;
   };
 
   return (

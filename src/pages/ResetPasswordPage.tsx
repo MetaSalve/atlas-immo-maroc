@@ -6,31 +6,65 @@ import { Input } from '@/components/ui/input';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card';
 import { toast } from 'sonner';
 import { Loader2 } from 'lucide-react';
-import { supabase } from '@/integrations/supabase/client';
+import { useAuth } from '@/providers/AuthProvider';
+import { Alert, AlertDescription } from '@/components/ui/alert';
 
 const ResetPasswordPage = () => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [tokenValid, setTokenValid] = useState(true);
+  const [tokenValid, setTokenValid] = useState(false);
+  const [tokenChecked, setTokenChecked] = useState(false);
+  const { updatePassword } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
 
   // Vérifier si le token est présent dans l'URL
   useEffect(() => {
-    const hash = location.hash;
-    if (!hash || !hash.includes('access_token=')) {
-      setTokenValid(false);
-      toast.error('Lien de réinitialisation invalide ou expiré');
-    }
+    const checkToken = async () => {
+      try {
+        const hash = location.hash;
+        
+        // Si l'URL contient un access_token (flow de réinitialisation)
+        if (hash && hash.includes('access_token=')) {
+          setTokenValid(true);
+          toast.info('Vous pouvez maintenant définir votre nouveau mot de passe');
+        } else {
+          // Si l'utilisateur arrive directement sans token, vérifier la session
+          const { data } = await supabase.auth.getSession();
+          if (data.session && data.session.access_token) {
+            setTokenValid(true);
+          } else {
+            setTokenValid(false);
+            toast.error('Lien de réinitialisation invalide ou expiré');
+          }
+        }
+      } catch (error) {
+        console.error('Erreur lors de la vérification du token:', error);
+        setTokenValid(false);
+        toast.error('Erreur lors de la vérification du lien');
+      } finally {
+        setTokenChecked(true);
+      }
+    };
+    
+    checkToken();
   }, [location]);
+
+  const validatePassword = (pass: string) => {
+    if (pass.length < 8) return "Le mot de passe doit contenir au moins 8 caractères";
+    if (!/[A-Z]/.test(pass)) return "Le mot de passe doit contenir au moins une majuscule";
+    if (!/[0-9]/.test(pass)) return "Le mot de passe doit contenir au moins un chiffre";
+    return null;
+  };
 
   const handlePasswordReset = async (e: React.FormEvent) => {
     e.preventDefault();
     
     // Validation de base
-    if (password.length < 8) {
-      toast.error('Le mot de passe doit contenir au moins 8 caractères');
+    const passwordError = validatePassword(password);
+    if (passwordError) {
+      toast.error(passwordError);
       return;
     }
     
@@ -42,10 +76,8 @@ const ResetPasswordPage = () => {
     setIsLoading(true);
     
     try {
-      // Mise à jour du mot de passe
-      const { error } = await supabase.auth.updateUser({ password });
-      
-      if (error) throw error;
+      // Mise à jour du mot de passe via AuthProvider
+      await updatePassword(password);
       
       toast.success('Mot de passe modifié avec succès');
       navigate('/auth');
@@ -58,6 +90,20 @@ const ResetPasswordPage = () => {
     }
   };
 
+  // Afficher un loader pendant la vérification du token
+  if (!tokenChecked) {
+    return (
+      <div className="min-h-screen flex items-center justify-center px-4 bg-gray-50">
+        <Card className="w-full max-w-md p-6 shadow-lg text-center">
+          <CardContent className="py-10">
+            <Loader2 className="h-8 w-8 animate-spin mx-auto mb-2 text-primary" />
+            <p>Vérification du lien de réinitialisation...</p>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
+
   if (!tokenValid) {
     return (
       <div className="min-h-screen flex items-center justify-center px-4 bg-gray-50">
@@ -68,6 +114,13 @@ const ResetPasswordPage = () => {
               Ce lien de réinitialisation est invalide ou a expiré
             </CardDescription>
           </CardHeader>
+          <CardContent>
+            <Alert variant="destructive" className="mb-4">
+              <AlertDescription>
+                Pour des raisons de sécurité, les liens de réinitialisation sont valables uniquement pour une durée limitée.
+              </AlertDescription>
+            </Alert>
+          </CardContent>
           <CardFooter className="flex justify-center pt-4">
             <Button onClick={() => navigate('/auth')}>
               Retour à la page de connexion
@@ -82,9 +135,9 @@ const ResetPasswordPage = () => {
     <div className="min-h-screen flex items-center justify-center px-4 bg-gray-50">
       <Card className="w-full max-w-md p-6 shadow-lg">
         <CardHeader className="space-y-1 text-center">
-          <CardTitle className="text-2xl font-bold">Réinitialisation du mot de passe</CardTitle>
+          <CardTitle className="text-2xl font-bold">Définition du mot de passe</CardTitle>
           <CardDescription>
-            Veuillez choisir un nouveau mot de passe sécurisé
+            Choisissez un nouveau mot de passe sécurisé pour votre compte
           </CardDescription>
         </CardHeader>
         
@@ -101,9 +154,11 @@ const ResetPasswordPage = () => {
                 required
                 disabled={isLoading}
                 minLength={8}
+                className="border-input"
+                autoComplete="new-password"
               />
               <p className="text-xs text-muted-foreground">
-                Minimum 8 caractères, avec lettres et chiffres
+                Minimum 8 caractères, avec au moins une majuscule et un chiffre
               </p>
             </div>
             <div className="space-y-2">
@@ -116,6 +171,8 @@ const ResetPasswordPage = () => {
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 required
                 disabled={isLoading}
+                className="border-input"
+                autoComplete="new-password"
               />
             </div>
             <Button 
@@ -126,7 +183,7 @@ const ResetPasswordPage = () => {
               {isLoading ? (
                 <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Modification en cours...</>
               ) : (
-                'Réinitialiser le mot de passe'
+                'Définir le nouveau mot de passe'
               )}
             </Button>
           </form>

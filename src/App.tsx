@@ -1,13 +1,13 @@
 
 import React from "react";
 import { Toaster } from "@/components/ui/toaster";
-import { toast } from "@/components/ui/sonner"; // Import toast from sonner
+import { toast } from "sonner";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-router-dom";
 import { Layout } from "./components/layout/Layout";
-import { AuthProvider } from "./providers/AuthProvider";
+import { AuthProvider, useAuth } from "./providers/AuthProvider";
 import { SubscriptionProvider } from "./providers/SubscriptionProvider";
 import { NotificationsProvider } from "./providers/NotificationsProvider";
 import HomePage from "./pages/HomePage";
@@ -33,15 +33,57 @@ const queryClient = new QueryClient({
 });
 
 // Composant de protection pour les routes nécessitant une authentification
-const ProtectedRoute = ({ element }: { element: React.ReactNode }) => {
-  const navigate = () => {
+const ProtectedRoute = ({ element, requiresAuth = true }: { element: React.ReactNode, requiresAuth?: boolean }) => {
+  const { user, loading } = useAuth();
+  const location = useLocation();
+  
+  // Si on est en cours de chargement, afficher un loader
+  if (loading) {
+    return <div className="flex items-center justify-center min-h-screen">
+      <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
+    </div>;
+  }
+  
+  // Si l'authentification est requise et l'utilisateur n'est pas connecté
+  if (requiresAuth && !user) {
     toast.info("Connexion requise", {
-      description: "Veuillez vous connecter pour accéder à cette fonctionnalité"
+      description: "Veuillez vous connecter pour accéder à cette fonctionnalité",
+      position: "top-center",
     });
-    return <Navigate to="/auth" replace />;
-  };
-  return element;
+    
+    return <Navigate to="/auth" state={{ from: location.pathname }} replace />;
+  }
+  
+  // Si l'authentification n'est pas requise et l'utilisateur est connecté (pages comme login/signup)
+  if (!requiresAuth && user) {
+    return <Navigate to="/" replace />;
+  }
+  
+  // Dans tous les autres cas, rendre le composant demandé
+  return <>{element}</>;
 };
+
+// Définir les métadonnées pour le document
+const updateDocumentMeta = (title: string, description: string) => {
+  document.title = title;
+  
+  // Mettre à jour ou créer la balise meta description
+  let metaDescription = document.querySelector('meta[name="description"]');
+  if (!metaDescription) {
+    metaDescription = document.createElement('meta');
+    metaDescription.setAttribute('name', 'description');
+    document.head.appendChild(metaDescription);
+  }
+  metaDescription.setAttribute('content', description);
+};
+
+// Définir les métadonnées par défaut du site
+React.useEffect(() => {
+  updateDocumentMeta(
+    'AlertImmo - Alertes immobilières en temps réel au Maroc',
+    'Trouvez votre bien immobilier idéal au Maroc grâce à nos alertes personnalisées en temps réel. Appartements, maisons, villas et riads dans tout le Maroc.'
+  );
+}, []);
 
 const App = () => (
   <React.StrictMode>
@@ -55,8 +97,18 @@ const App = () => (
                 <Sonner />
                 <Routes>
                   <Route path="/" element={<Navigate to="/home" replace />} />
-                  <Route path="/auth" element={<AuthPage />} />
-                  <Route path="/auth/reset-password" element={<ResetPasswordPage />} />
+                  <Route 
+                    path="/auth" 
+                    element={<ProtectedRoute element={<AuthPage />} requiresAuth={false} />} 
+                  />
+                  <Route 
+                    path="/auth/reset-password" 
+                    element={<ProtectedRoute element={<ResetPasswordPage />} requiresAuth={false} />} 
+                  />
+                  <Route 
+                    path="/auth/callback" 
+                    element={<ProtectedRoute element={<div>Redirection en cours...</div>} requiresAuth={false} />} 
+                  />
                   <Route element={<Layout />}>
                     <Route path="/home" element={<HomePage />} />
                     <Route path="/search" element={<SearchPage />} />
