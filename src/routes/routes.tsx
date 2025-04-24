@@ -1,84 +1,130 @@
+import { lazy } from 'react';
+import { LazyComponent } from '@/components/common/LazyComponent';
+import { PageTransition } from '@/components/common/PageTransition';
+import { RouteObject } from 'react-router-dom';
 
-import React, { Suspense } from "react";
-import { Navigate } from "react-router-dom";
-import { Layout } from "@/components/layout/Layout";
-import { LoadingFallback } from "@/components/common/LoadingFallback";
+// Lazy load les pages
+const HomePage = lazy(() => import('@/pages/HomePage'));
+const SearchPage = lazy(() => import('@/pages/SearchPage'));
+const PropertyDetailPage = lazy(() => import('@/pages/PropertyDetailPage'));
+const AuthPage = lazy(() => import('@/pages/AuthPage'));
+const ProfilePage = lazy(() => import('@/pages/ProfilePage'));
+const FavoritesPage = lazy(() => import('@/pages/FavoritesPage'));
+const AlertsPage = lazy(() => import('@/pages/AlertsPage'));
+const SubscriptionPage = lazy(() => import('@/pages/SubscriptionPage'));
+const ContactPage = lazy(() => import('@/pages/ContactPage'));
+const TwoFactorAuthPage = lazy(() => import('@/pages/TwoFactorAuthPage'));
+const AccountDeletionPage = lazy(() => import('@/pages/AccountDeletionPage'));
 
-// Lazy loaded components
-const HomePage = React.lazy(() => import("@/pages/HomePage"));
-const SearchPage = React.lazy(() => import("@/pages/SearchPage"));
-const PropertyDetailPage = React.lazy(() => import("@/pages/PropertyDetailPage"));
-const FavoritesPage = React.lazy(() => import("@/pages/FavoritesPage"));
-const AlertsPage = React.lazy(() => import("@/pages/AlertsPage"));
-const AdminPage = React.lazy(() => import("@/pages/AdminPage"));
-const AuthPage = React.lazy(() => import("@/pages/AuthPage"));
-const ResetPasswordPage = React.lazy(() => import("@/pages/ResetPasswordPage"));
-const SubscriptionPage = React.lazy(() => import("@/pages/SubscriptionPage"));
-const PaymentPage = React.lazy(() => import("@/pages/PaymentPage"));
-const ProfilePage = React.lazy(() => import("@/pages/ProfilePage"));
-const NotFound = React.lazy(() => import("@/pages/NotFound"));
-const LegalPage = React.lazy(() => import("@/pages/LegalPage"));
-const PrivacyPage = React.lazy(() => import("@/pages/PrivacyPage"));
-
-export const routes = [
+export const routes: RouteObject[] = [
   {
-    path: "/",
-    element: <Navigate to="/home" replace />
+    path: '/',
+    element: (
+      <LazyComponent>
+        <PageTransition>
+          <HomePage />
+        </PageTransition>
+      </LazyComponent>
+    ),
   },
   {
-    path: "/auth",
-    element: <AuthPage />,
-    authRequired: false
+    path: '/search',
+    element: (
+      <LazyComponent>
+        <PageTransition>
+          <SearchPage />
+        </PageTransition>
+      </LazyComponent>
+    ),
   },
   {
-    path: "/auth/reset-password",
-    element: <ResetPasswordPage />,
-    authRequired: false
+    path: '/properties/:id',
+    element: (
+      <LazyComponent>
+        <PageTransition>
+          <PropertyDetailPage />
+        </PageTransition>
+      </LazyComponent>
+    ),
   },
   {
-    element: <Layout />,
-    children: [
-      { path: "/home", element: <HomePage /> },
-      { path: "/search", element: <SearchPage /> },
-      {
-        path: "/properties/:id",
-        element: <PropertyDetailPage />,
-        authRequired: true
-      },
-      {
-        path: "/favorites",
-        element: <FavoritesPage />,
-        authRequired: true
-      },
-      {
-        path: "/alerts",
-        element: <AlertsPage />,
-        authRequired: true
-      },
-      {
-        path: "/admin",
-        element: <AdminPage />,
-        authRequired: true
-      },
-      {
-        path: "/subscription",
-        element: <SubscriptionPage />,
-        authRequired: true
-      },
-      {
-        path: "/payment",
-        element: <PaymentPage />,
-        authRequired: true
-      },
-      {
-        path: "/profile",
-        element: <ProfilePage />,
-        authRequired: true
-      },
-      { path: "/legal", element: <LegalPage /> },
-      { path: "/privacy", element: <PrivacyPage /> },
-      { path: "*", element: <NotFound /> }
-    ]
-  }
+    path: '/auth',
+    element: (
+      <LazyComponent>
+        <PageTransition>
+          <AuthPage />
+        </PageTransition>
+      </LazyComponent>
+    ),
+  },
+  {
+    path: '/profile',
+    element: (
+      <LazyComponent>
+        <PageTransition>
+          <ProfilePage />
+        </PageTransition>
+      </LazyComponent>
+    ),
+  },
+  {
+    path: '/favorites',
+    element: (
+      <LazyComponent>
+        <PageTransition>
+          <FavoritesPage />
+        </PageTransition>
+      </LazyComponent>
+    ),
+  },
+  {
+    path: '/alerts',
+    element: (
+      <LazyComponent>
+        <PageTransition>
+          <AlertsPage />
+        </PageTransition>
+      </LazyComponent>
+    ),
+  },
+  {
+    path: '/subscription',
+    element: (
+      <LazyComponent>
+        <PageTransition>
+          <SubscriptionPage />
+        </PageTransition>
+      </LazyComponent>
+    ),
+  },
+  {
+    path: '/contact',
+    element: (
+      <LazyComponent>
+        <PageTransition>
+          <ContactPage />
+        </PageTransition>
+      </LazyComponent>
+    ),
+  },
+  {
+    path: '/two-factor-auth',
+    element: (
+      <LazyComponent>
+        <PageTransition>
+          <TwoFactorAuthPage />
+        </PageTransition>
+      </LazyComponent>
+    ),
+  },
+  {
+    path: '/account-deletion',
+    element: (
+      <LazyComponent>
+        <PageTransition>
+          <AccountDeletionPage />
+        </PageTransition>
+      </LazyComponent>
+    ),
+  },
 ];
-

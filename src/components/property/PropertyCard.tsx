@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Property } from '@/types/property';
@@ -6,6 +5,8 @@ import { Heart } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { formatPrice } from '@/lib/utils';
 import { Image } from '@/components/image/Image';
+import { LazyLoadedImage } from '@/components/common/LazyLoadedImage';
+import { motion } from 'framer-motion';
 
 interface PropertyCardProps {
   property: Property;
@@ -25,17 +26,16 @@ export const PropertyCard = ({
   className 
 }: PropertyCardProps) => {
   return (
-    <Card 
-      className={`overflow-hidden h-full hover:shadow-lg transition-shadow animate-fade-in ${className}`}
-      tabIndex={0}
-      aria-label={`Propriété : ${property.title}`}
+    <motion.div
+      whileHover={{ scale: 1.02 }}
+      transition={{ duration: 0.2 }}
+      className="relative bg-white rounded-lg shadow-md overflow-hidden"
     >
-      <div className="relative aspect-[16/9]">
-        <Image
+      <div className="aspect-w-16 aspect-h-9">
+        <LazyLoadedImage
           src={property.images[0] || '/placeholder.svg'}
           alt={property.title}
           className="object-cover w-full h-full"
-          loading="lazy"
         />
         <Button
           variant="ghost"
@@ -71,6 +71,6 @@ export const PropertyCard = ({
           Source: {property.source.name}
         </a>
       </CardFooter>
-    </Card>
+    </motion.div>
   );
 };
