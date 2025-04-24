@@ -1,6 +1,6 @@
 
 import { useEffect } from "react";
-import { Routes, Route, useLocation, useNavigate } from "react-router-dom";
+import { Routes, Route, useNavigate } from "react-router-dom";
 import { Layout } from "@/components/layout/Layout";
 import { routes } from "@/routes/routes";
 import { ProtectedRoute } from "@/components/auth/ProtectedRoute";
@@ -11,16 +11,15 @@ import { CookieConsent } from "@/components/common/CookieConsent";
 import { CustomRouteObject } from "./routes/types";
 
 function App() {
-  const location = useLocation();
   const { user } = useAuth();
   const navigate = useNavigate();
 
   // Rediriger vers la page d'accueil si on arrive sur /auth alors qu'on est déjà connecté
   useEffect(() => {
-    if (user && location.pathname === '/auth') {
+    if (user && window.location.pathname === '/auth') {
       navigate('/');
     }
-  }, [user, location.pathname, navigate]);
+  }, [user, navigate]);
 
   // Configurer les en-têtes de sécurité au chargement de l'application
   useEffect(() => {
