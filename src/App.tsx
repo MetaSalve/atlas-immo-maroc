@@ -17,6 +17,7 @@ import FavoritesPage from "./pages/FavoritesPage";
 import AlertsPage from "./pages/AlertsPage";
 import AdminPage from "./pages/AdminPage";
 import AuthPage from "./pages/AuthPage";
+import ResetPasswordPage from "./pages/ResetPasswordPage";
 import SubscriptionPage from "./pages/SubscriptionPage";
 import PaymentPage from "./pages/PaymentPage";
 import ProfilePage from "./pages/ProfilePage";
@@ -55,6 +56,7 @@ const App = () => (
                 <Routes>
                   <Route path="/" element={<Navigate to="/home" replace />} />
                   <Route path="/auth" element={<AuthPage />} />
+                  <Route path="/auth/reset-password" element={<ResetPasswordPage />} />
                   <Route element={<Layout />}>
                     <Route path="/home" element={<HomePage />} />
                     <Route path="/search" element={<SearchPage />} />

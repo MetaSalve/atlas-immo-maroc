@@ -13,6 +13,8 @@ type AuthContextType = {
   signInWithGoogle: () => Promise<void>;
   signUp: (email: string, password: string) => Promise<void>;
   signOut: () => Promise<void>;
+  resetPassword: (email: string) => Promise<void>;
+  updatePassword: (password: string) => Promise<void>;
 };
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -35,6 +37,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
           toast.success('Connexion réussie');
         } else if (event === 'SIGNED_OUT') {
           toast.info('Déconnexion réussie');
+        } else if (event === 'PASSWORD_RECOVERY') {
+          // Rediriger vers la page de réinitialisation
+          navigate('/auth/reset-password');
         }
         
         setLoading(false);
@@ -92,6 +97,18 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     navigate('/auth');
   };
 
+  const resetPassword = async (email: string) => {
+    const { error } = await supabase.auth.resetPasswordForEmail(email, {
+      redirectTo: `${window.location.origin}/auth/reset-password`,
+    });
+    if (error) throw error;
+  };
+
+  const updatePassword = async (password: string) => {
+    const { error } = await supabase.auth.updateUser({ password });
+    if (error) throw error;
+  };
+
   return (
     <AuthContext.Provider value={{ 
       user, 
@@ -100,7 +117,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       signInWithEmail,
       signInWithGoogle,
       signUp,
-      signOut 
+      signOut,
+      resetPassword,
+      updatePassword
     }}>
       {children}
     </AuthContext.Provider>
