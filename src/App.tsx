@@ -1,5 +1,4 @@
-
-import React, { useEffect } from "react";
+import React, { useEffect, Suspense } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { toast } from "sonner";
 import { Toaster as Sonner } from "@/components/ui/sonner";
@@ -10,19 +9,28 @@ import { Layout } from "./components/layout/Layout";
 import { AuthProvider, useAuth } from "./providers/AuthProvider";
 import { SubscriptionProvider } from "./providers/SubscriptionProvider";
 import { NotificationsProvider } from "./providers/NotificationsProvider";
-import HomePage from "./pages/HomePage";
-import SearchPage from "./pages/SearchPage";
-import PropertyDetailPage from "./pages/PropertyDetailPage";
-import FavoritesPage from "./pages/FavoritesPage";
-import AlertsPage from "./pages/AlertsPage";
-import AdminPage from "./pages/AdminPage";
-import AuthPage from "./pages/AuthPage";
-import ResetPasswordPage from "./pages/ResetPasswordPage";
-import SubscriptionPage from "./pages/SubscriptionPage";
-import PaymentPage from "./pages/PaymentPage";
-import ProfilePage from "./pages/ProfilePage";
-import NotFound from "./pages/NotFound";
 import { configureSecurityHeaders, checkHttpsConfiguration, checkFrameProtection, runSecurityChecks } from "./utils/securityHeaders";
+
+const HomePage = React.lazy(() => import("./pages/HomePage"));
+const SearchPage = React.lazy(() => import("./pages/SearchPage"));
+const PropertyDetailPage = React.lazy(() => import("./pages/PropertyDetailPage"));
+const FavoritesPage = React.lazy(() => import("./pages/FavoritesPage"));
+const AlertsPage = React.lazy(() => import("./pages/AlertsPage"));
+const AdminPage = React.lazy(() => import("./pages/AdminPage"));
+const AuthPage = React.lazy(() => import("./pages/AuthPage"));
+const ResetPasswordPage = React.lazy(() => import("./pages/ResetPasswordPage"));
+const SubscriptionPage = React.lazy(() => import("./pages/SubscriptionPage"));
+const PaymentPage = React.lazy(() => import("./pages/PaymentPage"));
+const ProfilePage = React.lazy(() => import("./pages/ProfilePage"));
+const NotFound = React.lazy(() => import("./pages/NotFound"));
+const LegalPage = React.lazy(() => import("./pages/LegalPage"));
+const PrivacyPage = React.lazy(() => import("./pages/PrivacyPage"));
+
+const LoadingFallback = () => (
+  <div className="flex items-center justify-center min-h-screen">
+    <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
+  </div>
+);
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -33,19 +41,14 @@ const queryClient = new QueryClient({
   },
 });
 
-// Composant de protection pour les routes nécessitant une authentification
 const ProtectedRoute = ({ element, requiresAuth = true }: { element: React.ReactNode, requiresAuth?: boolean }) => {
   const { user, loading } = useAuth();
   const location = useLocation();
   
-  // Si on est en cours de chargement, afficher un loader
   if (loading) {
-    return <div className="flex items-center justify-center min-h-screen">
-      <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
-    </div>;
+    return <LoadingFallback />;
   }
   
-  // Si l'authentification est requise et l'utilisateur n'est pas connecté
   if (requiresAuth && !user) {
     toast.info("Connexion requise", {
       description: "Veuillez vous connecter pour accéder à cette fonctionnalité",
@@ -55,20 +58,16 @@ const ProtectedRoute = ({ element, requiresAuth = true }: { element: React.React
     return <Navigate to="/auth" state={{ from: location.pathname }} replace />;
   }
   
-  // Si l'authentification n'est pas requise et l'utilisateur est connecté (pages comme login/signup)
   if (!requiresAuth && user) {
     return <Navigate to="/" replace />;
   }
   
-  // Dans tous les autres cas, rendre le composant demandé
   return <>{element}</>;
 };
 
-// Définir les métadonnées pour le document
 const updateDocumentMeta = (title: string, description: string) => {
   document.title = title;
   
-  // Mettre à jour ou créer la balise meta description
   let metaDescription = document.querySelector('meta[name="description"]');
   if (!metaDescription) {
     metaDescription = document.createElement('meta');
@@ -79,12 +78,8 @@ const updateDocumentMeta = (title: string, description: string) => {
 };
 
 const App = () => {
-  // Move the useEffect hook inside the component function
   useEffect(() => {
-    // Exécuter toutes les vérifications de sécurité
     runSecurityChecks();
-    
-    // Définir les métadonnées par défaut du site
     updateDocumentMeta(
       'AlertImmo - Alertes immobilières en temps réel au Maroc',
       'Trouvez votre bien immobilier idéal au Maroc grâce à nos alertes personnalisées en temps réel. Appartements, maisons, villas et riads dans tout le Maroc.'
@@ -105,46 +100,108 @@ const App = () => {
                     <Route path="/" element={<Navigate to="/home" replace />} />
                     <Route 
                       path="/auth" 
-                      element={<ProtectedRoute element={<AuthPage />} requiresAuth={false} />} 
+                      element={
+                        <Suspense fallback={<LoadingFallback />}>
+                          <ProtectedRoute element={<AuthPage />} requiresAuth={false} />
+                        </Suspense>
+                      } 
                     />
                     <Route 
                       path="/auth/reset-password" 
-                      element={<ProtectedRoute element={<ResetPasswordPage />} requiresAuth={false} />} 
-                    />
-                    <Route 
-                      path="/auth/callback" 
-                      element={<ProtectedRoute element={<div>Redirection en cours...</div>} requiresAuth={false} />} 
+                      element={
+                        <Suspense fallback={<LoadingFallback />}>
+                          <ProtectedRoute element={<ResetPasswordPage />} requiresAuth={false} />
+                        </Suspense>
+                      } 
                     />
                     <Route element={<Layout />}>
-                      <Route path="/home" element={<HomePage />} />
-                      <Route path="/search" element={<SearchPage />} />
+                      <Route 
+                        path="/home" 
+                        element={
+                          <Suspense fallback={<LoadingFallback />}>
+                            <HomePage />
+                          </Suspense>
+                        } 
+                      />
+                      <Route 
+                        path="/search" 
+                        element={
+                          <Suspense fallback={<LoadingFallback />}>
+                            <SearchPage />
+                          </Suspense>
+                        } 
+                      />
                       <Route 
                         path="/properties/:id" 
-                        element={<ProtectedRoute element={<PropertyDetailPage />} />} 
+                        element={
+                          <Suspense fallback={<LoadingFallback />}>
+                            <ProtectedRoute element={<PropertyDetailPage />} />
+                          </Suspense>
+                        } 
                       />
                       <Route 
                         path="/favorites" 
-                        element={<ProtectedRoute element={<FavoritesPage />} />} 
+                        element={
+                          <Suspense fallback={<LoadingFallback />}>
+                            <ProtectedRoute element={<FavoritesPage />} />
+                          </Suspense>
+                        } 
                       />
                       <Route 
                         path="/alerts" 
-                        element={<ProtectedRoute element={<AlertsPage />} />} 
+                        element={
+                          <Suspense fallback={<LoadingFallback />}>
+                            <ProtectedRoute element={<AlertsPage />} />
+                          </Suspense>
+                        } 
                       />
                       <Route 
                         path="/admin" 
-                        element={<ProtectedRoute element={<AdminPage />} />} 
+                        element={
+                          <Suspense fallback={<LoadingFallback />}>
+                            <ProtectedRoute element={<AdminPage />} />
+                          </Suspense>
+                        } 
                       />
                       <Route 
                         path="/subscription" 
-                        element={<ProtectedRoute element={<SubscriptionPage />} />} 
+                        element={
+                          <Suspense fallback={<LoadingFallback />}>
+                            <ProtectedRoute element={<SubscriptionPage />} />
+                          </Suspense>
+                        } 
                       />
                       <Route 
                         path="/payment" 
-                        element={<ProtectedRoute element={<PaymentPage />} />} 
+                        element={
+                          <Suspense fallback={<LoadingFallback />}>
+                            <ProtectedRoute element={<PaymentPage />} />
+                          </Suspense>
+                        } 
                       />
                       <Route 
                         path="/profile" 
-                        element={<ProtectedRoute element={<ProfilePage />} />} 
+                        element={
+                          <Suspense fallback={<LoadingFallback />}>
+                            <ProtectedRoute element={<ProfilePage />} />
+                          </Suspense>
+                        } 
+                      />
+                      <Route 
+                        path="/legal" 
+                        element={
+                          <Suspense fallback={<LoadingFallback />}>
+                            <LegalPage />
+                          </Suspense>
+                        } 
+                      />
+                      <Route 
+                        path="/privacy" 
+                        element={
+                          <Suspense fallback={<LoadingFallback />}>
+                            <PrivacyPage />
+                          </Suspense>
+                        } 
                       />
                       <Route path="*" element={<NotFound />} />
                     </Route>
