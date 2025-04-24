@@ -48,8 +48,8 @@ export const NavBar = () => {
           <NavItem to="/map" icon={<Map className="h-4 w-4 mr-2" />} label="Carte" />
           {user && (
             <>
-              <NavItem to="/favorites" icon={<Heart className="h-4 w-4 mr-2" />} label={`Favoris (${maxFavorites})`} />
-              <NavItem to="/alerts" icon={<Bell className="h-4 w-4 mr-2" />} label={`Alertes (${allowedAlerts})`} />
+              <NavItem to="/favorites" icon={<Heart className="h-4 w-4 mr-2" />} label="Favoris" />
+              <NavItem to="/alerts" icon={<Bell className="h-4 w-4 mr-2" />} label="Alertes" />
               <NavItem to="/subscription" icon={<CreditCard className="h-4 w-4 mr-2" />} label="Abonnement" />
             </>
           )}

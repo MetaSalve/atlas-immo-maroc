@@ -61,25 +61,6 @@ const HomePage = () => {
             </div>
           </div>
           <SearchBar className="max-w-xl mx-auto" />
-          
-          {user && (
-            <div className="mt-6 flex justify-center gap-4">
-              <button 
-                className="bg-gold hover:bg-gold/80 text-navy px-4 py-2 rounded-md flex items-center gap-2 transition-colors shadow-md"
-                onClick={() => navigate('/alerts')}
-              >
-                <Bell className="h-4 w-4" />
-                Mes alertes
-              </button>
-              <button 
-                className="bg-gold hover:bg-gold/80 text-navy px-4 py-2 rounded-md flex items-center gap-2 transition-colors shadow-md"
-                onClick={() => navigate('/subscription')}
-              >
-                <CreditCard className="h-4 w-4" />
-                Mon abonnement
-              </button>
-            </div>
-          )}
         </div>
       </section>
       
@@ -152,16 +133,48 @@ const HomePage = () => {
       <section className="rounded-xl bg-cream/60 p-6 text-center relative overflow-hidden">
         <div className="absolute inset-0 opacity-5 z-0"><ZelligeBackground /></div>
         <div className="relative z-10">
-          <h2 className="text-2xl font-bold mb-2 font-playfair text-navy">Recevez les nouvelles annonces en temps réel</h2>
-          <p className="text-muted-foreground mb-4 max-w-lg mx-auto">
-            Inscrivez-vous pour recevoir des notifications personnalisées dès qu'un bien correspondant à vos critères est publié
+          <h2 className="text-2xl font-bold mb-2 font-playfair text-navy">Contactez-nous</h2>
+          <p className="text-muted-foreground mb-6 max-w-lg mx-auto">
+            Une question ? Une remarque ? N'hésitez pas à nous contacter
           </p>
-          <button 
-            className="bg-skyblue text-white px-6 py-2 rounded-md hover:bg-royalblue transition-colors font-bold"
-            onClick={() => navigate('/alerts')}
-          >
-            Créer une alerte
-          </button>
+          <form className="max-w-lg mx-auto space-y-4 text-left">
+            <div>
+              <label htmlFor="name" className="block text-sm font-medium text-navy mb-1">Nom</label>
+              <input
+                type="text"
+                id="name"
+                className="w-full rounded-md border border-input bg-background px-3 py-2"
+                placeholder="Votre nom"
+                required
+              />
+            </div>
+            <div>
+              <label htmlFor="email" className="block text-sm font-medium text-navy mb-1">Email</label>
+              <input
+                type="email"
+                id="email"
+                className="w-full rounded-md border border-input bg-background px-3 py-2"
+                placeholder="votre@email.com"
+                required
+              />
+            </div>
+            <div>
+              <label htmlFor="message" className="block text-sm font-medium text-navy mb-1">Message</label>
+              <textarea
+                id="message"
+                rows={4}
+                className="w-full rounded-md border border-input bg-background px-3 py-2"
+                placeholder="Votre message..."
+                required
+              />
+            </div>
+            <button 
+              type="submit"
+              className="w-full bg-skyblue text-white px-6 py-2 rounded-md hover:bg-royalblue transition-colors font-bold"
+            >
+              Envoyer
+            </button>
+          </form>
         </div>
       </section>
     </div>
