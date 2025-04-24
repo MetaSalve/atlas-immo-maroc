@@ -10,15 +10,14 @@ import { Progress } from '@/components/ui/progress';
 import { useSubscription } from '@/providers/SubscriptionProvider';
 
 export const SubscriptionTab = () => {
-  const { tier, maxFavorites, allowedAlerts } = useSubscription();
+  const { tier, maxFavorites, allowedAlerts, trialEndsAt } = useSubscription();
   
   const isPremium = tier === 'premium';
   const isFree = tier === 'free';
   
   const trialDays = 15;
-  const signUpDate = new Date();
-  const trialEndDate = addDays(signUpDate, trialDays);
   const today = new Date();
+  const trialEndDate = trialEndsAt ? new Date(trialEndsAt) : addDays(today, trialDays);
   const daysRemaining = Math.max(0, Math.ceil((trialEndDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24)));
   const trialProgress = Math.min(100, ((trialDays - daysRemaining) / trialDays) * 100);
 
@@ -80,6 +79,10 @@ export const SubscriptionTab = () => {
                 </div>
                 <div className="flex items-center justify-between">
                   <span>Notifications par email</span>
+                  <span className="text-red-500">Non disponible</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span>Comparaison de biens</span>
                   <span className="text-red-500">Non disponible</span>
                 </div>
               </div>
@@ -151,6 +154,10 @@ export const SubscriptionTab = () => {
                     <li className="flex items-center">
                       <span className="inline-block w-4 h-4 rounded-full bg-green-500/20 text-green-600 text-center text-xs mr-2">✓</span>
                       Notifications par email
+                    </li>
+                    <li className="flex items-center">
+                      <span className="inline-block w-4 h-4 rounded-full bg-green-500/20 text-green-600 text-center text-xs mr-2">✓</span>
+                      Comparaison de biens
                     </li>
                   </ul>
                 </div>
