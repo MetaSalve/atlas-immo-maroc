@@ -1,6 +1,7 @@
+
 import React from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
-import { Home, Search, Heart, Map, Menu, UserCircle, Bell, LogOut, User } from 'lucide-react';
+import { Home, Search, Heart, Map, Menu, UserCircle, Bell, LogOut, User, CreditCard } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { useIsMobile } from '@/hooks/use-mobile';
@@ -45,6 +46,13 @@ export const NavBar = () => {
           <NavItem to="/" icon={<Home className="h-4 w-4 mr-2" />} label="Accueil" />
           <NavItem to="/search" icon={<Search className="h-4 w-4 mr-2" />} label="Recherche" />
           <NavItem to="/map" icon={<Map className="h-4 w-4 mr-2" />} label="Carte" />
+          {user && (
+            <>
+              <NavItem to="/favorites" icon={<Heart className="h-4 w-4 mr-2" />} label={`Favoris (${maxFavorites})`} />
+              <NavItem to="/alerts" icon={<Bell className="h-4 w-4 mr-2" />} label={`Alertes (${allowedAlerts})`} />
+              <NavItem to="/subscription" icon={<CreditCard className="h-4 w-4 mr-2" />} label="Abonnement" />
+            </>
+          )}
         </div>
 
         <div className="flex items-center gap-2">
@@ -67,6 +75,9 @@ export const NavBar = () => {
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={() => navigate('/alerts')}>
                   <Bell className="h-4 w-4 mr-2" /> Alertes ({allowedAlerts})
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => navigate('/subscription')}>
+                  <CreditCard className="h-4 w-4 mr-2" /> Abonnement
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={() => signOut()} className="text-red-600">

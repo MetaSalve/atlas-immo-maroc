@@ -3,7 +3,8 @@ import { useFavorites } from '@/hooks/useFavorites';
 import { SearchBar } from '@/components/search/SearchBar';
 import { PropertyGrid } from '@/components/property/PropertyGrid';
 import { useNavigate } from 'react-router-dom';
-import { Layers3, Globe, Bell } from 'lucide-react';
+import { Layers3, Globe, Bell, CreditCard } from 'lucide-react';
+import { useAuth } from '@/providers/AuthProvider';
 
 const MoroccanHeroImage = () => (
   <img
@@ -27,6 +28,7 @@ const ZelligeBackground = () => (
 
 const HomePage = () => {
   const navigate = useNavigate();
+  const { user } = useAuth();
   const { data: properties = [], isLoading } = useProperties();
   const { favorites, toggleFavorite } = useFavorites();
 
@@ -59,6 +61,25 @@ const HomePage = () => {
             </div>
           </div>
           <SearchBar className="max-w-xl mx-auto" />
+          
+          {user && (
+            <div className="mt-6 flex justify-center gap-4">
+              <button 
+                className="bg-gold hover:bg-gold/80 text-navy px-4 py-2 rounded-md flex items-center gap-2 transition-colors shadow-md"
+                onClick={() => navigate('/alerts')}
+              >
+                <Bell className="h-4 w-4" />
+                Mes alertes
+              </button>
+              <button 
+                className="bg-gold hover:bg-gold/80 text-navy px-4 py-2 rounded-md flex items-center gap-2 transition-colors shadow-md"
+                onClick={() => navigate('/subscription')}
+              >
+                <CreditCard className="h-4 w-4" />
+                Mon abonnement
+              </button>
+            </div>
+          )}
         </div>
       </section>
       
