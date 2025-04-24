@@ -1,5 +1,5 @@
 
-import { Outlet } from 'react-router-dom';
+import React from 'react';
 import { NavBar } from './NavBar';
 import { BottomNav } from './BottomNav';
 import { useIsMobile } from '@/hooks/use-mobile';
@@ -8,7 +8,11 @@ import { FadeIn } from '../ui/animations';
 import { AccessibilityBar } from '../common/AccessibilityBar';
 import { withPageTransition } from '../hoc/WithPageTransition';
 
-export const Layout = () => {
+interface LayoutProps {
+  children: React.ReactNode;
+}
+
+export const Layout: React.FC<LayoutProps> = ({ children }) => {
   const isMobile = useIsMobile();
   
   return (
@@ -16,7 +20,7 @@ export const Layout = () => {
       <NavBar />
       <main id="main-content" className="flex-1 container pb-16" tabIndex={-1} aria-label="Contenu principal">
         <FadeIn>
-          <Outlet />
+          {children}
         </FadeIn>
       </main>
       <footer className="container py-4 text-center text-sm text-muted-foreground border-t">

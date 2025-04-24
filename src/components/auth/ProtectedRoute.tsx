@@ -1,4 +1,5 @@
 
+import React from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
 import { useAuth } from '@/providers/AuthProvider';
 import { toast } from "sonner";
@@ -10,10 +11,10 @@ interface ProtectedRouteProps {
   requiresAuth?: boolean;
 }
 
-export const ProtectedRoute = ({ 
+export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ 
   element, 
   requiresAuth = true 
-}: ProtectedRouteProps) => {
+}) => {
   const { user, loading } = useAuth();
   const location = useLocation();
   

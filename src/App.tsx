@@ -1,3 +1,4 @@
+
 import { useEffect } from "react";
 import { Routes, Route, useLocation, useNavigate } from "react-router-dom";
 import { Layout } from "@/components/layout/Layout";
@@ -33,7 +34,7 @@ function App() {
         {routes.map((route: CustomRouteObject, index: number) => (
           <Route
             key={index}
-            {...route}
+            path={route.path}
             element={
               <Layout>
                 <ProtectedRoute
