@@ -190,8 +190,8 @@ export const useProfilePage = () => {
     
     // Réinitialiser les tentatives après 30 minutes
     if (lastLoginTime) {
-      const timeDiff = now.getTime() - lastLoginTime.getTime();
-      if (timeDiff > 30 * 60 * 1000) {
+      const timeDiffMs = now.getTime() - lastLoginTime.getTime();
+      if (timeDiffMs > 30 * 60 * 1000) {
         setLoginAttempts(success ? 0 : 1);
         localStorage.setItem('login_attempts', success ? '0' : '1');
       }
@@ -199,9 +199,13 @@ export const useProfilePage = () => {
     
     // Si trop de tentatives échouées, bloquer temporairement
     if (currentAttempts >= 5) {
+      const remainingTimeMs = lastLoginTime 
+        ? Math.max(0, (30 * 60 * 1000) - (now.getTime() - lastLoginTime.getTime())) 
+        : 30 * 60 * 1000;
+        
       return {
         blocked: true,
-        remainingTime: Math.ceil((30 * 60 * 1000 - (timeDiff || 0)) / (60 * 1000))
+        remainingTime: Math.ceil(remainingTimeMs / (60 * 1000))
       };
     }
     

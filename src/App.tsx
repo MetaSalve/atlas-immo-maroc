@@ -22,7 +22,7 @@ import SubscriptionPage from "./pages/SubscriptionPage";
 import PaymentPage from "./pages/PaymentPage";
 import ProfilePage from "./pages/ProfilePage";
 import NotFound from "./pages/NotFound";
-import { configureSecurityHeaders, checkHttpsConfiguration, checkFrameProtection } from "./utils/securityHeaders";
+import { configureSecurityHeaders, checkHttpsConfiguration, checkFrameProtection, runSecurityChecks } from "./utils/securityHeaders";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -80,24 +80,14 @@ const updateDocumentMeta = (title: string, description: string) => {
 
 // Configuration de la sécurité et des métadonnées
 React.useEffect(() => {
-  // Configurer les en-têtes de sécurité
-  configureSecurityHeaders();
-  
-  // Vérifier la configuration HTTPS et la protection contre le clickjacking
-  checkHttpsConfiguration();
-  checkFrameProtection();
+  // Exécuter toutes les vérifications de sécurité
+  runSecurityChecks();
   
   // Définir les métadonnées par défaut du site
   updateDocumentMeta(
     'AlertImmo - Alertes immobilières en temps réel au Maroc',
     'Trouvez votre bien immobilier idéal au Maroc grâce à nos alertes personnalisées en temps réel. Appartements, maisons, villas et riads dans tout le Maroc.'
   );
-  
-  // Empêcher les attaques XSS en définissant la politique CSP
-  const meta = document.createElement('meta');
-  meta.httpEquiv = 'Content-Security-Policy';
-  meta.content = "default-src 'self'; img-src 'self' data: blob: https://*.supabase.co; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; connect-src 'self' https://*.supabase.co wss://*.supabase.co";
-  document.head.appendChild(meta);
 }, []);
 
 const App = () => (

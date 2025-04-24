@@ -9,7 +9,7 @@ import { toast } from 'sonner';
 import { Loader2, Shield } from 'lucide-react';
 import { useAuth } from '@/providers/AuthProvider';
 import { supabase } from '@/integrations/supabase/client';
-import QRCode from 'qrcode.react';
+import * as QRCodeReact from 'qrcode.react';
 
 interface TwoFactorSetupProps {
   onComplete?: () => void;
@@ -31,14 +31,21 @@ export const TwoFactorSetup = ({ onComplete }: TwoFactorSetupProps) => {
     
     try {
       setIsLoading(true);
+      // Vérifier si la colonne existe avant de la requêter
       const { data, error } = await supabase
         .from('profiles')
-        .select('two_factor_enabled')
+        .select('*')
         .eq('id', user.id)
         .single();
       
       if (error) throw error;
-      setIsEnabled(data?.two_factor_enabled || false);
+      
+      // Vérifier si la propriété existe dans les données
+      if (data && data.hasOwnProperty('two_factor_enabled')) {
+        setIsEnabled(data.two_factor_enabled || false);
+      } else {
+        setIsEnabled(false);
+      }
     } catch (error) {
       console.error('Erreur lors de la récupération du statut 2FA:', error);
     } finally {
@@ -229,7 +236,7 @@ export const TwoFactorSetup = ({ onComplete }: TwoFactorSetupProps) => {
         <CardContent className="space-y-4">
           <div className="flex justify-center py-4">
             {totpUri && (
-              <QRCode value={totpUri} size={200} />
+              <QRCodeReact.QRCodeCanvas value={totpUri} size={200} />
             )}
           </div>
           
