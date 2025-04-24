@@ -9,8 +9,10 @@ interface SearchResultsProps {
   isLoading: boolean;
   searchQuery: string;
   favorites: string[];
+  selectedProperties: Property[];
   onToggleFavorite: (id: string) => void;
   onPropertyClick: (property: Property) => void;
+  onPropertySelect: (property: Property) => void;
 }
 
 export const SearchResults = ({
@@ -19,8 +21,10 @@ export const SearchResults = ({
   isLoading,
   searchQuery,
   favorites,
+  selectedProperties,
   onToggleFavorite,
-  onPropertyClick
+  onPropertyClick,
+  onPropertySelect
 }: SearchResultsProps) => {
   return (
     <main>
@@ -41,7 +45,9 @@ export const SearchResults = ({
         <PropertyGrid
           properties={properties}
           favorites={favorites}
+          selectedProperties={selectedProperties}
           onToggleFavorite={onToggleFavorite}
+          onPropertySelect={onPropertySelect}
           isLoading={isLoading}
           emptyMessage="Aucun bien ne correspond à vos critères. Essayez d'élargir votre recherche."
         />

@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useProperties } from '@/hooks/useProperties';
@@ -12,6 +11,7 @@ import { SearchSidebar } from '@/components/search/SearchSidebar';
 import { SearchResults } from '@/components/search/SearchResults';
 import { AlertDialog } from '@/components/search/AlertDialog';
 import { SimpleSearchFiltersValues } from '@/components/search/SimpleSearchFilters';
+import { PropertyCompare } from '@/components/property/PropertyCompare';
 
 const SearchPage = () => {
   const location = useLocation();
@@ -36,8 +36,8 @@ const SearchPage = () => {
   });
   
   const [filteredProperties, setFilteredProperties] = useState<Property[]>(allProperties);
+  const [selectedProperties, setSelectedProperties] = useState<Property[]>([]);
   
-  // Parse query string on load
   useEffect(() => {
     const queryParams = new URLSearchParams(location.search);
     const q = queryParams.get('q');
@@ -47,7 +47,6 @@ const SearchPage = () => {
     }
   }, [location.search]);
   
-  // Apply filters when filter state or properties change
   useEffect(() => {
     let results = allProperties;
     
@@ -124,6 +123,21 @@ const SearchPage = () => {
     setShowAlertDialog(true);
   };
   
+  const handlePropertySelect = (property: Property) => {
+    setSelectedProperties(prev => {
+      if (prev.find(p => p.id === property.id)) {
+        return prev.filter(p => p.id !== property.id);
+      }
+      if (prev.length >= 3) {
+        toast("Maximum 3 biens", {
+          description: "Vous ne pouvez comparer que 3 biens à la fois.",
+        });
+        return prev;
+      }
+      return [...prev, property];
+    });
+  };
+  
   return (
     <div className="py-6">
       <SearchHeader
@@ -142,15 +156,26 @@ const SearchPage = () => {
           onSaveAlert={handleSaveAlert}
         />
         
-        <SearchResults
-          showMap={showMap}
-          properties={filteredProperties}
-          isLoading={isLoading}
-          searchQuery={searchQuery}
-          favorites={favorites}
-          onToggleFavorite={toggleFavorite}
-          onPropertyClick={handlePropertyClick}
-        />
+        <div className="space-y-6">
+          {selectedProperties.length > 0 && (
+            <PropertyCompare 
+              properties={selectedProperties} 
+              onClose={() => setSelectedProperties([])} 
+            />
+          )}
+          
+          <SearchResults
+            showMap={showMap}
+            properties={filteredProperties}
+            isLoading={isLoading}
+            searchQuery={searchQuery}
+            favorites={favorites}
+            onToggleFavorite={toggleFavorite}
+            onPropertyClick={handlePropertyClick}
+            selectedProperties={selectedProperties}
+            onPropertySelect={handlePropertySelect}
+          />
+        </div>
       </div>
 
       <AlertDialog

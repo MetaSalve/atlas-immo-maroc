@@ -7,7 +7,9 @@ import { AlertTriangle } from 'lucide-react';
 interface PropertyGridProps {
   properties: Property[];
   favorites?: string[];
+  selectedProperties: Property[];
   onToggleFavorite?: (id: string) => void;
+  onPropertySelect?: (property: Property) => void;
   emptyMessage?: string;
   isLoading?: boolean;
 }
@@ -15,7 +17,9 @@ interface PropertyGridProps {
 export const PropertyGrid = ({
   properties,
   favorites = [],
+  selectedProperties = [],
   onToggleFavorite,
+  onPropertySelect,
   emptyMessage = "Aucun bien immobilier trouvé",
   isLoading = false,
 }: PropertyGridProps) => {
@@ -59,7 +63,9 @@ export const PropertyGrid = ({
           key={property.id}
           property={property}
           isFavorite={favorites.includes(property.id)}
+          isSelected={selectedProperties.some(p => p.id === property.id)}
           onToggleFavorite={onToggleFavorite}
+          onToggleSelect={() => onPropertySelect?.(property)}
         />
       ))}
     </div>

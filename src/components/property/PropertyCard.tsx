@@ -1,24 +1,28 @@
-
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Home, Bed, Bath, Maximize, Heart } from 'lucide-react';
+import { Home, Bed, Bath, Maximize, Heart, Compare } from 'lucide-react';
 import { Property } from '@/types/property';
 import { useToast } from '@/hooks/use-toast';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
+import { FeatureGate } from '@/components/access/FeatureGate';
 
 interface PropertyCardProps {
   property: Property;
   isFavorite?: boolean;
+  isSelected?: boolean;
   onToggleFavorite?: (id: string) => void;
+  onToggleSelect?: () => void;
   className?: string;
 }
 
 export const PropertyCard = ({
   property,
   isFavorite = false,
+  isSelected = false,
   onToggleFavorite,
+  onToggleSelect,
   className
 }: PropertyCardProps) => {
   const { toast } = useToast();
@@ -40,6 +44,12 @@ export const PropertyCard = ({
         duration: 2000,
       });
     }
+  };
+  
+  const handleCompareClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    onToggleSelect?.();
   };
   
   const statusLabel = property.status === 'for-sale' ? 'À vendre' : 'À louer';
@@ -71,6 +81,22 @@ export const PropertyCard = ({
               )}
             />
           </Button>
+          
+          <FeatureGate feature="property_comparisons" showAlert={false}>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="absolute top-2 left-2 bg-white/80 hover:bg-white"
+              onClick={handleCompareClick}
+            >
+              <Compare 
+                className={cn(
+                  "h-5 w-5 transition-colors",
+                  isSelected ? "text-primary" : "text-muted-foreground"
+                )}
+              />
+            </Button>
+          </FeatureGate>
         </div>
         
         <CardContent className="property-card-content">
