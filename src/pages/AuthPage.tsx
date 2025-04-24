@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useAuth } from '@/providers/AuthProvider';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -9,6 +9,7 @@ import { SignupForm } from '@/components/auth/SignupForm';
 import { RecoveryForm } from '@/components/auth/RecoveryForm';
 import { SecurityFooter } from '@/components/auth/SecurityFooter';
 import { useAuthValidation } from '@/hooks/useAuthValidation';
+import { useLoginAttempts } from '@/hooks/useLoginAttempts';
 import { supabase } from '@/integrations/supabase/client';
 
 const AuthPage = () => {
@@ -22,6 +23,7 @@ const AuthPage = () => {
   const { signInWithEmail, signUp, user } = useAuth();
   const navigate = useNavigate();
   const { errorMessage, setErrorMessage, validateLogin, validateSignup, validateEmail } = useAuthValidation();
+  const { trackLoginAttempt } = useLoginAttempts();
 
   useEffect(() => {
     const token = Math.random().toString(36).substring(2, 15) + 
