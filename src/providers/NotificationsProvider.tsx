@@ -4,15 +4,10 @@ import { useNotifications } from '@/hooks/useNotifications';
 import { useAuth } from '@/providers/AuthProvider';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
+import { Tables } from '@/integrations/supabase/types';
 
-interface Notification {
-  id: string;
-  title: string;
-  body: string;
-  data: any;
-  read: boolean;
-  created_at: string;
-}
+// Explicitly define the Notification type based on the table schema
+type Notification = Tables<'notifications'>['Row'];
 
 interface NotificationsContextType {
   hasPermission: boolean;
@@ -50,7 +45,7 @@ export const NotificationsProvider = ({ children }: { children: React.ReactNode 
       if (error) throw error;
 
       if (data) {
-        setNotifications(data as Notification[]);
+        setNotifications(data);
         setUnreadCount(data.filter(n => !n.read).length);
       }
     } catch (error) {
@@ -67,7 +62,7 @@ export const NotificationsProvider = ({ children }: { children: React.ReactNode 
 
       if (error) throw error;
 
-      // Mettre à jour l'état local
+      // Update local state
       setNotifications(prev => 
         prev.map(n => n.id === id ? { ...n, read: true } : n)
       );
@@ -78,13 +73,13 @@ export const NotificationsProvider = ({ children }: { children: React.ReactNode 
     }
   };
 
-  // Configurer Supabase Realtime pour les notifications en temps réel
+  // Set up Supabase Realtime for real-time notifications
   useEffect(() => {
     if (!user) return;
 
     fetchNotifications();
 
-    // S'abonner aux nouvelles notifications
+    // Subscribe to new notifications
     const channel = supabase
       .channel('db-notifications')
       .on('postgres_changes', 
@@ -98,21 +93,21 @@ export const NotificationsProvider = ({ children }: { children: React.ReactNode 
           console.log('New notification received:', payload);
           const newNotification = payload.new as Notification;
           
-          // Mettre à jour l'état local
+          // Update local state
           setNotifications(prev => [newNotification, ...prev]);
           setUnreadCount(prev => prev + 1);
           
-          // Afficher une toast pour la notification
+          // Display toast notification
           toast.info(newNotification.title, {
             description: newNotification.body,
             action: {
               label: 'Voir',
               onClick: () => {
-                // Rediriger vers la page appropriée si nécessaire
+                // Redirect to appropriate page if needed
                 if (newNotification.data?.propertyId) {
                   window.location.href = `/properties/${newNotification.data.propertyId}`;
                 }
-                // Marquer comme lu
+                // Mark as read
                 markAsRead(newNotification.id);
               }
             }
