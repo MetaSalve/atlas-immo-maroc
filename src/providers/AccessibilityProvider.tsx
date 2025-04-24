@@ -1,4 +1,3 @@
-
 import React, { createContext, useContext, useState, useEffect } from 'react';
 
 interface AccessibilityContextType {
@@ -34,6 +33,9 @@ export const AccessibilityProvider: React.FC<{ children: React.ReactNode }> = ({
   useEffect(() => {
     localStorage.setItem('high-contrast', JSON.stringify(highContrast));
     document.documentElement.classList.toggle('high-contrast', highContrast);
+    
+    document.documentElement.setAttribute('lang', 'fr');
+    document.documentElement.setAttribute('dir', 'ltr');
   }, [highContrast]);
 
   useEffect(() => {

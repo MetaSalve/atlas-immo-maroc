@@ -1,10 +1,11 @@
-
+import React, { useCallback, useMemo } from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { Property } from '@/types/property';
 import { optimizedQueryKeys, cacheConfig } from './useCacheConfig';
 import { useErrorHandler } from './useErrorHandler';
-import { useCallback, useMemo } from 'react';
+
+const PROPERTIES_PER_PAGE = 12;
 
 export interface PropertyFilters {
   city?: string;
@@ -15,8 +16,6 @@ export interface PropertyFilters {
   bedrooms?: number;
   bathrooms?: number;
 }
-
-const PROPERTIES_PER_PAGE = 12;
 
 export const useProperties = (
   filters?: PropertyFilters, 
@@ -31,7 +30,6 @@ export const useProperties = (
     [filters, page]
   );
 
-  // Fonction de préchargement pour la pagination
   const prefetchNextPage = useCallback(() => {
     if (!enablePrefetching) return;
     
@@ -45,7 +43,6 @@ export const useProperties = (
   const fetchProperties = async (currentFilters?: PropertyFilters, currentPage: number = 1) => {
     console.log(`Récupération des propriétés depuis Supabase - Page ${currentPage}...`);
     
-    // Calcul des limites pour la pagination
     const from = (currentPage - 1) * PROPERTIES_PER_PAGE;
     const to = from + PROPERTIES_PER_PAGE - 1;
     
@@ -55,7 +52,6 @@ export const useProperties = (
       .order('created_at', { ascending: false })
       .range(from, to);
 
-    // Appliquer les filtres si présents
     if (currentFilters) {
       if (currentFilters.city) {
         query = query.ilike('city', `%${currentFilters.city}%`);
@@ -150,7 +146,6 @@ export const useProperties = (
     }
   });
 
-  // Précharger la page suivante lorsque les données actuelles sont chargées
   React.useEffect(() => {
     if (result.isSuccess && !result.isLoading) {
       prefetchNextPage();
