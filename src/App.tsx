@@ -9,7 +9,12 @@ import { Layout } from "./components/layout/Layout";
 import { AuthProvider, useAuth } from "./providers/AuthProvider";
 import { SubscriptionProvider } from "./providers/SubscriptionProvider";
 import { NotificationsProvider } from "./providers/NotificationsProvider";
-import { configureSecurityHeaders, checkHttpsConfiguration, checkFrameProtection, runSecurityChecks } from "./utils/securityHeaders";
+import { CookieConsent } from "./components/common/CookieConsent";
+import { ErrorBoundary } from "./components/common/ErrorBoundary";
+import { SkipToContent } from "./components/common/SkipToContent";
+import { PageTransition } from "./components/ui/animations";
+import { createQueryClient } from "./hooks/useCacheConfig";
+import { configureSecurityHeaders, runSecurityChecks } from "./utils/securityHeaders";
 
 const HomePage = React.lazy(() => import("./pages/HomePage"));
 const SearchPage = React.lazy(() => import("./pages/SearchPage"));
@@ -32,14 +37,7 @@ const LoadingFallback = () => (
   </div>
 );
 
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      staleTime: 5 * 60 * 1000,
-      retry: 1,
-    },
-  },
-});
+const queryClient = createQueryClient();
 
 const ProtectedRoute = ({ element, requiresAuth = true }: { element: React.ReactNode, requiresAuth?: boolean }) => {
   const { user, loading } = useAuth();
@@ -62,7 +60,7 @@ const ProtectedRoute = ({ element, requiresAuth = true }: { element: React.React
     return <Navigate to="/" replace />;
   }
   
-  return <>{element}</>;
+  return <PageTransition>{element}</PageTransition>;
 };
 
 const updateDocumentMeta = (title: string, description: string) => {
@@ -88,130 +86,134 @@ const App = () => {
 
   return (
     <React.StrictMode>
-      <QueryClientProvider client={queryClient}>
-        <TooltipProvider>
-          <BrowserRouter>
-            <AuthProvider>
-              <SubscriptionProvider>
-                <NotificationsProvider>
-                  <Toaster />
-                  <Sonner />
-                  <Routes>
-                    <Route path="/" element={<Navigate to="/home" replace />} />
-                    <Route 
-                      path="/auth" 
-                      element={
-                        <Suspense fallback={<LoadingFallback />}>
-                          <ProtectedRoute element={<AuthPage />} requiresAuth={false} />
-                        </Suspense>
-                      } 
-                    />
-                    <Route 
-                      path="/auth/reset-password" 
-                      element={
-                        <Suspense fallback={<LoadingFallback />}>
-                          <ProtectedRoute element={<ResetPasswordPage />} requiresAuth={false} />
-                        </Suspense>
-                      } 
-                    />
-                    <Route element={<Layout />}>
+      <ErrorBoundary>
+        <QueryClientProvider client={queryClient}>
+          <TooltipProvider>
+            <BrowserRouter>
+              <SkipToContent />
+              <AuthProvider>
+                <SubscriptionProvider>
+                  <NotificationsProvider>
+                    <Toaster />
+                    <Sonner />
+                    <CookieConsent />
+                    <Routes>
+                      <Route path="/" element={<Navigate to="/home" replace />} />
                       <Route 
-                        path="/home" 
+                        path="/auth" 
                         element={
                           <Suspense fallback={<LoadingFallback />}>
-                            <HomePage />
+                            <ProtectedRoute element={<AuthPage />} requiresAuth={false} />
                           </Suspense>
                         } 
                       />
                       <Route 
-                        path="/search" 
+                        path="/auth/reset-password" 
                         element={
                           <Suspense fallback={<LoadingFallback />}>
-                            <SearchPage />
+                            <ProtectedRoute element={<ResetPasswordPage />} requiresAuth={false} />
                           </Suspense>
                         } 
                       />
-                      <Route 
-                        path="/properties/:id" 
-                        element={
-                          <Suspense fallback={<LoadingFallback />}>
-                            <ProtectedRoute element={<PropertyDetailPage />} />
-                          </Suspense>
-                        } 
-                      />
-                      <Route 
-                        path="/favorites" 
-                        element={
-                          <Suspense fallback={<LoadingFallback />}>
-                            <ProtectedRoute element={<FavoritesPage />} />
-                          </Suspense>
-                        } 
-                      />
-                      <Route 
-                        path="/alerts" 
-                        element={
-                          <Suspense fallback={<LoadingFallback />}>
-                            <ProtectedRoute element={<AlertsPage />} />
-                          </Suspense>
-                        } 
-                      />
-                      <Route 
-                        path="/admin" 
-                        element={
-                          <Suspense fallback={<LoadingFallback />}>
-                            <ProtectedRoute element={<AdminPage />} />
-                          </Suspense>
-                        } 
-                      />
-                      <Route 
-                        path="/subscription" 
-                        element={
-                          <Suspense fallback={<LoadingFallback />}>
-                            <ProtectedRoute element={<SubscriptionPage />} />
-                          </Suspense>
-                        } 
-                      />
-                      <Route 
-                        path="/payment" 
-                        element={
-                          <Suspense fallback={<LoadingFallback />}>
-                            <ProtectedRoute element={<PaymentPage />} />
-                          </Suspense>
-                        } 
-                      />
-                      <Route 
-                        path="/profile" 
-                        element={
-                          <Suspense fallback={<LoadingFallback />}>
-                            <ProtectedRoute element={<ProfilePage />} />
-                          </Suspense>
-                        } 
-                      />
-                      <Route 
-                        path="/legal" 
-                        element={
-                          <Suspense fallback={<LoadingFallback />}>
-                            <LegalPage />
-                          </Suspense>
-                        } 
-                      />
-                      <Route 
-                        path="/privacy" 
-                        element={
-                          <Suspense fallback={<LoadingFallback />}>
-                            <PrivacyPage />
-                          </Suspense>
-                        } 
-                      />
-                      <Route path="*" element={<NotFound />} />
-                    </Route>
-                  </Routes>
-                </NotificationsProvider>
-              </SubscriptionProvider>
-            </AuthProvider>
-          </BrowserRouter>
-        </TooltipProvider>
-      </QueryClientProvider>
+                      <Route element={<Layout />}>
+                        <Route 
+                          path="/home" 
+                          element={
+                            <Suspense fallback={<LoadingFallback />}>
+                              <HomePage />
+                            </Suspense>
+                          } 
+                        />
+                        <Route 
+                          path="/search" 
+                          element={
+                            <Suspense fallback={<LoadingFallback />}>
+                              <SearchPage />
+                            </Suspense>
+                          } 
+                        />
+                        <Route 
+                          path="/properties/:id" 
+                          element={
+                            <Suspense fallback={<LoadingFallback />}>
+                              <ProtectedRoute element={<PropertyDetailPage />} />
+                            </Suspense>
+                          } 
+                        />
+                        <Route 
+                          path="/favorites" 
+                          element={
+                            <Suspense fallback={<LoadingFallback />}>
+                              <ProtectedRoute element={<FavoritesPage />} />
+                            </Suspense>
+                          } 
+                        />
+                        <Route 
+                          path="/alerts" 
+                          element={
+                            <Suspense fallback={<LoadingFallback />}>
+                              <ProtectedRoute element={<AlertsPage />} />
+                            </Suspense>
+                          } 
+                        />
+                        <Route 
+                          path="/admin" 
+                          element={
+                            <Suspense fallback={<LoadingFallback />}>
+                              <ProtectedRoute element={<AdminPage />} />
+                            </Suspense>
+                          } 
+                        />
+                        <Route 
+                          path="/subscription" 
+                          element={
+                            <Suspense fallback={<LoadingFallback />}>
+                              <ProtectedRoute element={<SubscriptionPage />} />
+                            </Suspense>
+                          } 
+                        />
+                        <Route 
+                          path="/payment" 
+                          element={
+                            <Suspense fallback={<LoadingFallback />}>
+                              <ProtectedRoute element={<PaymentPage />} />
+                            </Suspense>
+                          } 
+                        />
+                        <Route 
+                          path="/profile" 
+                          element={
+                            <Suspense fallback={<LoadingFallback />}>
+                              <ProtectedRoute element={<ProfilePage />} />
+                            </Suspense>
+                          } 
+                        />
+                        <Route 
+                          path="/legal" 
+                          element={
+                            <Suspense fallback={<LoadingFallback />}>
+                              <LegalPage />
+                            </Suspense>
+                          } 
+                        />
+                        <Route 
+                          path="/privacy" 
+                          element={
+                            <Suspense fallback={<LoadingFallback />}>
+                              <PrivacyPage />
+                            </Suspense>
+                          } 
+                        />
+                        <Route path="*" element={<NotFound />} />
+                      </Route>
+                    </Routes>
+                  </NotificationsProvider>
+                </SubscriptionProvider>
+              </AuthProvider>
+            </BrowserRouter>
+          </TooltipProvider>
+        </QueryClientProvider>
+      </ErrorBoundary>
     </React.StrictMode>
   );
 };
