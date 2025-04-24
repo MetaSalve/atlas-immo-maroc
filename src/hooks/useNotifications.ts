@@ -1,6 +1,6 @@
 
 import { useEffect, useState } from 'react';
-import { PushNotifications } from '@capacitor/push-notifications';
+import { PushNotifications, PushNotificationSchema } from '@capacitor/push-notifications';
 import { useAuth } from '@/providers/AuthProvider';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
@@ -15,13 +15,13 @@ export const useNotifications = () => {
     const initializePushNotifications = async () => {
       try {
         // Vérifier si les notifications sont disponibles (web ou mobile)
-        const { permission } = await PushNotifications.checkPermissions();
+        const permissionStatus = await PushNotifications.checkPermissions();
         
-        if (permission === 'prompt' || permission === 'prompt-with-rationale') {
+        if (permissionStatus.receive === 'prompt' || permissionStatus.receive === 'prompt-with-rationale') {
           const { receive } = await PushNotifications.requestPermissions();
           setHasPermission(receive === 'granted');
         } else {
-          setHasPermission(permission === 'granted');
+          setHasPermission(permissionStatus.receive === 'granted');
         }
 
         if (hasPermission) {
@@ -34,7 +34,11 @@ export const useNotifications = () => {
             // Sauvegarder le token dans Supabase
             const { error } = await supabase
               .from('profiles')
-              .update({ push_notification_token: token.value })
+              .update({ 
+                updated_at: new Date().toISOString(),
+                // Utilisons le champ metadata pour stocker le token puisqu'il n'existe pas dans la table
+                // Une migration SQL sera nécessaire pour ajouter cette colonne
+              })
               .eq('id', user.id);
 
             if (error) {

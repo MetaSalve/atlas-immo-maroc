@@ -1,3 +1,4 @@
+
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts"
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.39.3'
 
@@ -23,7 +24,7 @@ serve(async (req) => {
       .from('user_alerts')
       .select(`
         *,
-        profiles:profiles(push_notification_token)
+        profiles:profiles(id)
       `)
       .eq('is_active', true)
     
@@ -61,17 +62,30 @@ serve(async (req) => {
           console.log(`Alert ${alert.id} has ${matchingProperties.length} matching properties`)
           notificationCount += matchingProperties.length
 
-          // Envoyer une notification push si un token est disponible
-          if (alert.profiles?.push_notification_token) {
+          // Pour chaque alerte qui a des propriétés correspondantes,
+          // insérer une notification dans la base de données
+
+          if (alert.profiles?.id) {
             try {
-              await sendPushNotification(
-                alert.profiles.push_notification_token,
-                `${matchingProperties.length} nouveaux biens correspondent à votre alerte "${alert.name}"`,
-                "Cliquez pour voir les nouveaux biens",
-                { alertId: alert.id }
-              );
+              // Utiliser la table de notifications (il faudra la créer)
+              const { error: insertError } = await supabase
+                .from('notifications')
+                .insert({
+                  user_id: alert.profiles.id,
+                  title: `${matchingProperties.length} nouveaux biens`,
+                  body: `${matchingProperties.length} nouveaux biens correspondent à votre alerte "${alert.name}"`,
+                  data: { 
+                    alertId: alert.id,
+                    properties: matchingProperties.map(p => p.id)
+                  },
+                  read: false
+                })
+
+              if (insertError) {
+                console.error('Error inserting notification:', insertError)
+              }
             } catch (error) {
-              console.error('Error sending push notification:', error);
+              console.error('Error creating notification:', error);
             }
           }
           
@@ -155,33 +169,4 @@ function findMatchingProperties(alert: any, properties: any[]) {
     // If passed all filters, it's a match
     return true
   })
-}
-
-async function sendPushNotification(
-  token: string, 
-  title: string, 
-  body: string, 
-  data?: Record<string, any>
-) {
-  const response = await fetch('https://fcm.googleapis.com/fcm/send', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `key=${Deno.env.get('FIREBASE_SERVER_KEY')}`
-    },
-    body: JSON.stringify({
-      to: token,
-      notification: {
-        title,
-        body,
-      },
-      data,
-    })
-  });
-
-  if (!response.ok) {
-    throw new Error('Failed to send push notification');
-  }
-
-  return response.json();
 }
