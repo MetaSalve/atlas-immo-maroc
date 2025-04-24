@@ -46,7 +46,7 @@ export const PropertyCompare = ({ properties, onClose }: PropertyCompareProps) =
                     <TableCell className="font-medium">Prix</TableCell>
                     {properties.map((property) => (
                       <TableCell key={`${property.id}-price`}>
-                        {property.price.toLocaleString('fr-FR')} {property.price_unit}
+                        {property.price.toLocaleString('fr-FR')} {property.priceUnit}
                       </TableCell>
                     ))}
                   </TableRow>
@@ -66,7 +66,7 @@ export const PropertyCompare = ({ properties, onClose }: PropertyCompareProps) =
                     <TableCell className="font-medium">Localisation</TableCell>
                     {properties.map((property) => (
                       <TableCell key={`${property.id}-location`}>
-                        {property.district}, {property.city}
+                        {property.location.district}, {property.location.city}
                       </TableCell>
                     ))}
                   </TableRow>
@@ -90,7 +90,7 @@ export const PropertyCompare = ({ properties, onClose }: PropertyCompareProps) =
                     <TableCell className="font-medium">Contact</TableCell>
                     {properties.map((property) => (
                       <TableCell key={`${property.id}-contact`}>
-                        {property.contact_name}
+                        {property.contactInfo.name}
                       </TableCell>
                     ))}
                   </TableRow>
