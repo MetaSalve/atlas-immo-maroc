@@ -37,33 +37,20 @@ export const useAccountDeletion = () => {
       
       // Enregistrer la raison de suppression si fournie
       if (reason) {
-        const { error: reasonError } = await supabase
+        await supabase
           .from('account_deletions')
           .insert({
             user_id: user.id,
             reason
           });
-          
-        if (reasonError) console.error('Erreur lors de l\'enregistrement de la raison de suppression:', reasonError);
       }
       
-      // Supprimer les données utilisateur dans l'ordre pour respecter les contraintes FK
-      const tables = [
-        'favorites',
-        'user_alerts',
-        'notifications',
-        'payment_transactions',
-        'profiles'
-      ];
-      
-      for (const table of tables) {
-        const { error } = await supabase
-          .from(table)
-          .delete()
-          .eq('user_id', user.id);
-          
-        if (error) console.error(`Erreur lors de la suppression des données de ${table}:`, error);
-      }
+      // Supprimer les données utilisateur dans l'ordre
+      await supabase.from('favorites').delete().eq('user_id', user.id);
+      await supabase.from('user_alerts').delete().eq('user_id', user.id);
+      await supabase.from('notifications').delete().eq('user_id', user.id);
+      await supabase.from('payment_transactions').delete().eq('user_id', user.id);
+      await supabase.from('profiles').delete().eq('id', user.id);
       
       // Supprimer le compte utilisateur
       const { error: deleteError } = await supabase.auth.admin.deleteUser(user.id);

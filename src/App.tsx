@@ -1,4 +1,3 @@
-
 import { useEffect } from "react";
 import { Routes, Route, useLocation, useNavigate } from "react-router-dom";
 import { Layout } from "@/components/layout/Layout";
@@ -7,7 +6,7 @@ import { ProtectedRoute } from "@/components/auth/ProtectedRoute";
 import { NotFound } from "@/components/common/NotFound";
 import { configureSecurityHeaders, runSecurityChecks } from "./utils/securityHeaders";
 import { useAuth } from "./providers/AuthProvider";
-import { CookieConsent } from "./components/common/CookieConsent";
+import { CookieConsent } from "@/components/common/CookieConsent";
 import { CustomRouteObject } from "./routes/types";
 
 function App() {
@@ -34,7 +33,7 @@ function App() {
         {routes.map((route: CustomRouteObject, index: number) => (
           <Route
             key={index}
-            path={route.path}
+            {...route}
             element={
               <Layout>
                 <ProtectedRoute

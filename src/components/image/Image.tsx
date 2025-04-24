@@ -1,13 +1,14 @@
-
 import React, { useState, useEffect } from 'react';
 import { OptimizedImage } from './OptimizedImage';
 import { useCacheContext } from '@/providers/CacheProvider';
 
-type ImageProps = React.ImgHTMLAttributes<HTMLImageElement> & {
+type ImageProps = Omit<React.ImgHTMLAttributes<HTMLImageElement>, 'width' | 'height'> & {
   fallbackSrc?: string;
   loading?: 'lazy' | 'eager';
   lowQualitySrc?: string;
   highResThreshold?: number;
+  width?: number;
+  height?: number;
 };
 
 export const Image: React.FC<ImageProps> = ({ 
@@ -24,21 +25,17 @@ export const Image: React.FC<ImageProps> = ({
   const [shouldLoadHighRes, setShouldLoadHighRes] = useState(false);
   const { connectionType } = useCacheContext();
 
-  // Déterminer si on doit charger l'image haute résolution
   useEffect(() => {
-    // Toujours charger l'image haute résolution si pas d'image basse qualité
     if (!lowQualitySrc) {
       setShouldLoadHighRes(true);
       return;
     }
 
-    // Vérifier la connexion
     if (connectionType === '4g' || connectionType === 'wifi') {
       setShouldLoadHighRes(true);
       return;
     }
 
-    // Vérifier la taille de l'écran
     const checkScreenSize = () => {
       setShouldLoadHighRes(window.innerWidth >= highResThreshold);
     };
@@ -72,6 +69,8 @@ export const Image: React.FC<ImageProps> = ({
       className={className}
       loading={loading}
       onError={() => setImageError(true)}
+      width={props.width}
+      height={props.height}
       {...props}
     />
   );
