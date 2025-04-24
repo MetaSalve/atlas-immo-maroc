@@ -1,4 +1,3 @@
-
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts"
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.39.3'
 
@@ -19,10 +18,13 @@ serve(async (req) => {
     console.log("Starting process-alert-notifications function")
     const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY)
     
-    // Get all active alerts
+    // Get all active alerts with user profiles to get push tokens
     const { data: alerts, error: alertsError } = await supabase
       .from('user_alerts')
-      .select('*')
+      .select(`
+        *,
+        profiles:profiles(push_notification_token)
+      `)
       .eq('is_active', true)
     
     if (alertsError) {
@@ -48,7 +50,7 @@ serve(async (req) => {
 
     console.log(`Found ${newProperties?.length || 0} new properties`)
     
-    // For each alert, find matching properties
+    // Pour chaque alerte, trouver les propriétés correspondantes
     let notificationCount = 0
     
     if (alerts && alerts.length > 0 && newProperties && newProperties.length > 0) {
@@ -58,8 +60,22 @@ serve(async (req) => {
         if (matchingProperties.length > 0) {
           console.log(`Alert ${alert.id} has ${matchingProperties.length} matching properties`)
           notificationCount += matchingProperties.length
+
+          // Envoyer une notification push si un token est disponible
+          if (alert.profiles?.push_notification_token) {
+            try {
+              await sendPushNotification(
+                alert.profiles.push_notification_token,
+                `${matchingProperties.length} nouveaux biens correspondent à votre alerte "${alert.name}"`,
+                "Cliquez pour voir les nouveaux biens",
+                { alertId: alert.id }
+              );
+            } catch (error) {
+              console.error('Error sending push notification:', error);
+            }
+          }
           
-          // Update the alert with notification info
+          // Mettre à jour l'alerte avec les informations de notification
           await supabase
             .from('user_alerts')
             .update({
@@ -67,8 +83,6 @@ serve(async (req) => {
               last_notification_count: matchingProperties.length
             })
             .eq('id', alert.id)
-            
-          // In a real implementation, would send email or push notification here
         }
       }
     } else {
@@ -141,4 +155,33 @@ function findMatchingProperties(alert: any, properties: any[]) {
     // If passed all filters, it's a match
     return true
   })
+}
+
+async function sendPushNotification(
+  token: string, 
+  title: string, 
+  body: string, 
+  data?: Record<string, any>
+) {
+  const response = await fetch('https://fcm.googleapis.com/fcm/send', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `key=${Deno.env.get('FIREBASE_SERVER_KEY')}`
+    },
+    body: JSON.stringify({
+      to: token,
+      notification: {
+        title,
+        body,
+      },
+      data,
+    })
+  });
+
+  if (!response.ok) {
+    throw new Error('Failed to send push notification');
+  }
+
+  return response.json();
 }

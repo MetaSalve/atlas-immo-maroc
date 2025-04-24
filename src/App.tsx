@@ -7,6 +7,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Layout } from "./components/layout/Layout";
 import { AuthProvider } from "./providers/AuthProvider";
 import { SubscriptionProvider } from "./providers/SubscriptionProvider";
+import { NotificationsProvider } from "./providers/NotificationsProvider";
 import HomePage from "./pages/HomePage";
 import SearchPage from "./pages/SearchPage";
 import PropertyDetailPage from "./pages/PropertyDetailPage";
@@ -35,23 +36,25 @@ const App = () => (
         <BrowserRouter>
           <AuthProvider>
             <SubscriptionProvider>
-              <Toaster />
-              <Sonner />
-              <Routes>
-                <Route path="/auth" element={<AuthPage />} />
-                <Route element={<Layout />}>
-                  <Route path="/" element={<HomePage />} />
-                  <Route path="/search" element={<SearchPage />} />
-                  <Route path="/properties/:id" element={<PropertyDetailPage />} />
-                  <Route path="/favorites" element={<FavoritesPage />} />
-                  <Route path="/alerts" element={<AlertsPage />} />
-                  <Route path="/admin" element={<AdminPage />} />
-                  <Route path="/subscription" element={<SubscriptionPage />} />
-                  <Route path="/payment" element={<PaymentPage />} />
-                  <Route path="/profile" element={<ProfilePage />} />
-                  <Route path="*" element={<NotFound />} />
-                </Route>
-              </Routes>
+              <NotificationsProvider>
+                <Toaster />
+                <Sonner />
+                <Routes>
+                  <Route path="/auth" element={<AuthPage />} />
+                  <Route element={<Layout />}>
+                    <Route path="/" element={<HomePage />} />
+                    <Route path="/search" element={<SearchPage />} />
+                    <Route path="/properties/:id" element={<PropertyDetailPage />} />
+                    <Route path="/favorites" element={<FavoritesPage />} />
+                    <Route path="/alerts" element={<AlertsPage />} />
+                    <Route path="/admin" element={<AdminPage />} />
+                    <Route path="/subscription" element={<SubscriptionPage />} />
+                    <Route path="/payment" element={<PaymentPage />} />
+                    <Route path="/profile" element={<ProfilePage />} />
+                    <Route path="*" element={<NotFound />} />
+                  </Route>
+                </Routes>
+              </NotificationsProvider>
             </SubscriptionProvider>
           </AuthProvider>
         </BrowserRouter>
