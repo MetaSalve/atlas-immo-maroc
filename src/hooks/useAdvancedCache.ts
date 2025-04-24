@@ -123,7 +123,9 @@ export const useAdvancedCache = () => {
         misses++;
       } else if (query.state.status === 'success') {
         hits++;
-        if (query.state.dataUpdatedAt < Date.now() - query.options.staleTime!) {
+        // Fix: Safely access staleTime from query.options
+        const staleTime = query.options.staleTime ?? 0;
+        if (query.state.dataUpdatedAt < Date.now() - staleTime) {
           stale++;
         }
       } else {
