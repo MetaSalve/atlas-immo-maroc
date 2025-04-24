@@ -133,7 +133,7 @@ export const useProperties = (
     queryKey,
     queryFn: () => fetchProperties(filters, page),
     staleTime: cacheConfig.properties.staleTime,
-    gcTime: cacheConfig.properties.cacheTime,
+    gcTime: cacheConfig.properties.gcTime,
     refetchOnWindowFocus: false,
     retry: 1,
     meta: {
