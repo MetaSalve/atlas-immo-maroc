@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
@@ -11,7 +10,6 @@ import { SubscriptionProvider } from "./providers/SubscriptionProvider";
 import HomePage from "./pages/HomePage";
 import SearchPage from "./pages/SearchPage";
 import PropertyDetailPage from "./pages/PropertyDetailPage";
-import MapPage from "./pages/MapPage";
 import FavoritesPage from "./pages/FavoritesPage";
 import AlertsPage from "./pages/AlertsPage";
 import AdminPage from "./pages/AdminPage";
@@ -21,7 +19,6 @@ import PaymentPage from "./pages/PaymentPage";
 import ProfilePage from "./pages/ProfilePage";
 import NotFound from "./pages/NotFound";
 
-// Create a client
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
@@ -46,7 +43,6 @@ const App = () => (
                   <Route path="/" element={<HomePage />} />
                   <Route path="/search" element={<SearchPage />} />
                   <Route path="/properties/:id" element={<PropertyDetailPage />} />
-                  <Route path="/map" element={<MapPage />} />
                   <Route path="/favorites" element={<FavoritesPage />} />
                   <Route path="/alerts" element={<AlertsPage />} />
                   <Route path="/admin" element={<AdminPage />} />

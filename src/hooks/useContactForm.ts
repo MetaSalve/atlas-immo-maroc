@@ -3,24 +3,22 @@ import { useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 
+interface ContactFormData {
+  name: string;
+  email: string;
+  message: string;
+}
+
 export const useContactForm = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const submitContactForm = async (formData: {
-    name: string;
-    email: string;
-    message: string;
-  }) => {
+  const submitContactForm = async (formData: ContactFormData) => {
     setIsSubmitting(true);
     
     try {
       const { error } = await supabase
         .from('contact_messages')
-        .insert({
-          name: formData.name,
-          email: formData.email,
-          message: formData.message
-        });
+        .insert(formData);
 
       if (error) throw error;
 
