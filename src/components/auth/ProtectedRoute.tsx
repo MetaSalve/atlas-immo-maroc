@@ -21,11 +21,17 @@ export const ProtectedRoute = ({
     return <LoadingFallback />;
   }
   
+  // Éviter d'afficher un toast si l'utilisateur est déjà sur la page d'authentification
   if (requiresAuth && !user) {
-    toast.info("Connexion requise", {
-      description: "Veuillez vous connecter pour accéder à cette fonctionnalité",
-      position: "top-center",
-    });
+    // Afficher le toast uniquement si on n'est pas déjà sur la page d'authentification
+    if (!location.pathname.includes('/auth')) {
+      toast.info("Connexion requise", {
+        description: "Veuillez vous connecter pour accéder à cette fonctionnalité",
+        position: "top-center",
+        // Limiter les notifications répétées
+        id: "auth-required",
+      });
+    }
     
     return <Navigate to="/auth" state={{ from: location.pathname }} replace />;
   }

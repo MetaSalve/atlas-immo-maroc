@@ -9,17 +9,26 @@ const HomePage = lazy(() => import('@/pages/HomePage'));
 const SearchPage = lazy(() => import('@/pages/SearchPage'));
 const PropertyDetailPage = lazy(() => import('@/pages/PropertyDetailPage'));
 const AuthPage = lazy(() => import('@/pages/AuthPage'));
+const ResetPasswordPage = lazy(() => import('@/pages/ResetPasswordPage'));
 const ProfilePage = lazy(() => import('@/pages/ProfilePage'));
 const FavoritesPage = lazy(() => import('@/pages/FavoritesPage'));
 const AlertsPage = lazy(() => import('@/pages/AlertsPage'));
 const SubscriptionPage = lazy(() => import('@/pages/SubscriptionPage'));
-
-// Nous retirons les références aux pages non existantes
-// Plus tard, si ces pages sont nécessaires, nous pourrons les créer
+const Index = lazy(() => import('@/pages/Index'));
 
 export const routes: CustomRouteObject[] = [
   {
     path: '/',
+    element: (
+      <LazyComponent>
+        <PageTransition>
+          <Index />
+        </PageTransition>
+      </LazyComponent>
+    ),
+  },
+  {
+    path: '/home',
     element: (
       <LazyComponent>
         <PageTransition>
@@ -57,6 +66,18 @@ export const routes: CustomRouteObject[] = [
         </PageTransition>
       </LazyComponent>
     ),
+    authRequired: false,
+  },
+  {
+    path: '/auth/reset-password',
+    element: (
+      <LazyComponent>
+        <PageTransition>
+          <ResetPasswordPage />
+        </PageTransition>
+      </LazyComponent>
+    ),
+    authRequired: false,
   },
   {
     path: '/profile',
