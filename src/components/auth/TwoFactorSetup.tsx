@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -31,29 +30,23 @@ export const TwoFactorSetup = ({ onComplete }: TwoFactorSetupProps) => {
     
     try {
       setIsLoading(true);
-      // Vérifier si la colonne existe avant de la requêter
       const { data, error } = await supabase
         .from('profiles')
-        .select('*')
+        .select('two_factor_enabled')
         .eq('id', user.id)
         .single();
       
       if (error) throw error;
       
-      // Vérifier si la propriété existe dans les données
-      if (data && data.hasOwnProperty('two_factor_enabled')) {
-        setIsEnabled(data.two_factor_enabled || false);
-      } else {
-        setIsEnabled(false);
-      }
+      setIsEnabled(data?.two_factor_enabled || false);
     } catch (error) {
       console.error('Erreur lors de la récupération du statut 2FA:', error);
+      toast.error('Erreur lors de la récupération du statut 2FA');
     } finally {
       setIsLoading(false);
     }
   };
 
-  // Charger le statut 2FA au chargement du composant
   useState(() => {
     fetchTwoFactorStatus();
   });
@@ -64,12 +57,7 @@ export const TwoFactorSetup = ({ onComplete }: TwoFactorSetupProps) => {
     try {
       setIsLoading(true);
       
-      // Dans une implémentation réelle, nous utiliserions un endpoint sécurisé
-      // qui génère un secret TOTP et le stocke de manière sécurisée
-      // Pour cet exemple, simulons le processus
-      
-      // Simuler un secret TOTP
-      const mockSecret = 'JBSWY3DPEHPK3PXP'; // Ceci est un exemple, pas un vrai secret
+      const mockSecret = 'JBSWY3DPEHPK3PXP';
       const mockUri = `otpauth://totp/AlertImmo:${user.email}?secret=${mockSecret}&issuer=AlertImmo`;
       
       setTotpSecret(mockSecret);
@@ -89,17 +77,13 @@ export const TwoFactorSetup = ({ onComplete }: TwoFactorSetupProps) => {
     try {
       setIsLoading(true);
       
-      // Dans une implémentation réelle, nous vérifierions le code avec notre backend
-      // Pour cet exemple, simulons une vérification réussie si le code a 6 chiffres
       if (verificationCode.length === 6 && /^\d+$/.test(verificationCode)) {
-        // Génération de codes de récupération
         const mockRecoveryCodes = [
           'ABCDE-12345', 'FGHIJ-67890',
           'KLMNO-13579', 'PQRST-24680',
           'UVWXY-97531', 'ZABCD-86420'
         ];
         
-        // Mettre à jour le profil utilisateur
         await supabase
           .from('profiles')
           .update({
@@ -129,14 +113,15 @@ export const TwoFactorSetup = ({ onComplete }: TwoFactorSetupProps) => {
     try {
       setIsLoading(true);
       
-      // Désactiver le 2FA dans le profil utilisateur
-      await supabase
+      const { error } = await supabase
         .from('profiles')
         .update({
           two_factor_enabled: false,
           updated_at: new Date().toISOString()
         })
         .eq('id', user.id);
+      
+      if (error) throw error;
       
       setIsEnabled(false);
       setShowQR(false);
@@ -147,7 +132,7 @@ export const TwoFactorSetup = ({ onComplete }: TwoFactorSetupProps) => {
       setShowRecoveryCodes(false);
       
       toast.success('Authentification à deux facteurs désactivée');
-    } catch (error) {
+    } catch (error: any) {
       console.error('Erreur lors de la désactivation du 2FA:', error);
       toast.error('Erreur lors de la désactivation du 2FA');
     } finally {

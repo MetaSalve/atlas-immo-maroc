@@ -157,6 +157,7 @@ export type Database = {
           subscription_ends_at: string | null
           subscription_status: string | null
           subscription_tier: string
+          two_factor_enabled: boolean
           updated_at: string | null
         }
         Insert: {
@@ -169,6 +170,7 @@ export type Database = {
           subscription_ends_at?: string | null
           subscription_status?: string | null
           subscription_tier?: string
+          two_factor_enabled?: boolean
           updated_at?: string | null
         }
         Update: {
@@ -181,6 +183,7 @@ export type Database = {
           subscription_ends_at?: string | null
           subscription_status?: string | null
           subscription_tier?: string
+          two_factor_enabled?: boolean
           updated_at?: string | null
         }
         Relationships: []
