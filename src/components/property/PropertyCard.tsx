@@ -10,11 +10,19 @@ interface PropertyCardProps {
   property: Property;
   onToggleFavorite: (id: string) => void;
   isFavorite: boolean;
+  isSelected?: boolean;
+  className?: string;
 }
 
-export const PropertyCard = ({ property, onToggleFavorite, isFavorite }: PropertyCardProps) => {
+export const PropertyCard = ({ 
+  property, 
+  onToggleFavorite, 
+  isFavorite,
+  isSelected,
+  className 
+}: PropertyCardProps) => {
   return (
-    <Card className="overflow-hidden h-full hover:shadow-lg transition-shadow">
+    <Card className={`overflow-hidden h-full hover:shadow-lg transition-shadow ${className}`}>
       <div className="relative aspect-[16/9]">
         <OptimizedImage
           src={property.images[0] || '/placeholder.svg'}
