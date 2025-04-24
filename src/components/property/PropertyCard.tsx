@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Property } from '@/types/property';
@@ -11,6 +12,7 @@ interface PropertyCardProps {
   onToggleFavorite: (id: string) => void;
   isFavorite: boolean;
   isSelected?: boolean;
+  onToggleSelect?: () => void;
   className?: string;
 }
 
@@ -19,6 +21,7 @@ export const PropertyCard = ({
   onToggleFavorite, 
   isFavorite,
   isSelected,
+  onToggleSelect,
   className 
 }: PropertyCardProps) => {
   return (
