@@ -59,6 +59,39 @@ export type Database = {
           },
         ]
       }
+      payment_transactions: {
+        Row: {
+          amount: number
+          created_at: string | null
+          currency: string
+          id: string
+          payment_id: string | null
+          status: string
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          amount: number
+          created_at?: string | null
+          currency?: string
+          id?: string
+          payment_id?: string | null
+          status: string
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          amount?: number
+          created_at?: string | null
+          currency?: string
+          id?: string
+          payment_id?: string | null
+          status?: string
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           avatar_url: string | null
@@ -67,6 +100,8 @@ export type Database = {
           full_name: string | null
           id: string
           phone: string | null
+          subscription_ends_at: string | null
+          subscription_status: string | null
           subscription_tier: string
           updated_at: string | null
         }
@@ -77,6 +112,8 @@ export type Database = {
           full_name?: string | null
           id: string
           phone?: string | null
+          subscription_ends_at?: string | null
+          subscription_status?: string | null
           subscription_tier?: string
           updated_at?: string | null
         }
@@ -87,6 +124,8 @@ export type Database = {
           full_name?: string | null
           id?: string
           phone?: string | null
+          subscription_ends_at?: string | null
+          subscription_status?: string | null
           subscription_tier?: string
           updated_at?: string | null
         }

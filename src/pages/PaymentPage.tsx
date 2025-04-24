@@ -4,21 +4,14 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/providers/AuthProvider';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import { toast } from 'sonner';
 import { CreditCard, Lock } from 'lucide-react';
+import { supabase } from '@/integrations/supabase/client';
 
 const PaymentPage = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
-  const [formData, setFormData] = useState({
-    cardNumber: '',
-    cardName: '',
-    expiryDate: '',
-    cvv: ''
-  });
 
   // Redirect if not logged in
   if (!user) {
@@ -26,28 +19,50 @@ const PaymentPage = () => {
     return null;
   }
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
-  };
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
+  const handleSimulatedPayment = async () => {
+    if (!user) return;
     
-    // Simulate payment processing
-    setTimeout(() => {
-      setLoading(false);
-      // In a real implementation, you would update the user's subscription status in your database
-      toast.success("Paiement accepté", {
+    try {
+      setLoading(true);
+      
+      // Create a payment transaction record
+      const { error: transactionError } = await supabase
+        .from('payment_transactions')
+        .insert({
+          user_id: user.id,
+          amount: 99,
+          status: 'completed',
+          payment_id: `sim_${Date.now()}`
+        });
+
+      if (transactionError) throw transactionError;
+
+      // Update user's subscription status
+      const { error: updateError } = await supabase
+        .from('profiles')
+        .update({ 
+          subscription_status: 'premium',
+          subscription_tier: 'premium',
+          subscription_ends_at: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString() // +30 days
+        })
+        .eq('id', user.id);
+
+      if (updateError) throw updateError;
+
+      toast.success("Paiement simulé accepté", {
         description: "Votre abonnement Premium est maintenant actif. Profitez de toutes les fonctionnalités !",
         duration: 5000
       });
-      navigate('/');
-    }, 2000);
+      
+      navigate('/profile');
+    } catch (error: any) {
+      console.error('Error processing payment:', error);
+      toast.error("Erreur lors du traitement", {
+        description: "Une erreur est survenue lors de la simulation du paiement."
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -78,78 +93,30 @@ const PaymentPage = () => {
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <CreditCard className="h-5 w-5" />
-            Informations de paiement
+            Mode de test
           </CardTitle>
           <CardDescription>
-            Votre paiement est sécurisé et vos informations ne sont jamais stockées.
+            Cette page simule un paiement réussi pour tester les fonctionnalités Premium.
           </CardDescription>
         </CardHeader>
-        <CardContent>
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="cardName">Titulaire de la carte</Label>
-              <Input 
-                id="cardName" 
-                name="cardName"
-                placeholder="Nom sur la carte"
-                value={formData.cardName}
-                onChange={handleChange}
-                required
-              />
-            </div>
-            
-            <div className="space-y-2">
-              <Label htmlFor="cardNumber">Numéro de carte</Label>
-              <Input 
-                id="cardNumber" 
-                name="cardNumber"
-                placeholder="1234 5678 9012 3456"
-                value={formData.cardNumber}
-                onChange={handleChange}
-                required
-              />
-            </div>
-            
-            <div className="grid grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <Label htmlFor="expiryDate">Date d'expiration</Label>
-                <Input 
-                  id="expiryDate" 
-                  name="expiryDate"
-                  placeholder="MM/AA"
-                  value={formData.expiryDate}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
-              
-              <div className="space-y-2">
-                <Label htmlFor="cvv">Code de sécurité</Label>
-                <Input 
-                  id="cvv" 
-                  name="cvv"
-                  placeholder="123"
-                  value={formData.cvv}
-                  onChange={handleChange}
-                  type="password"
-                  required
-                />
-              </div>
-            </div>
-          </form>
+        <CardContent className="space-y-4">
+          <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 text-amber-700 text-sm">
+            <p><strong>Mode test activé :</strong> Aucune vraie transaction ne sera effectuée.</p>
+            <p className="mt-1">Le paiement sera simulé et votre compte passera en mode Premium pour 30 jours.</p>
+          </div>
         </CardContent>
         <CardFooter>
           <Button 
             className="w-full" 
-            onClick={handleSubmit} 
+            onClick={handleSimulatedPayment}
             disabled={loading}
           >
             {loading ? (
-              <>Traitement en cours...</>
+              <>Simulation en cours...</>
             ) : (
               <>
                 <Lock className="h-4 w-4 mr-2" />
-                Payer 99 MAD
+                Simuler le paiement de 99 MAD
               </>
             )}
           </Button>
@@ -157,7 +124,7 @@ const PaymentPage = () => {
       </Card>
       
       <p className="text-center text-sm text-muted-foreground mt-6">
-        En procédant au paiement, vous acceptez nos Conditions Générales d'Utilisation et notre Politique de Confidentialité.
+        Ceci est une simulation pour tester les fonctionnalités Premium.
       </p>
     </div>
   );
