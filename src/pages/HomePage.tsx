@@ -1,10 +1,12 @@
+import React, { useState } from 'react';
+import { useContactForm } from '@/hooks/useContactForm';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '@/providers/AuthProvider';
 import { useProperties } from '@/hooks/useProperties';
 import { useFavorites } from '@/hooks/useFavorites';
 import { SearchBar } from '@/components/search/SearchBar';
 import { PropertyGrid } from '@/components/property/PropertyGrid';
-import { useNavigate } from 'react-router-dom';
-import { Layers3, Globe, Bell, CreditCard } from 'lucide-react';
-import { useAuth } from '@/providers/AuthProvider';
+import { Layers3, Globe, Bell } from 'lucide-react';
 
 const MoroccanHeroImage = () => (
   <img
@@ -31,9 +33,24 @@ const HomePage = () => {
   const { user } = useAuth();
   const { data: properties = [], isLoading } = useProperties();
   const { favorites, toggleFavorite } = useFavorites();
+  const { submitContactForm, isSubmitting } = useContactForm();
 
   const featuredProperties = properties.slice(0, 3);
   const recentProperties = properties.slice(3);
+
+  const [contactForm, setContactForm] = useState({
+    name: '',
+    email: '',
+    message: ''
+  });
+
+  const handleContactFormSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const success = await submitContactForm(contactForm);
+    if (success) {
+      setContactForm({ name: '', email: '', message: '' });
+    }
+  };
 
   return (
     <div className="py-6 space-y-10">
@@ -137,12 +154,17 @@ const HomePage = () => {
           <p className="text-muted-foreground mb-6 max-w-lg mx-auto">
             Une question ? Une remarque ? N'hésitez pas à nous contacter
           </p>
-          <form className="max-w-lg mx-auto space-y-4 text-left">
+          <form 
+            onSubmit={handleContactFormSubmit} 
+            className="max-w-lg mx-auto space-y-4 text-left"
+          >
             <div>
               <label htmlFor="name" className="block text-sm font-medium text-navy mb-1">Nom</label>
               <input
                 type="text"
                 id="name"
+                value={contactForm.name}
+                onChange={(e) => setContactForm(prev => ({ ...prev, name: e.target.value }))}
                 className="w-full rounded-md border border-input bg-background px-3 py-2"
                 placeholder="Votre nom"
                 required
@@ -153,6 +175,8 @@ const HomePage = () => {
               <input
                 type="email"
                 id="email"
+                value={contactForm.email}
+                onChange={(e) => setContactForm(prev => ({ ...prev, email: e.target.value }))}
                 className="w-full rounded-md border border-input bg-background px-3 py-2"
                 placeholder="votre@email.com"
                 required
@@ -163,6 +187,8 @@ const HomePage = () => {
               <textarea
                 id="message"
                 rows={4}
+                value={contactForm.message}
+                onChange={(e) => setContactForm(prev => ({ ...prev, message: e.target.value }))}
                 className="w-full rounded-md border border-input bg-background px-3 py-2"
                 placeholder="Votre message..."
                 required
@@ -170,9 +196,10 @@ const HomePage = () => {
             </div>
             <button 
               type="submit"
-              className="w-full bg-skyblue text-white px-6 py-2 rounded-md hover:bg-royalblue transition-colors font-bold"
+              disabled={isSubmitting}
+              className="w-full bg-skyblue text-white px-6 py-2 rounded-md hover:bg-royalblue transition-colors font-bold disabled:opacity-50"
             >
-              Envoyer
+              {isSubmitting ? 'Envoi en cours...' : 'Envoyer'}
             </button>
           </form>
         </div>

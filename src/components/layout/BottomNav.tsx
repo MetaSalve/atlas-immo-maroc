@@ -1,5 +1,4 @@
-
-import { Home, Search, Heart, Map, User, Bell } from 'lucide-react';
+import { Home, Search, Heart, User, Bell } from 'lucide-react';
 import { NavLink } from 'react-router-dom';
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/providers/AuthProvider';
@@ -9,18 +8,16 @@ export const BottomNav = () => {
   
   return (
     <div className="fixed bottom-0 left-0 z-50 w-full h-16 bg-background border-t">
-      <div className="grid h-full grid-cols-5">
+      <div className="grid h-full grid-cols-4">
         <NavItem to="/" icon={<Home />} label="Accueil" />
         <NavItem to="/search" icon={<Search />} label="Recherche" />
         {user ? (
           <>
             <NavItem to="/alerts" icon={<Bell />} label="Alertes" />
-            <NavItem to="/favorites" icon={<Heart />} label="Favoris" />
             <NavItem to="/profile" icon={<User />} label="Compte" />
           </>
         ) : (
           <>
-            <NavItem to="/map" icon={<Map />} label="Carte" />
             <NavItem to="/auth" icon={<Heart />} label="Favoris" />
             <NavItem to="/auth" icon={<User />} label="Compte" />
           </>

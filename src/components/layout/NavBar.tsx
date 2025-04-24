@@ -1,7 +1,6 @@
-
 import React from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
-import { Home, Search, Heart, Map, Menu, UserCircle, Bell, LogOut, User, CreditCard } from 'lucide-react';
+import { Home, Search, Heart, Bell, Menu, UserCircle, LogOut, User, CreditCard } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { useIsMobile } from '@/hooks/use-mobile';
@@ -45,7 +44,6 @@ export const NavBar = () => {
         <div className="hidden md:flex items-center gap-1">
           <NavItem to="/" icon={<Home className="h-4 w-4 mr-2" />} label="Accueil" />
           <NavItem to="/search" icon={<Search className="h-4 w-4 mr-2" />} label="Recherche" />
-          <NavItem to="/map" icon={<Map className="h-4 w-4 mr-2" />} label="Carte" />
           {user && (
             <>
               <NavItem to="/favorites" icon={<Heart className="h-4 w-4 mr-2" />} label="Favoris" />
