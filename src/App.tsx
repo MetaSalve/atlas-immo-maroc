@@ -1,63 +1,63 @@
 
 import { useEffect } from "react";
-import { Routes, Route } from "react-router-dom";
-import { Toaster } from "@/components/ui/toaster";
-import { Toaster as Sonner } from "@/components/ui/sonner";
-import { CookieConsent } from "./components/common/CookieConsent";
-import { SkipToContent } from "./components/common/SkipToContent";
-import { AppProviders } from "./providers/AppProviders";
-import { routes } from "./routes/routes";
-import { ProtectedRoute } from "./components/auth/ProtectedRoute";
+import { Routes, Route, useLocation, useNavigate } from "react-router-dom";
+import { Layout } from "@/components/layout/Layout";
+import { routes } from "@/routes/routes";
+import { ProtectedRoute } from "@/components/auth/ProtectedRoute";
+import { NotFound } from "@/components/common/NotFound";
 import { configureSecurityHeaders, runSecurityChecks } from "./utils/securityHeaders";
+import { useAuth } from "./providers/AuthProvider";
+import { CookieConsent } from "./components/common/CookieConsent";
 import { CustomRouteObject } from "./routes/types";
 
-const App = () => {
+function App() {
+  const location = useLocation();
+  const { user } = useAuth();
+  const navigate = useNavigate();
+
+  // Rediriger vers la page d'accueil si on arrive sur /auth alors qu'on est déjà connecté
   useEffect(() => {
+    if (user && location.pathname === '/auth') {
+      navigate('/');
+    }
+  }, [user, location.pathname, navigate]);
+
+  // Configurer les en-têtes de sécurité au chargement de l'application
+  useEffect(() => {
+    configureSecurityHeaders();
     runSecurityChecks();
   }, []);
 
   return (
-    <AppProviders>
-      <SkipToContent />
+    <>
       <Routes>
-        {routes.map((route, index) => {
-          if (route.children) {
-            return (
-              <Route key={index} element={route.element}>
-                {route.children.map((childRoute, childIndex) => (
-                  <Route
-                    key={childIndex}
-                    path={childRoute.path}
-                    element={
-                      <ProtectedRoute
-                        element={childRoute.element}
-                        requiresAuth={childRoute.authRequired}
-                      />
-                    }
-                  />
-                ))}
-              </Route>
-            );
-          }
-          return (
-            <Route
-              key={index}
-              path={route.path}
-              element={
+        {routes.map((route: CustomRouteObject, index: number) => (
+          <Route
+            key={index}
+            path={route.path}
+            element={
+              <Layout>
                 <ProtectedRoute
                   element={route.element}
                   requiresAuth={route.authRequired}
                 />
-              }
-            />
-          );
-        })}
+              </Layout>
+            }
+          />
+        ))}
+        <Route
+          path="*"
+          element={
+            <Layout>
+              <NotFound />
+            </Layout>
+          }
+        />
       </Routes>
-      <Toaster />
-      <Sonner />
+      
       <CookieConsent />
-    </AppProviders>
+    </>
   );
-};
+}
 
 export default App;

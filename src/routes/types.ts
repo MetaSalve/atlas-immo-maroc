@@ -1,17 +1,8 @@
 
 import { RouteObject } from 'react-router-dom';
 
-export interface CustomRouteObject {
-  path?: string;
-  element?: React.ReactNode;
+// Étendre l'interface RouteObject de react-router-dom pour ajouter l'option authRequired
+export interface CustomRouteObject extends RouteObject {
   authRequired?: boolean;
   children?: CustomRouteObject[];
-  index?: boolean;
-  caseSensitive?: boolean;
-  id?: string;
-  handle?: unknown;
-  loader?: unknown;
-  action?: unknown;
-  errorElement?: React.ReactNode;
-  shouldRevalidate?: unknown;
 }

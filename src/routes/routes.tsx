@@ -16,6 +16,13 @@ const AlertsPage = lazy(() => import('@/pages/AlertsPage'));
 const SubscriptionPage = lazy(() => import('@/pages/SubscriptionPage'));
 const Index = lazy(() => import('@/pages/Index'));
 
+// Nouvelles pages
+const PaymentSuccessPage = lazy(() => import('@/pages/PaymentSuccessPage'));
+const LegalPage = lazy(() => import('@/pages/LegalPage'));
+const PrivacyPage = lazy(() => import('@/pages/PrivacyPage'));
+const TermsPage = lazy(() => import('@/pages/TermsPage'));
+const PaymentPage = lazy(() => import('@/pages/PaymentPage'));
+
 export const routes: CustomRouteObject[] = [
   {
     path: '/',
@@ -122,5 +129,57 @@ export const routes: CustomRouteObject[] = [
       </LazyComponent>
     ),
     authRequired: true,
+  },
+  {
+    path: '/payment',
+    element: (
+      <LazyComponent>
+        <PageTransition>
+          <PaymentPage />
+        </PageTransition>
+      </LazyComponent>
+    ),
+    authRequired: true,
+  },
+  {
+    path: '/payment-success',
+    element: (
+      <LazyComponent>
+        <PageTransition>
+          <PaymentSuccessPage />
+        </PageTransition>
+      </LazyComponent>
+    ),
+    authRequired: true,
+  },
+  {
+    path: '/legal',
+    element: (
+      <LazyComponent>
+        <PageTransition>
+          <LegalPage />
+        </PageTransition>
+      </LazyComponent>
+    ),
+  },
+  {
+    path: '/privacy',
+    element: (
+      <LazyComponent>
+        <PageTransition>
+          <PrivacyPage />
+        </PageTransition>
+      </LazyComponent>
+    ),
+  },
+  {
+    path: '/terms',
+    element: (
+      <LazyComponent>
+        <PageTransition>
+          <TermsPage />
+        </PageTransition>
+      </LazyComponent>
+    ),
   },
 ];

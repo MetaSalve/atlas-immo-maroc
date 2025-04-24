@@ -13,8 +13,14 @@ export const usePasswordValidation = () => {
       return "Le mot de passe doit contenir au moins un chiffre";
     }
     
+    if (!/[!@#$%^&*(),.?":{}|<>]/.test(password)) {
+      return "Le mot de passe doit contenir au moins un caractère spécial";
+    }
+    
     return null;
   };
 
-  return { validatePassword };
+  return {
+    validatePassword,
+  };
 };

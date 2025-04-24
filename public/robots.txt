@@ -1,14 +1,25 @@
+
+# AlertImmo Robots.txt
+User-agent: *
+Allow: /
+
+# Interdire les répertoires d'administration
+Disallow: /admin/
+Disallow: /api/
+Disallow: /dashboard/
+
+# Autoriser les bots spécifiques
 User-agent: Googlebot
 Allow: /
 
 User-agent: Bingbot
 Allow: /
 
-User-agent: Twitterbot
+User-agent: Yandex
 Allow: /
 
-User-agent: facebookexternalhit
+User-agent: Baiduspider
 Allow: /
 
-User-agent: *
-Allow: /
+# Sitemap
+Sitemap: https://alertimmo.ma/sitemap.xml

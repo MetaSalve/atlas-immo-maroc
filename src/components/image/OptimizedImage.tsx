@@ -1,6 +1,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { cn } from '@/lib/utils';
+import { optimizeImage } from '@/utils/optimizationUtils';
 
 interface OptimizedImageProps extends React.ImgHTMLAttributes<HTMLImageElement> {
   src: string;
@@ -9,6 +10,9 @@ interface OptimizedImageProps extends React.ImgHTMLAttributes<HTMLImageElement> 
   fallback?: string;
   aspectRatio?: string;
   objectFit?: 'cover' | 'contain' | 'fill' | 'none' | 'scale-down';
+  width?: number;
+  quality?: number;
+  priority?: boolean;
 }
 
 export const OptimizedImage = ({ 
@@ -18,6 +22,9 @@ export const OptimizedImage = ({
   fallback = '/placeholder.svg',
   aspectRatio = 'aspect-video',
   objectFit = 'cover',
+  width = 800,
+  quality = 80,
+  priority = false,
   ...props 
 }: OptimizedImageProps) => {
   const [imgSrc, setImgSrc] = useState(src);
@@ -26,11 +33,17 @@ export const OptimizedImage = ({
   const imgRef = useRef<HTMLImageElement>(null);
 
   useEffect(() => {
-    setImgSrc(src);
+    const optimizedSrc = optimizeImage(src, { width, quality, format: 'webp' });
+    setImgSrc(optimizedSrc);
     setIsLoading(true);
-  }, [src]);
+  }, [src, width, quality]);
 
   useEffect(() => {
+    if (priority) {
+      setIsVisible(true);
+      return;
+    }
+    
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -42,7 +55,7 @@ export const OptimizedImage = ({
           }
         });
       },
-      { threshold: 0.1 }
+      { threshold: 0.1, rootMargin: '200px' }
     );
 
     if (imgRef.current) {
@@ -54,18 +67,7 @@ export const OptimizedImage = ({
         observer.unobserve(imgRef.current);
       }
     };
-  }, []);
-
-  // Support du format WebP si disponible
-  const getOptimizedSrc = (originalSrc: string) => {
-    // Si l'utilisateur a déjà une URL optimisée (ex: Cloudinary, Imgix...)
-    if (originalSrc.includes('format=webp') || originalSrc.includes('f=webp')) {
-      return originalSrc;
-    }
-
-    // Si c'est une URL externe sans service d'optimisation
-    return originalSrc;
-  };
+  }, [priority]);
 
   return (
     <div className={cn(
@@ -73,10 +75,10 @@ export const OptimizedImage = ({
       aspectRatio,
       isLoading && "animate-pulse bg-muted"
     )}>
-      {(isVisible || props.loading === 'eager') && (
+      {(isVisible || props.loading === 'eager' || priority) && (
         <img
           ref={imgRef}
-          src={getOptimizedSrc(imgSrc)}
+          src={imgSrc}
           alt={alt}
           className={cn(
             "transition-opacity duration-300 w-full h-full",
@@ -89,8 +91,9 @@ export const OptimizedImage = ({
             setImgSrc(fallback);
             setIsLoading(false);
           }}
-          loading={props.loading || "lazy"}
-          decoding="async"
+          loading={priority ? "eager" : "lazy"}
+          decoding={priority ? "sync" : "async"}
+          width={width}
           {...props}
         />
       )}

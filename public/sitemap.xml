@@ -1,6 +1,7 @@
 
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <!-- Pages principales -->
   <url>
     <loc>https://alertimmo.ma/</loc>
     <lastmod>2024-04-24</lastmod>
@@ -10,9 +11,23 @@
   <url>
     <loc>https://alertimmo.ma/search</loc>
     <lastmod>2024-04-24</lastmod>
-    <changefreq>hourly</changefreq>
+    <changefreq>daily</changefreq>
     <priority>0.9</priority>
   </url>
+  <url>
+    <loc>https://alertimmo.ma/auth</loc>
+    <lastmod>2024-04-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://alertimmo.ma/subscription</loc>
+    <lastmod>2024-04-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <!-- Pages légales -->
   <url>
     <loc>https://alertimmo.ma/legal</loc>
     <lastmod>2024-04-24</lastmod>
@@ -24,5 +39,25 @@
     <lastmod>2024-04-24</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://alertimmo.ma/terms</loc>
+    <lastmod>2024-04-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  
+  <!-- Exemples de pages de propriétés principales -->
+  <url>
+    <loc>https://alertimmo.ma/properties/123</loc>
+    <lastmod>2024-04-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://alertimmo.ma/properties/456</loc>
+    <lastmod>2024-04-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
   </url>
 </urlset>
