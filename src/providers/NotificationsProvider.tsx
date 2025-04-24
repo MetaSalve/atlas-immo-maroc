@@ -9,6 +9,14 @@ import { Database } from '@/integrations/supabase/types';
 // Define the Notification type directly from the Database type
 type Notification = Database['public']['Tables']['notifications']['Row'];
 
+// Define the expected structure for notification data
+interface NotificationData {
+  propertyId?: string;
+  alertId?: string;
+  properties?: string[];
+  [key: string]: any; // Allow for other properties
+}
+
 interface NotificationsContextType {
   hasPermission: boolean;
   notifications: Notification[];
@@ -103,9 +111,10 @@ export const NotificationsProvider = ({ children }: { children: React.ReactNode 
             action: {
               label: 'Voir',
               onClick: () => {
-                // Redirect to appropriate page if needed
-                if (newNotification.data?.propertyId) {
-                  window.location.href = `/properties/${newNotification.data.propertyId}`;
+                // Safely access propertyId with type assertion
+                const notificationData = newNotification.data as NotificationData;
+                if (notificationData?.propertyId) {
+                  window.location.href = `/properties/${notificationData.propertyId}`;
                 }
                 // Mark as read
                 markAsRead(newNotification.id);
