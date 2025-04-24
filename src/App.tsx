@@ -1,6 +1,7 @@
 
 import React from "react";
 import { Toaster } from "@/components/ui/toaster";
+import { toast } from "@/components/ui/sonner"; // Import toast from sonner
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -33,9 +34,8 @@ const queryClient = new QueryClient({
 // Composant de protection pour les routes nécessitant une authentification
 const ProtectedRoute = ({ element }: { element: React.ReactNode }) => {
   const navigate = () => {
-    toast({
-      title: "Connexion requise",
-      description: "Veuillez vous connecter pour accéder à cette fonctionnalité",
+    toast.info("Connexion requise", {
+      description: "Veuillez vous connecter pour accéder à cette fonctionnalité"
     });
     return <Navigate to="/auth" replace />;
   };
