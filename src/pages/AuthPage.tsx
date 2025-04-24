@@ -1,29 +1,27 @@
-
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useAuth } from '@/providers/AuthProvider';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { toast } from 'sonner';
-import { Shield } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import { supabase } from '@/integrations/supabase/client';
-import { useProfilePage } from './ProfilePage/hooks/useProfilePage';
+import { toast } from 'sonner';
 import { LoginForm } from '@/components/auth/LoginForm';
 import { SignupForm } from '@/components/auth/SignupForm';
 import { RecoveryForm } from '@/components/auth/RecoveryForm';
+import { SecurityFooter } from '@/components/auth/SecurityFooter';
+import { useAuthValidation } from '@/hooks/useAuthValidation';
+import { supabase } from '@/integrations/supabase/client';
 
 const AuthPage = () => {
   const [isLogin, setIsLogin] = useState(true);
   const [isRecovery, setIsRecovery] = useState(false);
   const [email, setEmail] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [csrfToken, setCsrfToken] = useState('');
   const [isBlocked, setIsBlocked] = useState(false);
   const [blockExpiryMinutes, setBlockExpiryMinutes] = useState(0);
   const { signInWithEmail, signUp, user } = useAuth();
-  const { trackLoginAttempt } = useProfilePage();
   const navigate = useNavigate();
+  const { errorMessage, setErrorMessage, validateLogin, validateSignup, validateEmail } = useAuthValidation();
 
   useEffect(() => {
     const token = Math.random().toString(36).substring(2, 15) + 
@@ -54,11 +52,6 @@ const AuthPage = () => {
     return null;
   }
 
-  const validateEmail = (email: string) => {
-    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return regex.test(email);
-  };
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMessage(null);
@@ -68,18 +61,14 @@ const AuthPage = () => {
       return;
     }
     
-    if (!validateEmail(email)) {
-      setErrorMessage("L'adresse email n'est pas valide");
-      return;
-    }
-    
     const form = e.target as HTMLFormElement;
     const passwordInput = form.querySelector('input[type="password"]') as HTMLInputElement;
     const password = passwordInput.value;
     
-    if (!isLogin && password.length < 8) {
-      setErrorMessage("Le mot de passe doit contenir au moins 8 caractères");
-      return;
+    if (isLogin) {
+      if (!validateLogin(email, password)) return;
+    } else {
+      if (!validateSignup(email, password)) return;
     }
     
     setIsLoading(true);
@@ -87,7 +76,6 @@ const AuthPage = () => {
     try {
       if (isLogin) {
         await signInWithEmail(email, password);
-        trackLoginAttempt(true);
       } else {
         await signUp(email, password);
         toast.success('Compte créé avec succès. Veuillez vérifier votre email pour confirmer votre inscription.');
@@ -124,10 +112,7 @@ const AuthPage = () => {
     e.preventDefault();
     setErrorMessage(null);
     
-    if (!validateEmail(email)) {
-      setErrorMessage("Veuillez saisir une adresse email valide");
-      return;
-    }
+    if (!validateEmail(email)) return;
     
     setIsLoading(true);
     
@@ -235,10 +220,7 @@ const AuthPage = () => {
             </Button>
           )}
           
-          <div className="flex items-center justify-center space-x-2">
-            <Shield className="h-4 w-4 text-muted-foreground" />
-            <span className="text-xs text-muted-foreground">Connexion sécurisée SSL</span>
-          </div>
+          <SecurityFooter />
         </CardFooter>
       </Card>
     </div>
