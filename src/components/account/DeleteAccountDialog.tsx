@@ -6,6 +6,7 @@ import { toast } from 'sonner';
 import { useAuth } from '@/providers/AuthProvider';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
+import type { Tables } from '@/integrations/supabase/types';
 
 export function DeleteAccountDialog({ open, onOpenChange }: { open: boolean; onOpenChange: (open: boolean) => void }) {
   const [reason, setReason] = useState('');
@@ -19,12 +20,12 @@ export function DeleteAccountDialog({ open, onOpenChange }: { open: boolean; onO
     try {
       setIsDeleting(true);
       
-      // Store deletion reason
+      // Store deletion reason in the account_deletions table
       const { error: feedbackError } = await supabase
         .from('account_deletions')
         .insert({
           user_id: user.id,
-          reason: reason,
+          reason: reason || null
         });
 
       if (feedbackError) throw feedbackError;
@@ -56,7 +57,7 @@ export function DeleteAccountDialog({ open, onOpenChange }: { open: boolean; onO
         </AlertDialogHeader>
         <div className="my-4">
           <label htmlFor="reason" className="text-sm font-medium mb-2 block">
-            Pouvez-vous nous dire pourquoi vous partez ? (facultatif)
+            Pourquoi avez-vous décidé de quitter Alerte Immo ? (facultatif)
           </label>
           <Textarea
             id="reason"
