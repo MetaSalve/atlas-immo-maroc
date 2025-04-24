@@ -7,7 +7,7 @@ import { AlertTriangle } from 'lucide-react';
 interface PropertyGridProps {
   properties: Property[];
   favorites?: string[];
-  selectedProperties: Property[];
+  selectedProperties?: Property[];
   onToggleFavorite?: (id: string) => void;
   onPropertySelect?: (property: Property) => void;
   emptyMessage?: string;

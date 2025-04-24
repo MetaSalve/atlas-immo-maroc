@@ -40,6 +40,7 @@ const FavoritesPage = () => {
         <PropertyGrid
           properties={favoriteProperties}
           favorites={favorites}
+          selectedProperties={[]}
           onToggleFavorite={toggleFavorite}
         />
       ) : (

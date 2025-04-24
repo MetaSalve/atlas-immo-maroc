@@ -2,10 +2,11 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { PropertyGrid } from '@/components/property/PropertyGrid';
+import { Property } from '@/types/property';
 
 interface PropertiesSectionProps {
   title: string;
-  properties: any[];
+  properties: Property[];
   favorites: string[];
   onToggleFavorite: (id: string) => void;
   isLoading: boolean;
@@ -34,10 +35,10 @@ export const PropertiesSection = ({
       <PropertyGrid 
         properties={properties}
         favorites={favorites}
+        selectedProperties={[]}
         onToggleFavorite={onToggleFavorite}
         isLoading={isLoading}
       />
     </section>
   );
 };
-

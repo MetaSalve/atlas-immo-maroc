@@ -1,6 +1,7 @@
+
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Home, Bed, Bath, Maximize, Heart, Compare } from 'lucide-react';
+import { Home, Bed, Bath, Maximize, Heart, ArrowLeftRight } from 'lucide-react';
 import { Property } from '@/types/property';
 import { useToast } from '@/hooks/use-toast';
 import { Card, CardContent } from '@/components/ui/card';
@@ -89,7 +90,7 @@ export const PropertyCard = ({
               className="absolute top-2 left-2 bg-white/80 hover:bg-white"
               onClick={handleCompareClick}
             >
-              <Compare 
+              <ArrowLeftRight 
                 className={cn(
                   "h-5 w-5 transition-colors",
                   isSelected ? "text-primary" : "text-muted-foreground"
