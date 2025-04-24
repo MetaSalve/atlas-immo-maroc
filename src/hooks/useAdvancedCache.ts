@@ -1,6 +1,6 @@
 
 import { useState, useEffect, useCallback } from 'react';
-import { useQueryClient } from '@tanstack/react-query';
+import { useQueryClient, QueryOptions, QueryKey } from '@tanstack/react-query';
 import { optimizedQueryKeys, cacheConfig } from './useCacheConfig';
 import { useNetwork } from './useNetwork';
 
@@ -123,8 +123,8 @@ export const useAdvancedCache = () => {
         misses++;
       } else if (query.state.status === 'success') {
         hits++;
-        // Fix: Safely access staleTime from query.options
-        const staleTime = query.options.staleTime ?? 0;
+        // Safely extract staleTime, defaulting to 0 if not available
+        const staleTime = (query.options as QueryOptions<unknown, Error, unknown, QueryKey>).staleTime ?? 0;
         if (query.state.dataUpdatedAt < Date.now() - staleTime) {
           stale++;
         }
@@ -176,3 +176,4 @@ export const useAdvancedCache = () => {
     cacheStats,
   };
 };
+
