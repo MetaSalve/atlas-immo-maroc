@@ -97,13 +97,12 @@ export const PremiumSubscriptionCard = ({
           </div>
         </div>
       </CardContent>
-      <CardFooter className="flex flex-col sm:flex-row gap-3">
+      <CardFooter className="flex flex-col sm:flex-row gap-3 justify-center sm:justify-start pt-6">
         <Button 
-          variant="outline"
           className="w-full sm:w-auto"
+          variant="outline"
           onClick={onManagePayment}
         >
-          <CreditCard className="h-4 w-4 mr-2" />
           Gérer le paiement
         </Button>
 
