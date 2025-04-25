@@ -6,11 +6,13 @@
 ### 1. Disponibilité du Service
 - Uptime
 - Statut des composants (API, DB, Auth)
+- Temps de disponibilité en pourcentage (objectif: 99.9%)
 
 ### 2. Performance
 - Temps de réponse moyen
 - Nombre de requêtes par minute
 - Taux d'erreur global
+- Temps de chargement des pages
 
 ### 3. Monitoring des Performances
 
@@ -19,6 +21,7 @@
   - Temps de réponse des requêtes API
   - Taux d'erreur
   - Taux d'utilisation des ressources
+  - Détection d'anomalies
 
 #### Métriques à Surveiller
 
@@ -38,6 +41,7 @@
 - Taux d'utilisation du pool de connexions
 - Espace de stockage utilisé
 - Requêtes lentes (> 200ms)
+- Deadlocks et timeouts
 
 ### 5. Exemple d'Implémentation avec Grafana
 
@@ -50,3 +54,12 @@ providers:
     options:
       path: /var/lib/grafana/dashboards
 ```
+
+### 6. Visualisation et Tableaux de Bord
+
+Nous recommandons la création de tableaux de bord spécifiques pour:
+
+1. **Vue d'ensemble** - Indicateurs clés pour la direction
+2. **Opérations quotidiennes** - Pour l'équipe technique
+3. **Diagnostique** - Pour l'investigation des incidents
+4. **Capacité** - Pour la planification long terme

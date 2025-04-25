@@ -5,16 +5,19 @@
 
 ### 1. Alertes Critiques
 - SMS/appels aux responsables d'astreinte
-- Notifications push dans l'application Slack dédiée
+- Notifications push dans l'application Slack dédiée (#alerts-critical)
 - Emails aux responsables techniques
+- Appels automatisés via PagerDuty
 
 ### 2. Alertes Moyennes
-- Notifications Slack
+- Notifications Slack (#alerts-important)
 - Emails
+- Notifications dans le tableau de bord de monitoring
 
 ### 3. Alertes Informatives
-- Notifications Slack uniquement
+- Notifications Slack uniquement (#alerts-info)
 - Tableau de bord de monitoring
+- Rapport quotidien par email
 
 ## Configuration des Alertes
 
@@ -44,6 +47,7 @@ options:
 - Minimum de 2 personnes d'astreinte à tout moment
 - Temps de réponse maximum de 15 minutes
 - Procédure d'escalade automatique après 30 minutes sans réponse
+- Documentation des procédures d'astreinte accessible à toute l'équipe
 
 ## Niveaux de Criticité
 
@@ -53,3 +57,12 @@ options:
 | P1 | Majeur - Fonctionnalité principale inutilisable | Paiements indisponibles | < 30 min (24/7) |
 | P2 | Significatif - Fonctionnement dégradé | Lenteurs généralisées | < 2h (heures ouvrées) |
 | P3 | Mineur - Impact limité | Anomalies visuelles | < 1 jour ouvré |
+
+## Réduction des Fausses Alertes
+
+Pour minimiser la fatigue d'alerte:
+
+1. Validation des alertes avec des seuils progressifs
+2. Détection de corrélation entre alertes
+3. Revue mensuelle des alertes déclenchées pour ajuster les seuils
+4. Tests automatisés des mécanismes d'alerte
