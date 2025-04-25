@@ -7,7 +7,7 @@ import { Database } from 'lucide-react';
 import { FadeIn } from '../ui/animations';
 import { AccessibilityBar } from '../common/AccessibilityBar';
 import { InstallPWA } from '../common/InstallPWA';
-import { OfflineIndicator } from '../common/OfflineIndicator';
+import { PWAStatus } from '../common/PWAStatus';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -25,7 +25,7 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
         </FadeIn>
       </main>
       <InstallPWA />
-      <OfflineIndicator />
+      <PWAStatus />
       <AccessibilityBar />
       <footer className="container py-4 text-center text-sm text-muted-foreground border-t">
         <div className="flex items-center justify-center gap-2 font-medium">
