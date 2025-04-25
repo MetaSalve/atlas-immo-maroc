@@ -1,6 +1,7 @@
 
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.45.0";
+import Stripe from "https://esm.sh/stripe@14.21.0";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -14,10 +15,10 @@ serve(async (req) => {
   }
 
   try {
-    const { transactionId } = await req.json();
+    const { sessionId } = await req.json();
     
-    if (!transactionId) {
-      throw new Error('Transaction ID is required');
+    if (!sessionId) {
+      throw new Error('Session ID is required');
     }
 
     // Get auth token from request
@@ -25,6 +26,12 @@ serve(async (req) => {
     if (!authHeader) {
       throw new Error('Authorization header is required');
     }
+
+    // Initialize Stripe with your secret key
+    const stripeSecretKey = Deno.env.get("STRIPE_SECRET_KEY") || "keytoprovide";
+    const stripe = new Stripe(stripeSecretKey, {
+      apiVersion: "2023-10-16",
+    });
 
     // Create Supabase client with SERVICE ROLE KEY to bypass RLS
     const supabaseAdmin = createClient(
@@ -56,11 +63,20 @@ serve(async (req) => {
       throw new Error('Unauthorized');
     }
 
-    // Fetch transaction details
+    // Retrieve the checkout session from Stripe
+    const session = await stripe.checkout.sessions.retrieve(sessionId, {
+      expand: ['subscription', 'subscription.default_payment_method']
+    });
+
+    if (!session) {
+      throw new Error('Session not found');
+    }
+
+    // Find transaction by payment_id
     const { data: transaction, error: transactionError } = await supabaseAdmin
       .from('payment_transactions')
       .select('*')
-      .eq('payment_id', transactionId)
+      .eq('payment_id', sessionId)
       .eq('user_id', user.id)
       .single();
       
@@ -68,19 +84,22 @@ serve(async (req) => {
       throw new Error('Transaction not found');
     }
 
-    // Update transaction status to completed if it's still pending
-    if (transaction.status === 'pending') {
-      await supabaseAdmin
-        .from('payment_transactions')
-        .update({ 
-          status: 'completed',
-          updated_at: new Date().toISOString()
-        })
-        .eq('payment_id', transactionId);
+    // Update transaction status based on the Stripe session status
+    const status = session.payment_status === 'paid' ? 'completed' : session.status;
+    await supabaseAdmin
+      .from('payment_transactions')
+      .update({ 
+        status: status,
+        updated_at: new Date().toISOString()
+      })
+      .eq('payment_id', sessionId);
 
-      // Calculate subscription end date (30 days from now)
-      const subscriptionEnd = new Date();
-      subscriptionEnd.setDate(subscriptionEnd.getDate() + 30);
+    // If payment is successful and there's a subscription, update user profile
+    if (session.payment_status === 'paid' && session.subscription) {
+      const subscription = await stripe.subscriptions.retrieve(session.subscription.toString());
+      
+      // Calculate subscription end date from the current period end
+      const subscriptionEnd = new Date(subscription.current_period_end * 1000);
       
       // Update user profile to premium
       await supabaseAdmin
@@ -99,7 +118,10 @@ serve(async (req) => {
         success: true,
         transaction: {
           ...transaction,
-          subscription_ends_at: transaction.subscription_ends_at || null,
+          subscription_ends_at: session.subscription ? 
+            new Date((await stripe.subscriptions.retrieve(session.subscription.toString())).current_period_end * 1000).toISOString() : 
+            null,
+          status: status
         },
       }),
       {

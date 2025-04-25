@@ -24,3 +24,8 @@ enabled = true
 verify_jwt = true
 [functions.verify-payment]
 verify_jwt = true
+[functions.cmi-payment]
+verify_jwt = true
+[functions.stripe-webhook]
+verify_jwt = false
+

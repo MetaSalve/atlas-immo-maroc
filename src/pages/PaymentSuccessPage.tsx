@@ -17,7 +17,10 @@ const PaymentSuccessPage = () => {
   const [error, setError] = useState<string | null>(null);
   const [transaction, setTransaction] = useState<any>(null);
   
-  const transactionId = searchParams.get('transaction_id');
+  // Check for different payment providers
+  const sessionId = searchParams.get('session_id'); // Stripe
+  const orderId = searchParams.get('order_id'); // CMI
+  const transactionId = sessionId || orderId || '';
   
   useEffect(() => {
     // Redirect if not logged in
@@ -39,13 +42,18 @@ const PaymentSuccessPage = () => {
       try {
         // Call verify-payment edge function
         const { data, error } = await supabase.functions.invoke('verify-payment', {
-          body: { transactionId },
+          body: { sessionId: transactionId },
         });
         
         if (error || !data || !data.success) throw new Error(error?.message || 'Échec de la vérification du paiement');
         
         setTransaction(data.transaction);
         setLoading(false);
+        
+        // Show success notification
+        toast.success("Paiement confirmé", {
+          description: "Votre abonnement premium a été activé avec succès"
+        });
         
       } catch (err: any) {
         console.error('Erreur lors de la vérification du paiement:', err);

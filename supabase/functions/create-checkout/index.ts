@@ -1,6 +1,7 @@
 
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.45.0";
+import Stripe from "https://esm.sh/stripe@14.21.0";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -42,29 +43,70 @@ serve(async (req) => {
     if (userError || !user) {
       throw new Error('Unauthorized');
     }
+    
+    // Initialize Stripe with your secret key
+    const stripeSecretKey = Deno.env.get("STRIPE_SECRET_KEY") || "keytoprovide";
+    const stripe = new Stripe(stripeSecretKey, {
+      apiVersion: "2023-10-16",
+    });
+
+    // Check if a Stripe customer record exists for this user
+    const customers = await stripe.customers.list({ email: user.email, limit: 1 });
+    let customerId;
+    if (customers.data.length > 0) {
+      customerId = customers.data[0].id;
+    } else {
+      // Create a new customer if one doesn't exist
+      const customer = await stripe.customers.create({
+        email: user.email,
+        metadata: {
+          user_id: user.id
+        }
+      });
+      customerId = customer.id;
+    }
+
+    // Create a subscription checkout session
+    const session = await stripe.checkout.sessions.create({
+      customer: customerId,
+      payment_method_types: ["card"],
+      line_items: [
+        {
+          price_data: {
+            currency: "mad",
+            product_data: {
+              name: "Abonnement Premium AlertImmo",
+              description: "Accès à toutes les fonctionnalités premium d'AlertImmo",
+            },
+            unit_amount: 9900, // 99 MAD en centimes
+            recurring: {
+              interval: "month"
+            }
+          },
+          quantity: 1,
+        },
+      ],
+      mode: "subscription",
+      success_url: `${req.headers.get('origin')}/payment-success?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${req.headers.get('origin')}/subscription`,
+    });
 
     // Create a payment transaction record
-    const { error: transactionError, data: transactionData } = await supabaseClient
+    const { error: transactionError } = await supabaseClient
       .from('payment_transactions')
       .insert({
         user_id: user.id,
         amount: 99,
         status: 'pending',
-        payment_id: `sim_${Date.now()}`
-      })
-      .select('payment_id')
-      .single();
+        payment_id: session.id
+      });
 
     if (transactionError) throw transactionError;
-
-    // In a real implementation, you would redirect to a payment gateway here
-    // For now, we'll simulate a successful payment with a redirect URL
-    const redirectUrl = `${req.headers.get('origin')}/payment-success?transaction_id=${transactionData.payment_id}`;
 
     return new Response(
       JSON.stringify({
         success: true,
-        redirectUrl: redirectUrl,
+        redirectUrl: session.url,
       }),
       {
         headers: { ...corsHeaders, "Content-Type": "application/json" },
