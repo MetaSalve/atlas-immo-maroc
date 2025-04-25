@@ -5,7 +5,7 @@ import { useAuth } from '@/providers/AuthProvider';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
-import { CreditCard, Lock } from 'lucide-react';
+import { CreditCard, Lock, Loader2 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 
 const PaymentPage = () => {
@@ -19,48 +19,26 @@ const PaymentPage = () => {
     return null;
   }
 
-  const handleSimulatedPayment = async () => {
-    if (!user) return;
-    
+  const handlePayment = async () => {
     try {
       setLoading(true);
       
-      // Create a payment transaction record
-      const { error: transactionError } = await supabase
-        .from('payment_transactions')
-        .insert({
-          user_id: user.id,
-          amount: 99,
-          status: 'completed',
-          payment_id: `sim_${Date.now()}`
-        });
-
-      if (transactionError) throw transactionError;
-
-      // Update user's subscription status
-      const { error: updateError } = await supabase
-        .from('profiles')
-        .update({ 
-          subscription_status: 'premium',
-          subscription_tier: 'premium',
-          subscription_ends_at: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString() // +30 days
-        })
-        .eq('id', user.id);
-
-      if (updateError) throw updateError;
-
-      toast.success("Paiement simulé accepté", {
-        description: "Votre abonnement Premium est maintenant actif. Profitez de toutes les fonctionnalités !",
-        duration: 5000
+      // Call the create-checkout edge function
+      const { data, error } = await supabase.functions.invoke('create-checkout', {
+        body: {},
       });
       
-      navigate('/profile');
-    } catch (error: any) {
+      if (error) throw new Error(error.message);
+      if (!data || !data.success) throw new Error('Échec de la création du paiement');
+      
+      // Redirect to payment page or success page (for simulated payment)
+      window.location.href = data.redirectUrl;
+      
+    } catch (error) {
       console.error('Error processing payment:', error);
       toast.error("Erreur lors du traitement", {
-        description: "Une erreur est survenue lors de la simulation du paiement."
+        description: "Une erreur est survenue lors de la création du paiement."
       });
-    } finally {
       setLoading(false);
     }
   };
@@ -108,11 +86,11 @@ const PaymentPage = () => {
         <CardFooter>
           <Button 
             className="w-full" 
-            onClick={handleSimulatedPayment}
+            onClick={handlePayment}
             disabled={loading}
           >
             {loading ? (
-              <>Simulation en cours...</>
+              <><Loader2 className="h-4 w-4 mr-2 animate-spin" />Simulation en cours...</>
             ) : (
               <>
                 <Lock className="h-4 w-4 mr-2" />

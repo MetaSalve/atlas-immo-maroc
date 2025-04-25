@@ -1,8 +1,26 @@
 
+# Supabase configuration
 project_id = "lomogmjwjnhvmcqkpjmg"
 
-[functions.process-scraping-queue]
-verify_jwt = false
+[api]
+enabled = true
+port = 54321
+schemas = ["public", "storage", "graphql_public"]
 
-[functions.process-alert-notifications]
-verify_jwt = false
+[db]
+port = 54322
+
+[studio]
+port = 54323
+
+[inbucket]
+port = 54324
+
+[storage]
+enabled = true
+
+[functions]
+[functions.create-checkout]
+verify_jwt = true
+[functions.verify-payment]
+verify_jwt = true

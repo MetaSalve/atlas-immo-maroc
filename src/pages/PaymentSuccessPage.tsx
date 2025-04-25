@@ -20,7 +20,7 @@ const PaymentSuccessPage = () => {
   const transactionId = searchParams.get('transaction_id');
   
   useEffect(() => {
-    // Rediriger si non connecté
+    // Redirect if not logged in
     if (!user) {
       toast.error("Session expirée", {
         description: "Veuillez vous reconnecter pour accéder à cette page"
@@ -37,47 +37,14 @@ const PaymentSuccessPage = () => {
       }
       
       try {
-        // Récupérer les détails de la transaction
-        const { data, error } = await supabase
-          .from('payment_transactions')
-          .select('*')
-          .eq('payment_id', transactionId)
-          .eq('user_id', user.id)
-          .single();
+        // Call verify-payment edge function
+        const { data, error } = await supabase.functions.invoke('verify-payment', {
+          body: { transactionId },
+        });
         
-        if (error) throw error;
+        if (error || !data || !data.success) throw new Error(error?.message || 'Échec de la vérification du paiement');
         
-        if (!data) {
-          setError("Transaction non trouvée");
-          setLoading(false);
-          return;
-        }
-        
-        setTransaction(data);
-        
-        // Vérifier si l'abonnement a déjà été mis à jour
-        const { data: profile } = await supabase
-          .from('profiles')
-          .select('subscription_status, subscription_ends_at')
-          .eq('id', user.id)
-          .single();
-          
-        // Si l'abonnement n'est pas encore premium, le mettre à jour
-        if (profile && profile.subscription_status !== 'premium') {
-          const thirtyDaysLater = new Date();
-          thirtyDaysLater.setDate(thirtyDaysLater.getDate() + 30);
-          
-          await supabase
-            .from('profiles')
-            .update({
-              subscription_status: 'premium',
-              subscription_tier: 'premium',
-              subscription_ends_at: thirtyDaysLater.toISOString(),
-              updated_at: new Date().toISOString()
-            })
-            .eq('id', user.id);
-        }
-        
+        setTransaction(data.transaction);
         setLoading(false);
         
       } catch (err: any) {
