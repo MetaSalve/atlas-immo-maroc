@@ -7,6 +7,9 @@ import { formatPrice } from '@/lib/utils';
 import { Image } from '@/components/image/Image';
 import { LazyLoadedImage } from '@/components/common/LazyLoadedImage';
 import { motion } from 'framer-motion';
+import { useAuth } from '@/providers/AuthProvider';
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'sonner';
 
 interface PropertyCardProps {
   property: Property;
@@ -25,11 +28,38 @@ export const PropertyCard = ({
   onToggleSelect,
   className 
 }: PropertyCardProps) => {
+  const { user } = useAuth();
+  const navigate = useNavigate();
+
+  const handleFavoriteClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (!user) {
+      toast.info("Connexion requise", {
+        description: "Veuillez vous connecter pour ajouter des favoris",
+      });
+      navigate('/auth');
+      return;
+    }
+    onToggleFavorite(property.id);
+  };
+
+  const handleCardClick = () => {
+    if (!user) {
+      toast.info("Connexion requise", {
+        description: "Veuillez vous connecter pour voir les détails de l'annonce",
+      });
+      navigate('/auth');
+      return;
+    }
+    navigate(`/properties/${property.id}`);
+  };
+
   return (
     <motion.div
       whileHover={{ scale: 1.02 }}
       transition={{ duration: 0.2 }}
-      className="relative bg-white rounded-lg shadow-md overflow-hidden"
+      className="relative bg-white rounded-lg shadow-md overflow-hidden cursor-pointer"
+      onClick={handleCardClick}
     >
       <div className="aspect-w-16 aspect-h-9">
         <LazyLoadedImage
@@ -41,7 +71,7 @@ export const PropertyCard = ({
           variant="ghost"
           size="icon"
           className="absolute top-2 right-2 text-white hover:text-primary focus:text-primary bg-black/20 hover:bg-black/40 focus:bg-black/40 rounded-full"
-          onClick={() => onToggleFavorite(property.id)}
+          onClick={handleFavoriteClick}
           aria-label={isFavorite ? "Retirer des favoris" : "Ajouter aux favoris"}
           aria-pressed={isFavorite}
         >

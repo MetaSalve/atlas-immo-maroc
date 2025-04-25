@@ -1,11 +1,14 @@
 
-import { SimpleSearchFilters, SimpleSearchFiltersValues } from './SimpleSearchFilters';
 import { Button } from '@/components/ui/button';
-import { BookmarkPlus } from 'lucide-react';
+import { SimpleSearchFilters } from './SimpleSearchFilters';
+import { Bell } from 'lucide-react';
+import { useAuth } from '@/providers/AuthProvider';
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'sonner';
 
 interface SearchSidebarProps {
-  filters: SimpleSearchFiltersValues;
-  onFilterChange: (newFilters: Partial<SimpleSearchFiltersValues>) => void;
+  filters: any;
+  onFilterChange: (filters: any) => void;
   onApplyFilters: () => void;
   onResetFilters: () => void;
   onSaveAlert: () => void;
@@ -16,10 +19,24 @@ export const SearchSidebar = ({
   onFilterChange,
   onApplyFilters,
   onResetFilters,
-  onSaveAlert
+  onSaveAlert,
 }: SearchSidebarProps) => {
+  const { user } = useAuth();
+  const navigate = useNavigate();
+
+  const handleSaveAlert = () => {
+    if (!user) {
+      toast.info("Connexion requise", {
+        description: "Veuillez vous connecter pour créer une alerte",
+      });
+      navigate('/auth');
+      return;
+    }
+    onSaveAlert();
+  };
+
   return (
-    <aside>
+    <div className="space-y-6">
       <SimpleSearchFilters
         values={filters}
         onChange={onFilterChange}
@@ -27,17 +44,13 @@ export const SearchSidebar = ({
         onResetFilters={onResetFilters}
       />
       
-      <div className="mt-4">
-        <Button 
-          onClick={onSaveAlert} 
-          className="w-full"
-          variant="default"
-          size="lg"
-        >
-          <BookmarkPlus className="h-4 w-4 mr-2" />
-          Sauvegarder comme alerte
-        </Button>
-      </div>
-    </aside>
+      <Button 
+        onClick={handleSaveAlert}
+        className="w-full bg-terracotta hover:bg-terracotta/90"
+      >
+        <Bell className="h-4 w-4 mr-2" />
+        Sauvegarder comme alerte
+      </Button>
+    </div>
   );
 };
