@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { format, addDays } from 'date-fns';
 import { fr } from 'date-fns/locale';
@@ -255,7 +256,7 @@ export const SubscriptionTab = () => {
                 <AlertDialogFooter>
                   <AlertDialogCancel>Annuler</AlertDialogCancel>
                   <AlertDialogAction
-                    variant="destructive"
+                    className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
                     onClick={handleCancelSubscription}
                   >
                     Confirmer l'annulation
