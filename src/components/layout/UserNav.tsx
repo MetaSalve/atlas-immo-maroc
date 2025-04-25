@@ -1,9 +1,8 @@
 
 import { useNavigate } from 'react-router-dom';
-import { UserCircle, LogOut, User, Heart, Bell, CreditCard } from 'lucide-react';
+import { UserCircle, LogOut, User, Heart, Bell } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/providers/AuthProvider';
-import { useSubscription } from '@/providers/SubscriptionProvider';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -16,7 +15,6 @@ import {
 export const UserNav = () => {
   const navigate = useNavigate();
   const { user, signOut } = useAuth();
-  const { maxFavorites, allowedAlerts } = useSubscription();
   
   if (!user) {
     return (
@@ -57,13 +55,10 @@ export const UserNav = () => {
           <User className="h-4 w-4 mr-2" /> Profil
         </DropdownMenuItem>
         <DropdownMenuItem onClick={() => navigate('/favorites')}>
-          <Heart className="h-4 w-4 mr-2" /> Favoris ({maxFavorites})
+          <Heart className="h-4 w-4 mr-2" /> Favoris
         </DropdownMenuItem>
         <DropdownMenuItem onClick={() => navigate('/alerts')}>
-          <Bell className="h-4 w-4 mr-2" /> Alertes ({allowedAlerts})
-        </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => navigate('/subscription')}>
-          <CreditCard className="h-4 w-4 mr-2" /> Abonnement
+          <Bell className="h-4 w-4 mr-2" /> Alertes
         </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem onClick={() => signOut()} className="text-red-600">

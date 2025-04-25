@@ -6,7 +6,6 @@ import { useIsMobile } from '@/hooks/use-mobile';
 import { Database } from 'lucide-react';
 import { FadeIn } from '../ui/animations';
 import { AccessibilityBar } from '../common/AccessibilityBar';
-import { withPageTransition } from '../hoc/WithPageTransition';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -23,6 +22,7 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
           {children}
         </FadeIn>
       </main>
+      <AccessibilityBar />
       <footer className="container py-4 text-center text-sm text-muted-foreground border-t">
         <div className="flex items-center justify-center gap-2 font-medium">
           <Database className="h-4 w-4 text-primary" aria-hidden="true" />
@@ -33,11 +33,7 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
           <a href="/privacy" className="hover:underline">Politique de confidentialité</a>
         </div>
       </footer>
-      {!isMobile && <AccessibilityBar />} 
       {isMobile && <BottomNav />}
     </div>
   );
 };
-
-// Exporter avec la transition de page
-export default withPageTransition(Layout);

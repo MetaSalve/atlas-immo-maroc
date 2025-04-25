@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useContactForm } from '@/hooks/useContactForm';
 import { ZelligeBackground } from './HeroBackground';
@@ -44,7 +43,7 @@ export const ContactSection = () => {
               id="name"
               value={contactForm.name}
               onChange={(e) => setContactForm(prev => ({ ...prev, name: e.target.value }))}
-              className="w-full rounded-md border border-input bg-background px-3 py-2"
+              className="w-full rounded-md border border-input bg-white px-3 py-2"
               placeholder="Votre nom"
               required
             />
@@ -56,7 +55,7 @@ export const ContactSection = () => {
               id="email"
               value={contactForm.email}
               onChange={(e) => setContactForm(prev => ({ ...prev, email: e.target.value }))}
-              className="w-full rounded-md border border-input bg-background px-3 py-2"
+              className="w-full rounded-md border border-input bg-white px-3 py-2"
               placeholder="votre@email.com"
               required
             />
@@ -68,7 +67,7 @@ export const ContactSection = () => {
               rows={4}
               value={contactForm.message}
               onChange={(e) => setContactForm(prev => ({ ...prev, message: e.target.value }))}
-              className="w-full rounded-md border border-input bg-background px-3 py-2"
+              className="w-full rounded-md border border-input bg-white px-3 py-2"
               placeholder="Votre message..."
               required
             />
@@ -85,4 +84,3 @@ export const ContactSection = () => {
     </section>
   );
 };
-
