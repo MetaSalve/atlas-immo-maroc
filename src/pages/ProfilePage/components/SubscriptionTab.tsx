@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { format, addDays } from 'date-fns';
 import { fr } from 'date-fns/locale';
@@ -7,7 +6,20 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 import { useSubscription } from '@/providers/SubscriptionProvider';
+import { supabase } from '@/integrations/supabase/client';
+import { toast } from 'sonner';
 
 export const SubscriptionTab = () => {
   const { tier, maxFavorites, allowedAlerts, trialEndsAt } = useSubscription();
@@ -33,6 +45,40 @@ export const SubscriptionTab = () => {
 
   const handleUpgradeSubscription = () => {
     window.location.href = '/subscription';
+  };
+
+  const handleManageSubscription = async () => {
+    try {
+      const { data, error } = await supabase.functions.invoke('customer-portal', {
+        method: 'POST'
+      });
+
+      if (error) throw error;
+      
+      if (data?.url) {
+        window.location.href = data.url;
+      }
+    } catch (error) {
+      console.error('Error redirecting to customer portal:', error);
+      toast.error("Une erreur est survenue lors de l'accès au portail de paiement");
+    }
+  };
+
+  const handleCancelSubscription = async () => {
+    try {
+      const { data, error } = await supabase.functions.invoke('customer-portal', {
+        method: 'POST'
+      });
+
+      if (error) throw error;
+      
+      if (data?.url) {
+        window.location.href = data.url;
+      }
+    } catch (error) {
+      console.error('Error redirecting to customer portal:', error);
+      toast.error("Une erreur est survenue lors de l'annulation de l'abonnement");
+    }
   };
 
   return (
@@ -183,17 +229,40 @@ export const SubscriptionTab = () => {
             <Button 
               variant="outline"
               className="w-full sm:w-auto"
-              onClick={() => window.location.href = '/subscription'}
+              onClick={handleManageSubscription}
             >
+              <CreditCard className="h-4 w-4 mr-2" />
               Gérer le paiement
             </Button>
-            <Button
-              variant="outline" 
-              className="w-full sm:w-auto text-destructive hover:text-destructive hover:bg-destructive/10 border-destructive/30"
-              onClick={() => window.location.href = '/subscription'}
-            >
-              Annuler l'abonnement
-            </Button>
+
+            <AlertDialog>
+              <AlertDialogTrigger asChild>
+                <Button
+                  variant="outline" 
+                  className="w-full sm:w-auto text-destructive hover:text-destructive hover:bg-destructive/10 border-destructive/30"
+                >
+                  Annuler l'abonnement
+                </Button>
+              </AlertDialogTrigger>
+              <AlertDialogContent>
+                <AlertDialogHeader>
+                  <AlertDialogTitle>Êtes-vous sûr de vouloir annuler votre abonnement ?</AlertDialogTitle>
+                  <AlertDialogDescription>
+                    Vous perdrez l'accès à toutes les fonctionnalités premium à la fin de votre période d'abonnement actuelle.
+                    Votre abonnement restera actif jusqu'au {format(subscriptionData.renewalDate!, 'dd MMMM yyyy', { locale: fr })}.
+                  </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                  <AlertDialogCancel>Annuler</AlertDialogCancel>
+                  <AlertDialogAction
+                    variant="destructive"
+                    onClick={handleCancelSubscription}
+                  >
+                    Confirmer l'annulation
+                  </AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
           </CardFooter>
         </Card>
       )}
