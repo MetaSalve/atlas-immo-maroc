@@ -396,6 +396,45 @@ export type Database = {
           },
         ]
       }
+      subscriptions: {
+        Row: {
+          created_at: string | null
+          end_date: string
+          id: string
+          payment_id: string | null
+          payment_provider: string
+          plan_id: string
+          start_date: string
+          status: string
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          end_date: string
+          id?: string
+          payment_id?: string | null
+          payment_provider: string
+          plan_id: string
+          start_date: string
+          status: string
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          end_date?: string
+          id?: string
+          payment_id?: string | null
+          payment_provider?: string
+          plan_id?: string
+          start_date?: string
+          status?: string
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       user_alerts: {
         Row: {
           created_at: string
@@ -434,7 +473,14 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      create_test_user_alerts: {
+        Args: Record<PropertyKey, never>
+        Returns: undefined
+      }
+      update_test_user_profiles: {
+        Args: Record<PropertyKey, never>
+        Returns: undefined
+      }
     }
     Enums: {
       [_ in never]: never

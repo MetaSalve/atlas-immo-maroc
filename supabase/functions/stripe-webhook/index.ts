@@ -9,7 +9,6 @@ const corsHeaders = {
 };
 
 serve(async (req) => {
-  // Handle CORS preflight requests
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
   }
@@ -65,16 +64,21 @@ serve(async (req) => {
         // Calculate subscription end date
         const subscriptionEnd = new Date(subscription.current_period_end * 1000);
         
-        // Update user profile
+        // Update or create subscription record
         await supabaseAdmin
-          .from('profiles')
-          .update({ 
-            subscription_status: subscription.status === 'active' ? 'premium' : 'free',
-            subscription_tier: subscription.status === 'active' ? 'premium' : 'free',
-            subscription_ends_at: subscription.status === 'active' ? subscriptionEnd.toISOString() : null,
+          .from('subscriptions')
+          .upsert({ 
+            user_id: userId,
+            plan_id: subscription.status === 'active' ? 'premium' : 'free',
+            status: subscription.status,
+            start_date: new Date(subscription.current_period_start * 1000),
+            end_date: subscriptionEnd,
+            payment_provider: 'stripe',
+            payment_id: subscription.id,
             updated_at: new Date().toISOString()
-          })
-          .eq('id', userId);
+          }, {
+            onConflict: 'payment_id'
+          });
         
         break;
         
@@ -90,16 +94,14 @@ serve(async (req) => {
           throw new Error("User ID not found in customer metadata");
         }
         
-        // Update user profile to free
+        // Update subscription status to cancelled
         await supabaseAdmin
-          .from('profiles')
+          .from('subscriptions')
           .update({ 
-            subscription_status: 'free',
-            subscription_tier: 'free',
-            subscription_ends_at: null,
+            status: 'cancelled',
             updated_at: new Date().toISOString()
           })
-          .eq('id', cancelledUserId);
+          .eq('payment_id', cancelledSubscription.id);
           
         break;
         
@@ -121,7 +123,7 @@ serve(async (req) => {
     }
     
     return new Response(JSON.stringify({ received: true }), {
-      headers: { "Content-Type": "application/json" },
+      headers: { ...corsHeaders, "Content-Type": "application/json" },
       status: 200,
     });
   } catch (error) {

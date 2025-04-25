@@ -9,7 +9,6 @@ const corsHeaders = {
 };
 
 serve(async (req) => {
-  // Handle CORS preflight requests
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
   }
@@ -94,23 +93,27 @@ serve(async (req) => {
       })
       .eq('payment_id', sessionId);
 
-    // If payment is successful and there's a subscription, update user profile
+    // If payment is successful and there's a subscription, create subscription record
     if (session.payment_status === 'paid' && session.subscription) {
       const subscription = await stripe.subscriptions.retrieve(session.subscription.toString());
       
       // Calculate subscription end date from the current period end
       const subscriptionEnd = new Date(subscription.current_period_end * 1000);
       
-      // Update user profile to premium
-      await supabaseAdmin
-        .from('profiles')
-        .update({ 
-          subscription_status: 'premium',
-          subscription_tier: 'premium',
-          subscription_ends_at: subscriptionEnd.toISOString(),
-          updated_at: new Date().toISOString()
-        })
-        .eq('id', user.id);
+      // Insert new subscription record
+      const { error: subscriptionError } = await supabaseAdmin
+        .from('subscriptions')
+        .insert({
+          user_id: user.id,
+          plan_id: 'premium',
+          status: subscription.status,
+          start_date: new Date(),
+          end_date: subscriptionEnd,
+          payment_provider: 'stripe',
+          payment_id: subscription.id
+        });
+
+      if (subscriptionError) throw subscriptionError;
     }
 
     return new Response(
