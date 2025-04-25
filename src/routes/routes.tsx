@@ -1,4 +1,3 @@
-
 import { lazy } from 'react';
 import { LazyComponent } from '@/components/common/LazyComponent';
 import { PageTransition } from '@/components/common/PageTransition';
@@ -33,6 +32,7 @@ export const routes: CustomRouteObject[] = [
         </PageTransition>
       </LazyComponent>
     ),
+    authRequired: false,
   },
   {
     path: '/home',
@@ -43,6 +43,7 @@ export const routes: CustomRouteObject[] = [
         </PageTransition>
       </LazyComponent>
     ),
+    authRequired: false,
   },
   {
     path: '/search',
@@ -53,6 +54,7 @@ export const routes: CustomRouteObject[] = [
         </PageTransition>
       </LazyComponent>
     ),
+    authRequired: false,
   },
   {
     path: '/properties/:id',
@@ -63,6 +65,7 @@ export const routes: CustomRouteObject[] = [
         </PageTransition>
       </LazyComponent>
     ),
+    authRequired: true,
   },
   {
     path: '/auth',

@@ -21,24 +21,16 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
   if (loading) {
     return <LoadingFallback />;
   }
-  
-  // Éviter d'afficher un toast si l'utilisateur est déjà sur la page d'authentification
+
+  // Only check authentication for protected routes
   if (requiresAuth && !user) {
-    // Afficher le toast uniquement si on n'est pas déjà sur la page d'authentification
-    if (!location.pathname.includes('/auth')) {
-      toast.info("Connexion requise", {
-        description: "Veuillez vous connecter pour accéder à cette fonctionnalité",
-        position: "top-center",
-        // Limiter les notifications répétées
-        id: "auth-required",
-      });
-    }
+    toast.info("Connexion requise", {
+      description: "Veuillez vous connecter pour accéder à cette fonctionnalité",
+      position: "top-center",
+      id: "auth-required",
+    });
     
     return <Navigate to="/auth" state={{ from: location.pathname }} replace />;
-  }
-  
-  if (!requiresAuth && user) {
-    return <Navigate to="/" replace />;
   }
   
   return <PageTransition>{element}</PageTransition>;
