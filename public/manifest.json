@@ -1,0 +1,58 @@
+
+{
+  "name": "AlertImmo | L'agrégateur d'annonces immobilières au Maroc",
+  "short_name": "AlertImmo",
+  "description": "Trouvez votre bien immobilier idéal au Maroc grâce à notre agrégateur d'annonces et nos alertes personnalisées",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#4f46e5",
+  "orientation": "any",
+  "icons": [
+    {
+      "src": "/icons/icon-72x72.png",
+      "sizes": "72x72",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icons/icon-96x96.png",
+      "sizes": "96x96",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icons/icon-128x128.png",
+      "sizes": "128x128",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icons/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icons/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Rechercher un bien",
+      "short_name": "Recherche",
+      "description": "Lancez une recherche de biens immobiliers",
+      "url": "/search"
+    },
+    {
+      "name": "Mes favoris",
+      "short_name": "Favoris",
+      "description": "Accédez à vos biens favoris",
+      "url": "/favorites"
+    }
+  ],
+  "categories": ["immobilier", "maison", "shopping"]
+}
