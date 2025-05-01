@@ -1,188 +1,67 @@
-import { lazy } from 'react';
-import { LazyComponent } from '@/components/common/LazyComponent';
-import { PageTransition } from '@/components/common/PageTransition';
+import { HomePage } from '@/pages/HomePage';
+import { AuthPage } from '@/pages/AuthPage';
+import { ProfilePage } from '@/pages/ProfilePage';
+import { PropertiesPage } from '@/pages/PropertiesPage';
+import { PropertyDetailPage } from '@/pages/PropertyDetailPage';
+import { FavoritesPage } from '@/pages/FavoritesPage';
+import { AlertsPage } from '@/pages/AlertsPage';
+import { NotificationsPage } from '@/pages/NotificationsPage';
+import AdminPage from '@/pages/AdminPage';
+import AdminDashboardPage from '@/pages/AdminDashboardPage';
 import { CustomRouteObject } from './types';
-
-// Lazy load les pages
-const HomePage = lazy(() => import('@/pages/HomePage'));
-const SearchPage = lazy(() => import('@/pages/SearchPage'));
-const PropertyDetailPage = lazy(() => import('@/pages/PropertyDetailPage'));
-const AuthPage = lazy(() => import('@/pages/AuthPage'));
-const ResetPasswordPage = lazy(() => import('@/pages/ResetPasswordPage'));
-const ProfilePage = lazy(() => import('@/pages/ProfilePage'));
-const FavoritesPage = lazy(() => import('@/pages/FavoritesPage'));
-const AlertsPage = lazy(() => import('@/pages/AlertsPage'));
-const SubscriptionPage = lazy(() => import('@/pages/SubscriptionPage'));
-const Index = lazy(() => import('@/pages/Index'));
-
-// Nouvelles pages
-const PaymentSuccessPage = lazy(() => import('@/pages/PaymentSuccessPage'));
-const LegalPage = lazy(() => import('@/pages/LegalPage'));
-const PrivacyPage = lazy(() => import('@/pages/PrivacyPage'));
-const TermsPage = lazy(() => import('@/pages/TermsPage'));
-const PaymentPage = lazy(() => import('@/pages/PaymentPage'));
 
 export const routes: CustomRouteObject[] = [
   {
     path: '/',
-    element: (
-      <LazyComponent>
-        <PageTransition>
-          <Index />
-        </PageTransition>
-      </LazyComponent>
-    ),
-    authRequired: false,
-  },
-  {
-    path: '/home',
-    element: (
-      <LazyComponent>
-        <PageTransition>
-          <HomePage />
-        </PageTransition>
-      </LazyComponent>
-    ),
-    authRequired: false,
-  },
-  {
-    path: '/search',
-    element: (
-      <LazyComponent>
-        <PageTransition>
-          <SearchPage />
-        </PageTransition>
-      </LazyComponent>
-    ),
-    authRequired: false,
-  },
-  {
-    path: '/properties/:id',
-    element: (
-      <LazyComponent>
-        <PageTransition>
-          <PropertyDetailPage />
-        </PageTransition>
-      </LazyComponent>
-    ),
-    authRequired: true,
+    element: <HomePage />,
+    authRequired: false
   },
   {
     path: '/auth',
-    element: (
-      <LazyComponent>
-        <PageTransition>
-          <AuthPage />
-        </PageTransition>
-      </LazyComponent>
-    ),
-    authRequired: false,
-  },
-  {
-    path: '/auth/reset-password',
-    element: (
-      <LazyComponent>
-        <PageTransition>
-          <ResetPasswordPage />
-        </PageTransition>
-      </LazyComponent>
-    ),
-    authRequired: false,
+    element: <AuthPage />,
+    authRequired: false
   },
   {
     path: '/profile',
-    element: (
-      <LazyComponent>
-        <PageTransition>
-          <ProfilePage />
-        </PageTransition>
-      </LazyComponent>
-    ),
-    authRequired: true,
+    element: <ProfilePage />,
+    authRequired: true
+  },
+  {
+    path: '/properties',
+    element: <PropertiesPage />,
+    authRequired: false
+  },
+  {
+    path: '/properties/:id',
+    element: <PropertyDetailPage />,
+    authRequired: false
   },
   {
     path: '/favorites',
-    element: (
-      <LazyComponent>
-        <PageTransition>
-          <FavoritesPage />
-        </PageTransition>
-      </LazyComponent>
-    ),
-    authRequired: true,
+    element: <FavoritesPage />,
+    authRequired: true
   },
   {
     path: '/alerts',
-    element: (
-      <LazyComponent>
-        <PageTransition>
-          <AlertsPage />
-        </PageTransition>
-      </LazyComponent>
-    ),
-    authRequired: true,
+    element: <AlertsPage />,
+    authRequired: true
   },
   {
-    path: '/subscription',
-    element: (
-      <LazyComponent>
-        <PageTransition>
-          <SubscriptionPage />
-        </PageTransition>
-      </LazyComponent>
-    ),
-    authRequired: true,
+    path: '/notifications',
+    element: <NotificationsPage />,
+    authRequired: true
   },
+  // Route admin existante
   {
-    path: '/payment',
-    element: (
-      <LazyComponent>
-        <PageTransition>
-          <PaymentPage />
-        </PageTransition>
-      </LazyComponent>
-    ),
-    authRequired: true,
+    path: '/admin',
+    element: <AdminPage />,
+    authRequired: true
   },
+  
+  // Nouvelle route pour le tableau de bord admin
   {
-    path: '/payment-success',
-    element: (
-      <LazyComponent>
-        <PageTransition>
-          <PaymentSuccessPage />
-        </PageTransition>
-      </LazyComponent>
-    ),
-    authRequired: true,
-  },
-  {
-    path: '/legal',
-    element: (
-      <LazyComponent>
-        <PageTransition>
-          <LegalPage />
-        </PageTransition>
-      </LazyComponent>
-    ),
-  },
-  {
-    path: '/privacy',
-    element: (
-      <LazyComponent>
-        <PageTransition>
-          <PrivacyPage />
-        </PageTransition>
-      </LazyComponent>
-    ),
-  },
-  {
-    path: '/terms',
-    element: (
-      <LazyComponent>
-        <PageTransition>
-          <TermsPage />
-        </PageTransition>
-      </LazyComponent>
-    ),
-  },
+    path: '/admin/dashboard',
+    element: <AdminDashboardPage />,
+    authRequired: true
+  }
 ];

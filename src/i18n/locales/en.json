@@ -1,0 +1,158 @@
+
+{
+  "app": {
+    "name": "AlertImmo",
+    "tagline": "Find your ideal property in Morocco"
+  },
+  "common": {
+    "search": "Search",
+    "filter": "Filter",
+    "sort": "Sort",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "add": "Add",
+    "yes": "Yes",
+    "no": "No",
+    "loading": "Loading",
+    "error": "Error",
+    "success": "Success",
+    "info": "Information",
+    "warning": "Warning",
+    "confirm": "Confirm",
+    "back": "Back",
+    "next": "Next",
+    "previous": "Previous"
+  },
+  "auth": {
+    "login": "Login",
+    "signup": "Sign up",
+    "logout": "Logout",
+    "email": "Email",
+    "password": "Password",
+    "forgotPassword": "Forgot password?",
+    "resetPassword": "Reset password",
+    "createAccount": "Create an account",
+    "alreadyHaveAccount": "Already registered?",
+    "dontHaveAccount": "Don't have an account?",
+    "twoFactor": {
+      "title": "Two-factor authentication",
+      "setup": "Set up two-factor authentication",
+      "enter": "Enter 6-digit code"
+    }
+  },
+  "profile": {
+    "title": "Profile",
+    "personalInfo": "Personal information",
+    "security": "Security",
+    "subscription": "Subscription",
+    "preferences": "Preferences",
+    "signOut": "Sign out",
+    "deleteAccount": "Delete my account",
+    "firstName": "First name",
+    "lastName": "Last name",
+    "email": "Email",
+    "phone": "Phone",
+    "updateProfile": "Update profile",
+    "passwordChange": "Password change",
+    "currentPassword": "Current password",
+    "newPassword": "New password",
+    "confirmPassword": "Confirm password"
+  },
+  "subscription": {
+    "plans": "Subscription plans",
+    "features": "Features",
+    "free": "Free",
+    "premium": "Premium",
+    "current": "Current subscription",
+    "upgrade": "Upgrade to Premium",
+    "manage": "Manage subscription",
+    "cancel": "Cancel subscription",
+    "price": {
+      "monthly": "{{price}} per month",
+      "yearly": "{{price}} per year"
+    },
+    "status": {
+      "active": "Active",
+      "canceled": "Canceled",
+      "incomplete": "Incomplete",
+      "incomplete_expired": "Expired",
+      "past_due": "Past due",
+      "trialing": "Trial",
+      "unpaid": "Unpaid"
+    }
+  },
+  "properties": {
+    "title": "Properties",
+    "search": "Search properties",
+    "filters": {
+      "type": "Property type",
+      "priceRange": "Price range",
+      "bedrooms": "Bedrooms",
+      "bathrooms": "Bathrooms",
+      "area": "Area",
+      "keywords": "Keywords"
+    },
+    "types": {
+      "all": "All",
+      "apartment": "Apartment",
+      "house": "House",
+      "villa": "Villa",
+      "office": "Office",
+      "land": "Land",
+      "other": "Other"
+    },
+    "status": {
+      "sale": "For sale",
+      "rent": "For rent"
+    },
+    "details": {
+      "price": "Price",
+      "area": "Area",
+      "bedrooms": "Bedrooms",
+      "bathrooms": "Bathrooms",
+      "address": "Address",
+      "description": "Description",
+      "features": "Features",
+      "map": "View on map"
+    }
+  },
+  "alerts": {
+    "title": "Alerts",
+    "create": "Create alert",
+    "edit": "Edit alert",
+    "delete": "Delete alert",
+    "empty": "No alerts defined",
+    "form": {
+      "name": "Alert name",
+      "criteria": "Criteria",
+      "frequency": "Frequency",
+      "notifications": "Notifications"
+    },
+    "frequency": {
+      "instant": "Instant",
+      "daily": "Daily",
+      "weekly": "Weekly"
+    }
+  },
+  "favorites": {
+    "title": "Favorites",
+    "empty": "No favorites saved",
+    "add": "Add to favorites",
+    "remove": "Remove from favorites"
+  },
+  "notifications": {
+    "title": "Notifications",
+    "empty": "No notifications",
+    "markAllRead": "Mark all as read",
+    "settings": "Notification settings"
+  },
+  "errors": {
+    "network": "Connection problem. Please check your internet connection.",
+    "auth": "You are no longer authenticated. Please login again.",
+    "validation": "The entered data is invalid.",
+    "server": "An error occurred on our servers. Our teams have been notified.",
+    "unknown": "An unexpected error occurred."
+  }
+}

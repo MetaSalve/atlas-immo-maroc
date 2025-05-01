@@ -1,52 +1,62 @@
 
-import React, { useEffect } from 'react';
+import React, { ReactNode } from 'react';
+import { BrowserRouter } from 'react-router-dom';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { Toaster } from '@/components/ui/sonner';
+import { AuthProvider } from './AuthProvider';
+import { SubscriptionProvider } from './SubscriptionProvider';
+import { AccessibilityProvider } from './AccessibilityProvider';
+import { CacheProvider } from './CacheProvider';
+import { NotificationsProvider } from './NotificationsProvider';
 import { HelmetProvider } from 'react-helmet-async';
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter } from "react-router-dom";
-import { TooltipProvider } from "@/components/ui/tooltip";
-import { AuthProvider } from "./AuthProvider";
-import { SubscriptionProvider } from "./SubscriptionProvider";
-import { NotificationsProvider } from "./NotificationsProvider";
-import { ErrorBoundary } from "@/components/common/ErrorBoundary";
-import { createQueryClient, preloadCommonQueries } from "@/hooks/useCacheConfig";
-import { AccessibilityProvider } from "./AccessibilityProvider";
-import { CacheProvider } from "./CacheProvider";
+import { ErrorBoundary } from '@/components/common/ErrorBoundary';
+import { withErrorBoundary } from '@/integrations/sentry';
 
-interface AppProvidersProps {
-  children: React.ReactNode;
-}
+// Intégration i18n
+import '@/i18n';
 
-const queryClient = createQueryClient();
+type AppProvidersProps = {
+  children: ReactNode;
+};
 
-export const AppProviders = ({ children }: AppProvidersProps) => {
-  useEffect(() => {
-    // Précharger les données communes au démarrage de l'application
-    preloadCommonQueries(queryClient);
-  }, []);
+// Client pour React Query
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+      staleTime: 5 * 60 * 1000, // 5 minutes
+      retry: 1,
+    },
+  },
+});
 
+// Composant AppProviders avec monitoring d'erreurs
+const AppProvidersComponent = ({ children }: AppProvidersProps) => {
   return (
-    <React.StrictMode>
-      <ErrorBoundary>
-        <HelmetProvider>
-          <QueryClientProvider client={queryClient}>
-            <TooltipProvider>
-              <BrowserRouter>
-                <AuthProvider>
-                  <SubscriptionProvider>
+    <HelmetProvider>
+      <BrowserRouter>
+        <QueryClientProvider client={queryClient}>
+          <ErrorBoundary>
+            <AuthProvider>
+              <SubscriptionProvider>
+                <CacheProvider>
+                  <AccessibilityProvider>
                     <NotificationsProvider>
-                      <AccessibilityProvider>
-                        <CacheProvider>
-                          {children}
-                        </CacheProvider>
-                      </AccessibilityProvider>
+                      {children}
+                      <Toaster richColors position="bottom-right" closeButton />
                     </NotificationsProvider>
-                  </SubscriptionProvider>
-                </AuthProvider>
-              </BrowserRouter>
-            </TooltipProvider>
-          </QueryClientProvider>
-        </HelmetProvider>
-      </ErrorBoundary>
-    </React.StrictMode>
+                  </AccessibilityProvider>
+                </CacheProvider>
+              </SubscriptionProvider>
+            </AuthProvider>
+          </ErrorBoundary>
+        </QueryClientProvider>
+      </BrowserRouter>
+    </HelmetProvider>
   );
 };
+
+// Exporter avec le suivi d'erreurs Sentry
+export const AppProviders = withErrorBoundary(AppProvidersComponent, {
+  fallback: <div className="p-8 text-center">Une erreur critique est survenue. Veuillez actualiser la page.</div>
+});

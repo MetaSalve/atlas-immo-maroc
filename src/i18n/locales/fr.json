@@ -1,0 +1,158 @@
+
+{
+  "app": {
+    "name": "AlertImmo",
+    "tagline": "Trouvez votre bien immobilier idéal au Maroc"
+  },
+  "common": {
+    "search": "Rechercher",
+    "filter": "Filtrer",
+    "sort": "Trier",
+    "save": "Enregistrer",
+    "cancel": "Annuler",
+    "delete": "Supprimer",
+    "edit": "Modifier",
+    "add": "Ajouter",
+    "yes": "Oui",
+    "no": "Non",
+    "loading": "Chargement",
+    "error": "Erreur",
+    "success": "Succès",
+    "info": "Information",
+    "warning": "Attention",
+    "confirm": "Confirmer",
+    "back": "Retour",
+    "next": "Suivant",
+    "previous": "Précédent"
+  },
+  "auth": {
+    "login": "Connexion",
+    "signup": "Inscription",
+    "logout": "Déconnexion",
+    "email": "Email",
+    "password": "Mot de passe",
+    "forgotPassword": "Mot de passe oublié?",
+    "resetPassword": "Réinitialiser le mot de passe",
+    "createAccount": "Créer un compte",
+    "alreadyHaveAccount": "Déjà inscrit?",
+    "dontHaveAccount": "Pas encore de compte?",
+    "twoFactor": {
+      "title": "Authentification à deux facteurs",
+      "setup": "Configurer l'authentification à deux facteurs",
+      "enter": "Entrez le code à 6 chiffres"
+    }
+  },
+  "profile": {
+    "title": "Profil",
+    "personalInfo": "Informations personnelles",
+    "security": "Sécurité",
+    "subscription": "Abonnement",
+    "preferences": "Préférences",
+    "signOut": "Déconnexion",
+    "deleteAccount": "Supprimer mon compte",
+    "firstName": "Prénom",
+    "lastName": "Nom",
+    "email": "Email",
+    "phone": "Téléphone",
+    "updateProfile": "Mettre à jour le profil",
+    "passwordChange": "Modification du mot de passe",
+    "currentPassword": "Mot de passe actuel",
+    "newPassword": "Nouveau mot de passe",
+    "confirmPassword": "Confirmer le mot de passe"
+  },
+  "subscription": {
+    "plans": "Forfaits d'abonnement",
+    "features": "Fonctionnalités",
+    "free": "Gratuit",
+    "premium": "Premium",
+    "current": "Abonnement actuel",
+    "upgrade": "Passer à Premium",
+    "manage": "Gérer l'abonnement",
+    "cancel": "Annuler l'abonnement",
+    "price": {
+      "monthly": "{{price}} par mois",
+      "yearly": "{{price}} par an"
+    },
+    "status": {
+      "active": "Actif",
+      "canceled": "Annulé",
+      "incomplete": "Incomplet",
+      "incomplete_expired": "Expiré",
+      "past_due": "En retard",
+      "trialing": "Période d'essai",
+      "unpaid": "Non payé"
+    }
+  },
+  "properties": {
+    "title": "Biens immobiliers",
+    "search": "Rechercher des biens",
+    "filters": {
+      "type": "Type de bien",
+      "priceRange": "Fourchette de prix",
+      "bedrooms": "Chambres",
+      "bathrooms": "Salles de bain",
+      "area": "Surface",
+      "keywords": "Mots-clés"
+    },
+    "types": {
+      "all": "Tous",
+      "apartment": "Appartement",
+      "house": "Maison",
+      "villa": "Villa",
+      "office": "Bureau",
+      "land": "Terrain",
+      "other": "Autre"
+    },
+    "status": {
+      "sale": "À vendre",
+      "rent": "À louer"
+    },
+    "details": {
+      "price": "Prix",
+      "area": "Surface",
+      "bedrooms": "Chambres",
+      "bathrooms": "Salles de bain",
+      "address": "Adresse",
+      "description": "Description",
+      "features": "Caractéristiques",
+      "map": "Voir sur la carte"
+    }
+  },
+  "alerts": {
+    "title": "Alertes",
+    "create": "Créer une alerte",
+    "edit": "Modifier l'alerte",
+    "delete": "Supprimer l'alerte",
+    "empty": "Aucune alerte définie",
+    "form": {
+      "name": "Nom de l'alerte",
+      "criteria": "Critères",
+      "frequency": "Fréquence",
+      "notifications": "Notifications"
+    },
+    "frequency": {
+      "instant": "Instantanée",
+      "daily": "Quotidienne",
+      "weekly": "Hebdomadaire"
+    }
+  },
+  "favorites": {
+    "title": "Favoris",
+    "empty": "Aucun favori enregistré",
+    "add": "Ajouter aux favoris",
+    "remove": "Retirer des favoris"
+  },
+  "notifications": {
+    "title": "Notifications",
+    "empty": "Aucune notification",
+    "markAllRead": "Marquer tout comme lu",
+    "settings": "Paramètres de notification"
+  },
+  "errors": {
+    "network": "Problème de connexion. Veuillez vérifier votre connexion internet.",
+    "auth": "Vous n'êtes plus authentifié. Veuillez vous reconnecter.",
+    "validation": "Les données saisies sont invalides.",
+    "server": "Une erreur est survenue sur nos serveurs. Nos équipes ont été notifiées.",
+    "unknown": "Une erreur inattendue est survenue."
+  }
+}

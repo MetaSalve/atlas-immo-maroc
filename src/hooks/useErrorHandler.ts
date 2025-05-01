@@ -1,6 +1,7 @@
 
 import { useState, useCallback } from 'react';
 import { toast } from 'sonner';
+import { captureError } from '@/integrations/sentry';
 
 type ErrorType = 'network' | 'auth' | 'validation' | 'server' | 'unknown';
 
@@ -8,6 +9,7 @@ interface ErrorOptions {
   showToast?: boolean;
   logToConsole?: boolean;
   retry?: boolean;
+  context?: Record<string, any>;
 }
 
 export const useErrorHandler = () => {
@@ -47,7 +49,7 @@ export const useErrorHandler = () => {
   };
   
   const handleError = useCallback((error: any, options: ErrorOptions = {}) => {
-    const { showToast = true, logToConsole = true } = options;
+    const { showToast = true, logToConsole = true, context } = options;
     
     // Conserver l'erreur
     setLastError(error);
@@ -70,7 +72,11 @@ export const useErrorHandler = () => {
       });
     }
     
-    // On pourrait ajouter ici une logique pour envoyer l'erreur à un service de monitoring
+    // Envoyer l'erreur à Sentry
+    captureError(error instanceof Error ? error : new Error(errorMessage), {
+      errorType,
+      ...context
+    });
     
     return { errorType, errorMessage };
   }, []);
