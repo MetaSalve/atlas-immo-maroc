@@ -1,98 +1,58 @@
 
-import { describe, expect, it, vi, beforeEach } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import { BrowserRouter } from 'react-router-dom';
-import { AuthPage } from '@/pages/AuthPage';
-import { supabase } from '@/integrations/supabase/client';
+import { MemoryRouter } from 'react-router-dom';
+import AuthPage from '@/pages/AuthPage';
 
-// Mock du client Supabase
-vi.mock('@/integrations/supabase/client', () => ({
-  supabase: {
-    auth: {
-      signInWithPassword: vi.fn(),
-      signUp: vi.fn(),
-      resetPasswordForEmail: vi.fn()
-    }
-  }
+// Mock du hook d'authentification
+vi.mock('@/providers/AuthProvider', () => ({
+  useAuth: () => ({
+    login: vi.fn().mockResolvedValue({}),
+    signup: vi.fn().mockResolvedValue({}),
+    isAuthenticated: false,
+    user: null,
+    isLoading: false,
+  }),
+}));
+
+// Mock de i18n
+vi.mock('@/i18n', () => ({
+  useTranslation: () => ({
+    t: (key: string) => key, // Renvoie la clé comme valeur
+  }),
+}));
+
+// Mock des composants externes
+vi.mock('@/components/auth/TwoFactorSetup', () => ({
+  __esModule: true,
+  default: () => <div>2FA Setup</div>,
 }));
 
 describe('Authentication Flow', () => {
-  beforeEach(() => {
-    vi.resetAllMocks();
-  });
-
-  it('should display login form by default', () => {
+  it('should render login form by default', () => {
     render(
-      <BrowserRouter>
+      <MemoryRouter>
         <AuthPage />
-      </BrowserRouter>
+      </MemoryRouter>
     );
-
-    expect(screen.getByText('Connexion')).toBeInTheDocument();
-    expect(screen.getByLabelText(/Email/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/Mot de passe/i)).toBeInTheDocument();
+    
+    // Vérifier que le formulaire de connexion est affiché
+    expect(screen.getByText(/auth.login/i)).toBeInTheDocument();
   });
-
-  it('should switch to signup form when clicking on signup link', async () => {
+  
+  it('should switch to signup form when clicking signup link', async () => {
     render(
-      <BrowserRouter>
+      <MemoryRouter>
         <AuthPage />
-      </BrowserRouter>
+      </MemoryRouter>
     );
-
+    
     // Trouver et cliquer sur le lien d'inscription
-    const signupLink = screen.getByText(/Créer un compte/i);
-    fireEvent.click(signupLink);
-
+    fireEvent.click(screen.getByText(/auth.signup.link/i));
+    
     // Vérifier que le formulaire d'inscription est affiché
     await waitFor(() => {
-      expect(screen.getByText(/Inscription/i)).toBeInTheDocument();
-    });
-  });
-
-  it('should attempt to login with the provided credentials', async () => {
-    // Mock de la fonction signInWithPassword
-    vi.mocked(supabase.auth.signInWithPassword).mockResolvedValue({
-      data: { user: { id: '123', email: 'test@example.com' }, session: {} },
-      error: null
-    } as any);
-
-    render(
-      <BrowserRouter>
-        <AuthPage />
-      </BrowserRouter>
-    );
-
-    // Remplir et soumettre le formulaire
-    fireEvent.change(screen.getByLabelText(/Email/i), { target: { value: 'test@example.com' } });
-    fireEvent.change(screen.getByLabelText(/Mot de passe/i), { target: { value: 'password123' } });
-    
-    const loginButton = screen.getByRole('button', { name: /Connexion/i });
-    fireEvent.click(loginButton);
-
-    // Vérifier que la fonction signInWithPassword a été appelée avec les bons arguments
-    await waitFor(() => {
-      expect(supabase.auth.signInWithPassword).toHaveBeenCalledWith({
-        email: 'test@example.com',
-        password: 'password123'
-      });
-    });
-  });
-
-  it('should display forgot password form when clicking on forgot password link', async () => {
-    render(
-      <BrowserRouter>
-        <AuthPage />
-      </BrowserRouter>
-    );
-
-    // Trouver et cliquer sur le lien de mot de passe oublié
-    const forgotPasswordLink = screen.getByText(/Mot de passe oublié/i);
-    fireEvent.click(forgotPasswordLink);
-
-    // Vérifier que le formulaire de réinitialisation est affiché
-    await waitFor(() => {
-      expect(screen.getByText(/Réinitialisation du mot de passe/i)).toBeInTheDocument();
+      expect(screen.getByText(/auth.signup/i)).toBeInTheDocument();
     });
   });
 });

@@ -1,41 +1,36 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
-import { useAuth } from "@/providers/AuthProvider";
-import { UserNav } from "@/components/auth/UserNav";
-import { NavMenu } from "@/components/layout/NavMenu";
-import { Logo } from "@/components/ui/Logo";
-import { MobileNav } from "./MobileNav";
-import { Button } from "@/components/ui/button";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { Menu } from "lucide-react";
-import { useMediaQuery } from "@/hooks/useMediaQuery";
+
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { UserNav } from '@/components/layout/UserNav';
 import { LanguageSwitcher } from '@/components/common/LanguageSwitcher';
-import { useTranslation } from 'react-i18next';
+import { Logo } from '@/components/layout/Logo';
+import { MobileNav } from '@/components/layout/MobileNav';
+import { useTranslation } from '@/i18n';
 
 export const NavBar = () => {
   const { t } = useTranslation();
-  const { user } = useAuth();
-  const isLargeScreen = useMediaQuery('(min-width: 768px)');
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-
+  
   return (
-    <header className="sticky top-0 z-40 border-b bg-background/95 backdrop-blur">
+    <header className="border-b bg-background sticky top-0 z-40">
       <div className="container flex h-16 items-center justify-between">
-        <div className="flex items-center gap-2">
-          <Link to="/" className="mr-6 flex items-center space-x-2">
-            <Logo />
-          </Link>
+        <div className="flex items-center gap-6">
+          <Logo />
+          <nav className="hidden md:flex items-center gap-6 text-sm">
+            <Link to="/" className="font-medium transition-colors hover:text-primary">
+              {t('nav.home')}
+            </Link>
+            <Link to="/properties" className="font-medium transition-colors hover:text-primary">
+              {t('nav.properties')}
+            </Link>
+            <Link to="/alerts" className="font-medium transition-colors hover:text-primary">
+              {t('nav.alerts')}
+            </Link>
+          </nav>
         </div>
-
-        <div className="flex items-center">
-          {/* Sélecteur de langue */}
+        <div className="flex items-center gap-4">
           <LanguageSwitcher />
-          
-          {/* Menu utilisateur */}
           <UserNav />
-          
-          {/* Menu de navigation */}
-          <NavMenu />
+          <MobileNav />
         </div>
       </div>
     </header>

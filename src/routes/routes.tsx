@@ -1,67 +1,58 @@
-import { HomePage } from '@/pages/HomePage';
-import { AuthPage } from '@/pages/AuthPage';
-import { ProfilePage } from '@/pages/ProfilePage';
-import { PropertiesPage } from '@/pages/PropertiesPage';
-import { PropertyDetailPage } from '@/pages/PropertyDetailPage';
-import { FavoritesPage } from '@/pages/FavoritesPage';
-import { AlertsPage } from '@/pages/AlertsPage';
-import { NotificationsPage } from '@/pages/NotificationsPage';
-import AdminPage from '@/pages/AdminPage';
-import AdminDashboardPage from '@/pages/AdminDashboardPage';
-import { CustomRouteObject } from './types';
 
-export const routes: CustomRouteObject[] = [
+import React from 'react';
+import HomePage from '@/pages/HomePage';
+import AuthPage from '@/pages/AuthPage'; 
+import ProfilePage from '@/pages/ProfilePage';
+import PropertyDetailPage from '@/pages/PropertyDetailPage';
+import FavoritesPage from '@/pages/FavoritesPage';
+import AlertsPage from '@/pages/AlertsPage';
+import AdminDashboardPage from '@/pages/AdminDashboard';
+import NotFound from '@/components/common/NotFound';
+import { RouteObject } from 'react-router-dom';
+import { ProtectedRoute } from '@/components/auth/ProtectedRoute';
+
+const routes: RouteObject[] = [
   {
     path: '/',
     element: <HomePage />,
-    authRequired: false
+    index: true
   },
   {
     path: '/auth',
-    element: <AuthPage />,
-    authRequired: false
+    element: <AuthPage />
   },
   {
     path: '/profile',
-    element: <ProfilePage />,
-    authRequired: true
+    element: <ProtectedRoute><ProfilePage /></ProtectedRoute>
   },
   {
     path: '/properties',
-    element: <PropertiesPage />,
-    authRequired: false
+    element: <HomePage /> // Utilisation de HomePage temporairement en attendant PropertiesPage
   },
   {
-    path: '/properties/:id',
-    element: <PropertyDetailPage />,
-    authRequired: false
+    path: '/property/:id',
+    element: <PropertyDetailPage />
   },
   {
     path: '/favorites',
-    element: <FavoritesPage />,
-    authRequired: true
+    element: <ProtectedRoute><FavoritesPage /></ProtectedRoute>
   },
   {
     path: '/alerts',
-    element: <AlertsPage />,
-    authRequired: true
+    element: <ProtectedRoute><AlertsPage /></ProtectedRoute>
   },
   {
     path: '/notifications',
-    element: <NotificationsPage />,
-    authRequired: true
+    element: <ProtectedRoute><HomePage /></ProtectedRoute> // Utilisation de HomePage temporairement
   },
-  // Route admin existante
   {
     path: '/admin',
-    element: <AdminPage />,
-    authRequired: true
+    element: <ProtectedRoute><AdminDashboardPage /></ProtectedRoute>
   },
-  
-  // Nouvelle route pour le tableau de bord admin
   {
-    path: '/admin/dashboard',
-    element: <AdminDashboardPage />,
-    authRequired: true
+    path: '*',
+    element: <NotFound />
   }
 ];
+
+export default routes;
