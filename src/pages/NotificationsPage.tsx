@@ -1,12 +1,12 @@
 
 import React from 'react';
 import { Helmet } from 'react-helmet-async';
-import { useNotifications } from '@/hooks/useNotifications';
+import { useNotificationsContext } from '@/providers/NotificationsProvider';
 import { useTranslation } from '@/i18n';
 
 const NotificationsPage = () => {
   const { t } = useTranslation();
-  const { notifications, markAsRead } = useNotifications();
+  const { notifications, markAsRead } = useNotificationsContext();
 
   return (
     <div className="container py-6">

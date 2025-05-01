@@ -1,5 +1,5 @@
 
-import { useEffect, useState } from 'react';
+import { useState, useEffect } from 'react';
 import { PushNotifications, PushNotificationSchema } from '@capacitor/push-notifications';
 import { useAuth } from '@/providers/AuthProvider';
 import { supabase } from '@/integrations/supabase/client';

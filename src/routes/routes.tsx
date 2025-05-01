@@ -7,9 +7,10 @@ import PropertyDetailPage from '@/pages/PropertyDetailPage';
 import FavoritesPage from '@/pages/FavoritesPage';
 import AlertsPage from '@/pages/AlertsPage';
 import AdminDashboardPage from '@/pages/AdminDashboard';
-import NotFound from '@/components/common/NotFound';
+import PropertiesPage from '@/pages/PropertiesPage';
+import NotificationsPage from '@/pages/NotificationsPage';
+import { NotFound } from '@/components/common/NotFound';
 import { RouteObject } from 'react-router-dom';
-import { ProtectedRoute } from '@/components/auth/ProtectedRoute';
 
 const routes: RouteObject[] = [
   {
@@ -23,11 +24,11 @@ const routes: RouteObject[] = [
   },
   {
     path: '/profile',
-    element: <ProtectedRoute><ProfilePage /></ProtectedRoute>
+    element: <ProfilePage />
   },
   {
     path: '/properties',
-    element: <HomePage /> // Utilisation de HomePage temporairement en attendant PropertiesPage
+    element: <PropertiesPage />
   },
   {
     path: '/property/:id',
@@ -35,19 +36,19 @@ const routes: RouteObject[] = [
   },
   {
     path: '/favorites',
-    element: <ProtectedRoute><FavoritesPage /></ProtectedRoute>
+    element: <FavoritesPage />
   },
   {
     path: '/alerts',
-    element: <ProtectedRoute><AlertsPage /></ProtectedRoute>
+    element: <AlertsPage />
   },
   {
     path: '/notifications',
-    element: <ProtectedRoute><HomePage /></ProtectedRoute> // Utilisation de HomePage temporairement
+    element: <NotificationsPage />
   },
   {
     path: '/admin',
-    element: <ProtectedRoute><AdminDashboardPage /></ProtectedRoute>
+    element: <AdminDashboardPage />
   },
   {
     path: '*',
