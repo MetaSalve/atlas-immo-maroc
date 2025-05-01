@@ -29,9 +29,9 @@ const NotificationsPage = () => {
               onClick={() => markAsRead(notification.id)}
             >
               <h3 className="font-medium">{notification.title}</h3>
-              <p className="text-gray-600">{notification.message}</p>
+              <p className="text-gray-600">{notification.body}</p>
               <span className="text-xs text-gray-400">
-                {new Date(notification.createdAt).toLocaleString()}
+                {new Date(notification.created_at).toLocaleString()}
               </span>
             </li>
           ))}
