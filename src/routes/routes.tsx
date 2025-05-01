@@ -9,6 +9,9 @@ import AlertsPage from '@/pages/AlertsPage';
 import AdminDashboardPage from '@/pages/AdminDashboard';
 import PropertiesPage from '@/pages/PropertiesPage';
 import NotificationsPage from '@/pages/NotificationsPage';
+import SubscriptionPage from '@/pages/SubscriptionPage';
+import PaymentPage from '@/pages/PaymentPage';
+import PaymentSuccessPage from '@/pages/PaymentSuccessPage';
 import { NotFound } from '@/components/common/NotFound';
 import { RouteObject } from 'react-router-dom';
 
@@ -45,6 +48,18 @@ const routes: RouteObject[] = [
   {
     path: '/notifications',
     element: <NotificationsPage />
+  },
+  {
+    path: '/subscription',
+    element: <SubscriptionPage />
+  },
+  {
+    path: '/payment',
+    element: <PaymentPage />
+  },
+  {
+    path: '/payment-success',
+    element: <PaymentSuccessPage />
   },
   {
     path: '/admin',
