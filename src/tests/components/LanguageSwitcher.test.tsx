@@ -8,7 +8,16 @@ vi.mock('@/i18n', () => ({
   useLanguageSwitch: () => ({
     currentLanguage: 'fr',
     switchLanguage: vi.fn(),
-    availableLanguages: ['fr', 'en']
+    availableLanguages: ['fr', 'en', 'ar', 'es']
+  }),
+  languageNames: {
+    fr: 'Français',
+    en: 'English',
+    ar: 'العربية',
+    es: 'Español'
+  },
+  useTranslation: () => ({
+    t: (key: string) => key
   })
 }));
 
@@ -23,5 +32,10 @@ describe('LanguageSwitcher', () => {
     // Vérifier que l'icône du globe est présente
     const globeIcon = document.querySelector('svg');
     expect(globeIcon).toBeInTheDocument();
+  });
+  
+  it('displays the current language', () => {
+    render(<LanguageSwitcher />);
+    expect(screen.getByText('Français')).toBeInTheDocument();
   });
 });

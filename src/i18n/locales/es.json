@@ -1,0 +1,158 @@
+
+{
+  "app": {
+    "name": "AlertImmo",
+    "tagline": "Encuentra tu propiedad ideal en Marruecos"
+  },
+  "common": {
+    "search": "Buscar",
+    "filter": "Filtrar",
+    "sort": "Ordenar",
+    "save": "Guardar",
+    "cancel": "Cancelar",
+    "delete": "Eliminar",
+    "edit": "Editar",
+    "add": "Añadir",
+    "yes": "Sí",
+    "no": "No",
+    "loading": "Cargando",
+    "error": "Error",
+    "success": "Éxito",
+    "info": "Información",
+    "warning": "Advertencia",
+    "confirm": "Confirmar",
+    "back": "Atrás",
+    "next": "Siguiente",
+    "previous": "Anterior"
+  },
+  "auth": {
+    "login": "Iniciar sesión",
+    "signup": "Registrarse",
+    "logout": "Cerrar sesión",
+    "email": "Correo electrónico",
+    "password": "Contraseña",
+    "forgotPassword": "¿Olvidaste tu contraseña?",
+    "resetPassword": "Restablecer contraseña",
+    "createAccount": "Crear una cuenta",
+    "alreadyHaveAccount": "¿Ya tienes cuenta?",
+    "dontHaveAccount": "¿No tienes cuenta?",
+    "twoFactor": {
+      "title": "Autenticación de dos factores",
+      "setup": "Configurar autenticación de dos factores",
+      "enter": "Ingresa el código de 6 dígitos"
+    }
+  },
+  "profile": {
+    "title": "Perfil",
+    "personalInfo": "Información personal",
+    "security": "Seguridad",
+    "subscription": "Suscripción",
+    "preferences": "Preferencias",
+    "signOut": "Cerrar sesión",
+    "deleteAccount": "Eliminar mi cuenta",
+    "firstName": "Nombre",
+    "lastName": "Apellido",
+    "email": "Correo electrónico",
+    "phone": "Teléfono",
+    "updateProfile": "Actualizar perfil",
+    "passwordChange": "Cambio de contraseña",
+    "currentPassword": "Contraseña actual",
+    "newPassword": "Nueva contraseña",
+    "confirmPassword": "Confirmar contraseña"
+  },
+  "subscription": {
+    "plans": "Planes de suscripción",
+    "features": "Características",
+    "free": "Gratuito",
+    "premium": "Premium",
+    "current": "Suscripción actual",
+    "upgrade": "Actualizar a Premium",
+    "manage": "Gestionar suscripción",
+    "cancel": "Cancelar suscripción",
+    "price": {
+      "monthly": "{{price}} por mes",
+      "yearly": "{{price}} por año"
+    },
+    "status": {
+      "active": "Activa",
+      "canceled": "Cancelada",
+      "incomplete": "Incompleta",
+      "incomplete_expired": "Expirada",
+      "past_due": "Vencida",
+      "trialing": "En prueba",
+      "unpaid": "No pagada"
+    }
+  },
+  "properties": {
+    "title": "Propiedades",
+    "search": "Buscar propiedades",
+    "filters": {
+      "type": "Tipo de propiedad",
+      "priceRange": "Rango de precio",
+      "bedrooms": "Dormitorios",
+      "bathrooms": "Baños",
+      "area": "Superficie",
+      "keywords": "Palabras clave"
+    },
+    "types": {
+      "all": "Todos",
+      "apartment": "Apartamento",
+      "house": "Casa",
+      "villa": "Villa",
+      "office": "Oficina",
+      "land": "Terreno",
+      "other": "Otro"
+    },
+    "status": {
+      "sale": "En venta",
+      "rent": "En alquiler"
+    },
+    "details": {
+      "price": "Precio",
+      "area": "Superficie",
+      "bedrooms": "Dormitorios",
+      "bathrooms": "Baños",
+      "address": "Dirección",
+      "description": "Descripción",
+      "features": "Características",
+      "map": "Ver en el mapa"
+    }
+  },
+  "alerts": {
+    "title": "Alertas",
+    "create": "Crear alerta",
+    "edit": "Editar alerta",
+    "delete": "Eliminar alerta",
+    "empty": "No hay alertas definidas",
+    "form": {
+      "name": "Nombre de la alerta",
+      "criteria": "Criterios",
+      "frequency": "Frecuencia",
+      "notifications": "Notificaciones"
+    },
+    "frequency": {
+      "instant": "Instantánea",
+      "daily": "Diaria",
+      "weekly": "Semanal"
+    }
+  },
+  "favorites": {
+    "title": "Favoritos",
+    "empty": "No hay favoritos guardados",
+    "add": "Añadir a favoritos",
+    "remove": "Eliminar de favoritos"
+  },
+  "notifications": {
+    "title": "Notificaciones",
+    "empty": "No hay notificaciones",
+    "markAllRead": "Marcar todas como leídas",
+    "settings": "Configuración de notificaciones"
+  },
+  "errors": {
+    "network": "Problema de conexión. Por favor comprueba tu conexión a internet.",
+    "auth": "Ya no estás autenticado. Por favor inicia sesión nuevamente.",
+    "validation": "Los datos ingresados son inválidos.",
+    "server": "Ocurrió un error en nuestros servidores. Nuestros equipos han sido notificados.",
+    "unknown": "Ocurrió un error inesperado."
+  }
+}

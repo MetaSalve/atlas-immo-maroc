@@ -1,0 +1,158 @@
+
+{
+  "app": {
+    "name": "AlertImmo",
+    "tagline": "ابحث عن العقار المثالي الخاص بك في المغرب"
+  },
+  "common": {
+    "search": "بحث",
+    "filter": "تصفية",
+    "sort": "فرز",
+    "save": "حفظ",
+    "cancel": "إلغاء",
+    "delete": "حذف",
+    "edit": "تعديل",
+    "add": "إضافة",
+    "yes": "نعم",
+    "no": "لا",
+    "loading": "جاري التحميل",
+    "error": "خطأ",
+    "success": "نجاح",
+    "info": "معلومات",
+    "warning": "تحذير",
+    "confirm": "تأكيد",
+    "back": "رجوع",
+    "next": "التالي",
+    "previous": "السابق"
+  },
+  "auth": {
+    "login": "تسجيل الدخول",
+    "signup": "التسجيل",
+    "logout": "تسجيل الخروج",
+    "email": "البريد الإلكتروني",
+    "password": "كلمة المرور",
+    "forgotPassword": "نسيت كلمة المرور؟",
+    "resetPassword": "إعادة تعيين كلمة المرور",
+    "createAccount": "إنشاء حساب",
+    "alreadyHaveAccount": "لديك حساب بالفعل؟",
+    "dontHaveAccount": "ليس لديك حساب؟",
+    "twoFactor": {
+      "title": "المصادقة الثنائية",
+      "setup": "إعداد المصادقة الثنائية",
+      "enter": "أدخل الرمز المكون من 6 أرقام"
+    }
+  },
+  "profile": {
+    "title": "الملف الشخصي",
+    "personalInfo": "المعلومات الشخصية",
+    "security": "الأمان",
+    "subscription": "الاشتراك",
+    "preferences": "التفضيلات",
+    "signOut": "تسجيل الخروج",
+    "deleteAccount": "حذف حسابي",
+    "firstName": "الاسم الأول",
+    "lastName": "اسم العائلة",
+    "email": "البريد الإلكتروني",
+    "phone": "الهاتف",
+    "updateProfile": "تحديث الملف الشخصي",
+    "passwordChange": "تغيير كلمة المرور",
+    "currentPassword": "كلمة المرور الحالية",
+    "newPassword": "كلمة المرور الجديدة",
+    "confirmPassword": "تأكيد كلمة المرور"
+  },
+  "subscription": {
+    "plans": "خطط الاشتراك",
+    "features": "المميزات",
+    "free": "مجاني",
+    "premium": "متميز",
+    "current": "الاشتراك الحالي",
+    "upgrade": "الترقية إلى متميز",
+    "manage": "إدارة الاشتراك",
+    "cancel": "إلغاء الاشتراك",
+    "price": {
+      "monthly": "{{price}} شهريًا",
+      "yearly": "{{price}} سنويًا"
+    },
+    "status": {
+      "active": "نشط",
+      "canceled": "ملغى",
+      "incomplete": "غير مكتمل",
+      "incomplete_expired": "منتهي الصلاحية",
+      "past_due": "متأخر",
+      "trialing": "تجريبي",
+      "unpaid": "غير مدفوع"
+    }
+  },
+  "properties": {
+    "title": "العقارات",
+    "search": "البحث عن العقارات",
+    "filters": {
+      "type": "نوع العقار",
+      "priceRange": "نطاق السعر",
+      "bedrooms": "غرف النوم",
+      "bathrooms": "الحمامات",
+      "area": "المساحة",
+      "keywords": "الكلمات المفتاحية"
+    },
+    "types": {
+      "all": "الكل",
+      "apartment": "شقة",
+      "house": "منزل",
+      "villa": "فيلا",
+      "office": "مكتب",
+      "land": "أرض",
+      "other": "أخرى"
+    },
+    "status": {
+      "sale": "للبيع",
+      "rent": "للإيجار"
+    },
+    "details": {
+      "price": "السعر",
+      "area": "المساحة",
+      "bedrooms": "غرف النوم",
+      "bathrooms": "الحمامات",
+      "address": "العنوان",
+      "description": "الوصف",
+      "features": "المميزات",
+      "map": "عرض على الخريطة"
+    }
+  },
+  "alerts": {
+    "title": "التنبيهات",
+    "create": "إنشاء تنبيه",
+    "edit": "تعديل التنبيه",
+    "delete": "حذف التنبيه",
+    "empty": "لا توجد تنبيهات محددة",
+    "form": {
+      "name": "اسم التنبيه",
+      "criteria": "المعايير",
+      "frequency": "التكرار",
+      "notifications": "الإشعارات"
+    },
+    "frequency": {
+      "instant": "فوري",
+      "daily": "يومي",
+      "weekly": "أسبوعي"
+    }
+  },
+  "favorites": {
+    "title": "المفضلة",
+    "empty": "لا توجد عناصر مفضلة محفوظة",
+    "add": "إضافة إلى المفضلة",
+    "remove": "إزالة من المفضلة"
+  },
+  "notifications": {
+    "title": "الإشعارات",
+    "empty": "لا توجد إشعارات",
+    "markAllRead": "تحديد الكل كمقروء",
+    "settings": "إعدادات الإشعارات"
+  },
+  "errors": {
+    "network": "مشكلة في الاتصال. يرجى التحقق من اتصال الإنترنت الخاص بك.",
+    "auth": "أنت لم تعد مصادقًا. يرجى تسجيل الدخول مرة أخرى.",
+    "validation": "البيانات المدخلة غير صالحة.",
+    "server": "حدث خطأ في خوادمنا. تم إخطار فرقنا.",
+    "unknown": "حدث خطأ غير متوقع."
+  }
+}

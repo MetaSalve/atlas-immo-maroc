@@ -7,8 +7,10 @@ import { FeaturesSection } from '@/components/home/FeaturesSection';
 import { PropertiesSection } from '@/components/home/PropertiesSection';
 import { ContactSection } from '@/components/home/ContactSection';
 import { MetaTags } from '@/components/common/MetaTags';
+import { useTranslation } from '@/i18n';
 
 const HomePage = () => {
+  const { t } = useTranslation();
   const { data: properties = [], isLoading } = useProperties();
   const { favorites, toggleFavorite } = useFavorites();
 
@@ -22,14 +24,14 @@ const HomePage = () => {
         <HeroSection />
         <FeaturesSection />
         <PropertiesSection 
-          title="Biens en vedette"
+          title={t('properties.featured')}
           properties={featuredProperties}
           favorites={favorites}
           onToggleFavorite={toggleFavorite}
           isLoading={isLoading}
         />
         <PropertiesSection 
-          title="Ajouts récents"
+          title={t('properties.recent')}
           properties={recentProperties}
           favorites={favorites}
           onToggleFavorite={toggleFavorite}

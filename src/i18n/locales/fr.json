@@ -23,7 +23,8 @@
     "confirm": "Confirmer",
     "back": "Retour",
     "next": "Suivant",
-    "previous": "Précédent"
+    "previous": "Précédent",
+    "language": "Langue"
   },
   "auth": {
     "login": "Connexion",
@@ -86,6 +87,8 @@
   "properties": {
     "title": "Biens immobiliers",
     "search": "Rechercher des biens",
+    "featured": "Biens en vedette",
+    "recent": "Ajouts récents",
     "filters": {
       "type": "Type de bien",
       "priceRange": "Fourchette de prix",
@@ -147,6 +150,17 @@
     "empty": "Aucune notification",
     "markAllRead": "Marquer tout comme lu",
     "settings": "Paramètres de notification"
+  },
+  "admin": {
+    "dashboard": "Tableau de bord administrateur",
+    "overview": "Vue d'ensemble",
+    "users": "Utilisateurs",
+    "properties": "Propriétés",
+    "alerts": "Alertes",
+    "reports": "Rapports",
+    "settings": "Paramètres",
+    "performance": "Performance",
+    "errors": "Erreurs"
   },
   "errors": {
     "network": "Problème de connexion. Veuillez vérifier votre connexion internet.",

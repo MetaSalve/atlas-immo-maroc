@@ -23,7 +23,8 @@
     "confirm": "Confirm",
     "back": "Back",
     "next": "Next",
-    "previous": "Previous"
+    "previous": "Previous",
+    "language": "Language"
   },
   "auth": {
     "login": "Login",
@@ -86,6 +87,8 @@
   "properties": {
     "title": "Properties",
     "search": "Search properties",
+    "featured": "Featured properties",
+    "recent": "Recent additions",
     "filters": {
       "type": "Property type",
       "priceRange": "Price range",
@@ -147,6 +150,17 @@
     "empty": "No notifications",
     "markAllRead": "Mark all as read",
     "settings": "Notification settings"
+  },
+  "admin": {
+    "dashboard": "Admin Dashboard",
+    "overview": "Overview",
+    "users": "Users",
+    "properties": "Properties",
+    "alerts": "Alerts",
+    "reports": "Reports",
+    "settings": "Settings",
+    "performance": "Performance",
+    "errors": "Errors"
   },
   "errors": {
     "network": "Connection problem. Please check your internet connection.",

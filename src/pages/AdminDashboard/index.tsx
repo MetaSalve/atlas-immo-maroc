@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Helmet } from 'react-helmet-async';
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from '@/i18n';
 import { AdminDashboardTabs } from './components/AdminDashboardTabs';
 import { AdminDashboardHeader } from './components/AdminDashboardHeader';
 
@@ -11,7 +11,7 @@ const AdminDashboardPage = () => {
   return (
     <div className="py-6">
       <Helmet>
-        <title>Tableau de bord administrateur | AlertImmo</title>
+        <title>{t('admin.dashboard')} | AlertImmo</title>
       </Helmet>
       
       <AdminDashboardHeader />
