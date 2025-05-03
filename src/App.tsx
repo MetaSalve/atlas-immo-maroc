@@ -34,7 +34,7 @@ function App() {
         {routes.map((route: CustomRouteObject, index: number) => (
           <Route
             key={index}
-            path={route.path}
+            path={route.path as string}
             element={
               <Layout>
                 {route.adminRequired ? (

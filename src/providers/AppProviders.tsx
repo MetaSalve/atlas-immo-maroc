@@ -1,6 +1,6 @@
+
 import React from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { BrowserRouter } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
 import { ThemeProvider } from '@/components/ui/theme-provider';
@@ -42,7 +42,6 @@ export const AppProviders = ({ children }: { children: React.ReactNode }) => {
             </ThemeProvider>
           </BrowserRouter>
         </HelmetProvider>
-        <ReactQueryDevtools initialIsOpen={false} />
       </QueryClientProvider>
     </React.StrictMode>
   );
