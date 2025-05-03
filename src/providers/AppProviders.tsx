@@ -1,62 +1,49 @@
-
-import React, { ReactNode } from 'react';
-import { BrowserRouter } from 'react-router-dom';
+import React from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { Toaster } from '@/components/ui/sonner';
-import { AuthProvider } from './AuthProvider';
-import { SubscriptionProvider } from './SubscriptionProvider';
-import { AccessibilityProvider } from './AccessibilityProvider';
-import { CacheProvider } from './CacheProvider';
-import { NotificationsProvider } from './NotificationsProvider';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import { BrowserRouter } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
+import { ThemeProvider } from '@/components/ui/theme-provider';
+import { AuthProvider } from '@/providers/AuthProvider';
+import { SubscriptionProvider } from '@/providers/SubscriptionProvider';
+import { NotificationsProvider } from '@/providers/NotificationsProvider';
+import { AccessibilityProvider } from '@/providers/AccessibilityProvider';
+import { CacheProvider } from '@/providers/CacheProvider';
 import { ErrorBoundary } from '@/components/common/ErrorBoundary';
-import { withErrorBoundary } from '@/integrations/sentry';
+import { SecurityAuditProvider } from '@/providers/SecurityAuditProvider';
+import { Toaster } from '@/components/ui/toaster';
+import { Toaster as SonnerToaster } from 'sonner';
 
-// Intégration i18n
-import '@/i18n';
+const queryClient = new QueryClient();
 
-type AppProvidersProps = {
-  children: ReactNode;
-};
-
-// Client pour React Query
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      refetchOnWindowFocus: false,
-      staleTime: 5 * 60 * 1000, // 5 minutes
-      retry: 1,
-    },
-  },
-});
-
-// Composant AppProviders avec monitoring d'erreurs
-const AppProvidersComponent = ({ children }: AppProvidersProps) => {
+export const AppProviders = ({ children }: { children: React.ReactNode }) => {
+  
   return (
-    <HelmetProvider>
-      <BrowserRouter>
-        <QueryClientProvider client={queryClient}>
-          <ErrorBoundary>
-            <AuthProvider>
-              <SubscriptionProvider>
-                <CacheProvider>
-                  <AccessibilityProvider>
-                    <NotificationsProvider>
-                      {children}
-                      <Toaster richColors position="bottom-right" closeButton />
-                    </NotificationsProvider>
-                  </AccessibilityProvider>
-                </CacheProvider>
-              </SubscriptionProvider>
-            </AuthProvider>
-          </ErrorBoundary>
-        </QueryClientProvider>
-      </BrowserRouter>
-    </HelmetProvider>
+    <React.StrictMode>
+      <QueryClientProvider client={queryClient}>
+        <HelmetProvider>
+          <BrowserRouter>
+            <ThemeProvider defaultTheme="light" storageKey="alertimmo-theme">
+              <ErrorBoundary>
+                <AuthProvider>
+                  <SubscriptionProvider>
+                    <CacheProvider>
+                      <SecurityAuditProvider>
+                        <NotificationsProvider>
+                          <AccessibilityProvider>
+                            {children}
+                          </AccessibilityProvider>
+                        </NotificationsProvider>
+                      </SecurityAuditProvider>
+                    </CacheProvider>
+                  </SubscriptionProvider>
+                </AuthProvider>
+              </ErrorBoundary>
+            </ThemeProvider>
+          </BrowserRouter>
+        </HelmetProvider>
+        <ReactQueryDevtools initialIsOpen={false} />
+      </QueryClientProvider>
+    </React.StrictMode>
   );
 };
-
-// Exporter avec le suivi d'erreurs Sentry
-export const AppProviders = withErrorBoundary(AppProvidersComponent, {
-  fallback: <div className="p-8 text-center">Une erreur critique est survenue. Veuillez actualiser la page.</div>
-});

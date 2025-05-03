@@ -13,9 +13,9 @@ import SubscriptionPage from '@/pages/SubscriptionPage';
 import PaymentPage from '@/pages/PaymentPage';
 import PaymentSuccessPage from '@/pages/PaymentSuccessPage';
 import { NotFound } from '@/components/common/NotFound';
-import { RouteObject } from 'react-router-dom';
+import { CustomRouteObject } from './types';
 
-const routes: RouteObject[] = [
+const routes: CustomRouteObject[] = [
   {
     path: '/',
     element: <HomePage />,
@@ -27,7 +27,8 @@ const routes: RouteObject[] = [
   },
   {
     path: '/profile',
-    element: <ProfilePage />
+    element: <ProfilePage />,
+    authRequired: true
   },
   {
     path: '/properties',
@@ -39,31 +40,39 @@ const routes: RouteObject[] = [
   },
   {
     path: '/favorites',
-    element: <FavoritesPage />
+    element: <FavoritesPage />,
+    authRequired: true
   },
   {
     path: '/alerts',
-    element: <AlertsPage />
+    element: <AlertsPage />,
+    authRequired: true
   },
   {
     path: '/notifications',
-    element: <NotificationsPage />
+    element: <NotificationsPage />,
+    authRequired: true
   },
   {
     path: '/subscription',
-    element: <SubscriptionPage />
+    element: <SubscriptionPage />,
+    authRequired: true
   },
   {
     path: '/payment',
-    element: <PaymentPage />
+    element: <PaymentPage />,
+    authRequired: true
   },
   {
     path: '/payment-success',
-    element: <PaymentSuccessPage />
+    element: <PaymentSuccessPage />,
+    authRequired: true
   },
   {
     path: '/admin',
-    element: <AdminDashboardPage />
+    element: <AdminDashboardPage />,
+    authRequired: true,
+    adminRequired: true
   },
   {
     path: '*',
