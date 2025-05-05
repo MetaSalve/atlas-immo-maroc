@@ -14,7 +14,7 @@ import { SecurityAuditProvider } from '@/providers/SecurityAuditProvider';
 import { Toaster } from '@/components/ui/toaster';
 import { Toaster as SonnerToaster } from 'sonner';
 
-// Configuration for the QueryClient
+// Create queryClient instance outside the component
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
