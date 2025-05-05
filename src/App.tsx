@@ -15,14 +15,14 @@ function App() {
   const { user } = useAuth();
   const navigate = useNavigate();
 
-  // Rediriger vers la page d'accueil si on arrive sur /auth alors qu'on est déjà connecté
+  // Redirect to home page if arriving at /auth while already logged in
   useEffect(() => {
     if (user && window.location.pathname === '/auth') {
       navigate('/');
     }
   }, [user, navigate]);
 
-  // Configurer les en-têtes de sécurité au chargement de l'application
+  // Configure security headers on application load
   useEffect(() => {
     configureSecurityHeaders();
     runSecurityChecks();

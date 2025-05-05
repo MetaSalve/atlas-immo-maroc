@@ -14,7 +14,7 @@ import { SecurityAuditProvider } from '@/providers/SecurityAuditProvider';
 import { Toaster } from '@/components/ui/toaster';
 import { Toaster as SonnerToaster } from 'sonner';
 
-// Create queryClient instance outside the component
+// Create a new QueryClient instance
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
@@ -26,7 +26,7 @@ const queryClient = new QueryClient({
   },
 });
 
-export const AppProviders = ({ children }: { children: React.ReactNode }) => {
+export function AppProviders({ children }: { children: React.ReactNode }) {
   return (
     <QueryClientProvider client={queryClient}>
       <HelmetProvider>
@@ -54,4 +54,4 @@ export const AppProviders = ({ children }: { children: React.ReactNode }) => {
       </HelmetProvider>
     </QueryClientProvider>
   );
-};
+}
