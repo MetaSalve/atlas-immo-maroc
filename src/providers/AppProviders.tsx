@@ -1,5 +1,5 @@
 
-import React, { useEffect } from 'react';
+import React from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { BrowserRouter } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
@@ -40,36 +40,31 @@ const queryClient = new QueryClient({
 });
 
 export const AppProviders = ({ children }: { children: React.ReactNode }) => {
-  // We'll remove the useEffect causing problems for now to isolate the issue
-  // We can add it back once the app is working again
-  
   return (
-    <React.StrictMode>
-      <QueryClientProvider client={queryClient}>
-        <HelmetProvider>
-          <BrowserRouter>
-            <ThemeProvider defaultTheme="light" storageKey="alertimmo-theme">
-              <ErrorBoundary>
-                <AuthProvider>
-                  <SubscriptionProvider>
-                    <CacheProvider>
-                      <SecurityAuditProvider>
-                        <NotificationsProvider>
-                          <AccessibilityProvider>
-                            {children}
-                            <SonnerToaster position="top-right" />
-                            <Toaster />
-                          </AccessibilityProvider>
-                        </NotificationsProvider>
-                      </SecurityAuditProvider>
-                    </CacheProvider>
-                  </SubscriptionProvider>
-                </AuthProvider>
-              </ErrorBoundary>
-            </ThemeProvider>
-          </BrowserRouter>
-        </HelmetProvider>
-      </QueryClientProvider>
-    </React.StrictMode>
+    <QueryClientProvider client={queryClient}>
+      <HelmetProvider>
+        <BrowserRouter>
+          <ThemeProvider defaultTheme="light" storageKey="alertimmo-theme">
+            <ErrorBoundary>
+              <AuthProvider>
+                <SubscriptionProvider>
+                  <CacheProvider>
+                    <SecurityAuditProvider>
+                      <NotificationsProvider>
+                        <AccessibilityProvider>
+                          {children}
+                          <SonnerToaster position="top-right" />
+                          <Toaster />
+                        </AccessibilityProvider>
+                      </NotificationsProvider>
+                    </SecurityAuditProvider>
+                  </CacheProvider>
+                </SubscriptionProvider>
+              </AuthProvider>
+            </ErrorBoundary>
+          </ThemeProvider>
+        </BrowserRouter>
+      </HelmetProvider>
+    </QueryClientProvider>
   );
 };
