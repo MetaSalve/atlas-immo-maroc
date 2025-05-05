@@ -9,7 +9,7 @@ type ToasterProps = React.ComponentProps<typeof Sonner>;
 
 const Toaster = ({ ...props }: ToasterProps) => {
   const [mounted, setMounted] = React.useState(false);
-  const { theme, resolvedTheme } = useTheme();
+  const { theme = 'light', resolvedTheme } = useTheme();
   
   React.useEffect(() => {
     setMounted(true);
