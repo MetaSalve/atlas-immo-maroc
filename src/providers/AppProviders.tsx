@@ -27,11 +27,6 @@ const queryClient = new QueryClient({
 });
 
 export function AppProviders({ children }: { children: React.ReactNode }) {
-  // Force React to be defined properly
-  React.useEffect(() => {
-    console.log('AppProviders initialized');
-  }, []);
-
   return (
     <React.StrictMode>
       <QueryClientProvider client={queryClient}>
