@@ -31,7 +31,7 @@ export function AppProviders({ children }: { children: React.ReactNode }) {
     <QueryClientProvider client={queryClient}>
       <HelmetProvider>
         <BrowserRouter>
-          <ThemeProvider defaultTheme="light" storageKey="alertimmo-theme">
+          <ThemeProvider>
             <ErrorBoundary>
               <AuthProvider>
                 <SubscriptionProvider>

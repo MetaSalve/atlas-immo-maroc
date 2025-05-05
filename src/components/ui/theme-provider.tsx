@@ -7,7 +7,7 @@ import { type ThemeProviderProps } from "next-themes";
 
 export function ThemeProvider({ children, ...props }: ThemeProviderProps) {
   return (
-    <NextThemesProvider {...props}>
+    <NextThemesProvider defaultTheme="light" storageKey="alertimmo-theme" {...props}>
       {children}
     </NextThemesProvider>
   );
