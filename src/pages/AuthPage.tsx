@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { useAuth } from '@/providers/AuthProvider';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card';
@@ -11,26 +12,30 @@ import { SecurityFooter } from '@/components/auth/SecurityFooter';
 import { useAuthValidation } from '@/hooks/useAuthValidation';
 import { useLoginAttempts } from '@/hooks/useLoginAttempts';
 import { supabase } from '@/integrations/supabase/client';
+import { Loader2 } from 'lucide-react';
 
 const AuthPage = () => {
   const [isLogin, setIsLogin] = useState(true);
   const [isRecovery, setIsRecovery] = useState(false);
   const [email, setEmail] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [pageLoading, setPageLoading] = useState(true);
   const [csrfToken, setCsrfToken] = useState('');
   const [isBlocked, setIsBlocked] = useState(false);
   const [blockExpiryMinutes, setBlockExpiryMinutes] = useState(0);
-  const { signInWithEmail, signUp, user } = useAuth();
+  const { signInWithEmail, signUp, user, loading: authLoading } = useAuth();
   const navigate = useNavigate();
   const { errorMessage, setErrorMessage, validateLogin, validateSignup, validateEmail } = useAuthValidation();
   const { trackLoginAttempt } = useLoginAttempts();
 
   useEffect(() => {
+    // Générer un token CSRF
     const token = Math.random().toString(36).substring(2, 15) + 
                  Math.random().toString(36).substring(2, 15);
     setCsrfToken(token);
     sessionStorage.setItem('csrf_token', token);
     
+    // Vérifier les tentatives de connexion
     const attempts = parseInt(localStorage.getItem('login_attempts') || '0');
     const lastAttemptTime = localStorage.getItem('last_login_time');
     
@@ -47,12 +52,18 @@ const AuthPage = () => {
         localStorage.setItem('login_attempts', '0');
       }
     }
+    
+    setTimeout(() => {
+      setPageLoading(false);
+    }, 500);
   }, []);
 
-  if (user) {
-    navigate('/');
-    return null;
-  }
+  // Rediriger si l'utilisateur est déjà connecté
+  useEffect(() => {
+    if (user && !authLoading) {
+      navigate('/');
+    }
+  }, [user, authLoading, navigate]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -142,6 +153,24 @@ const AuthPage = () => {
       setIsLoading(false);
     }
   };
+
+  if (pageLoading || authLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center px-4 bg-gray-50">
+        <Card className="w-full max-w-md p-6 shadow-lg text-center">
+          <CardContent className="py-10">
+            <Loader2 className="h-8 w-8 animate-spin mx-auto mb-4 text-primary" />
+            <p className="text-gray-500">Chargement...</p>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
+
+  if (user) {
+    navigate('/');
+    return null;
+  }
 
   return (
     <div className="min-h-screen flex items-center justify-center px-4 bg-gray-50">

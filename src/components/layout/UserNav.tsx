@@ -12,12 +12,13 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { useTranslation } from '@/i18n';
+import { useAuth } from '@/providers/AuthProvider';
 
 export function UserNav() {
   const { t } = useTranslation();
-  const isLoggedIn = localStorage.getItem('sb-authuser') !== null;
+  const { user, signOut } = useAuth();
 
-  if (!isLoggedIn) {
+  if (!user) {
     return (
       <Link to="/auth">
         <Button variant="outline" size="sm">{t('auth.login')}</Button>
@@ -25,18 +26,20 @@ export function UserNav() {
     );
   }
 
+  const userInitial = user.email ? user.email.charAt(0).toUpperCase() : 'U';
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" className="relative h-10 w-10 rounded-full">
           <Avatar>
-            <AvatarImage src="/placeholder.svg" alt={t('user.profile')} />
-            <AvatarFallback>U</AvatarFallback>
+            <AvatarImage src={user.user_metadata?.avatar_url || "/placeholder.svg"} alt={t('user.profile')} />
+            <AvatarFallback>{userInitial}</AvatarFallback>
           </Avatar>
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
-        <DropdownMenuLabel>{t('user.account')}</DropdownMenuLabel>
+        <DropdownMenuLabel>{user.email}</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <Link to="/profile">
           <DropdownMenuItem className="cursor-pointer">
@@ -54,7 +57,13 @@ export function UserNav() {
           </DropdownMenuItem>
         </Link>
         <DropdownMenuSeparator />
-        <DropdownMenuItem className="cursor-pointer">
+        <DropdownMenuItem 
+          className="cursor-pointer" 
+          onClick={(e) => {
+            e.preventDefault();
+            signOut();
+          }}
+        >
           {t('auth.logout')}
         </DropdownMenuItem>
       </DropdownMenuContent>
