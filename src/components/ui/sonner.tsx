@@ -15,7 +15,7 @@ const Toaster = ({ ...props }: ToasterProps) => {
     setMounted(true);
   }, []);
   
-  // Utiliser une valeur par défaut si mounted est false
+  // Use a default theme when not mounted yet
   const currentTheme = mounted ? (resolvedTheme || theme || "light") : "light";
 
   return (

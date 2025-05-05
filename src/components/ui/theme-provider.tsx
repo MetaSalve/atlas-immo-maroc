@@ -3,12 +3,7 @@
 
 import * as React from "react";
 import { ThemeProvider as NextThemesProvider } from "next-themes";
-
-type ThemeProviderProps = {
-  children: React.ReactNode;
-  defaultTheme?: string;
-  storageKey?: string;
-};
+import { type ThemeProviderProps } from "next-themes/dist/types";
 
 export function ThemeProvider({
   children,
@@ -16,17 +11,16 @@ export function ThemeProvider({
   storageKey = "alertimmo-theme",
   ...props
 }: ThemeProviderProps) {
-  // Utilisez un état pour suivre le montage côté client
   const [mounted, setMounted] = React.useState(false);
 
-  // Définir mounted à true après le premier rendu côté client
+  // Set mounted to true after the first render on the client
   React.useEffect(() => {
     setMounted(true);
   }, []);
 
-  // Rendu conditionnel pour éviter les erreurs d'hydratation
-  // Renvoie simplement les enfants pendant le rendu côté serveur
+  // Avoid rendering the ThemeProvider on the server to prevent hydration mismatch
   if (!mounted) {
+    // Return children without the ThemeProvider during SSR and initial client render
     return <>{children}</>;
   }
 

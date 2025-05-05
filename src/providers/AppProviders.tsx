@@ -28,30 +28,32 @@ const queryClient = new QueryClient({
 
 export function AppProviders({ children }: { children: React.ReactNode }) {
   return (
-    <QueryClientProvider client={queryClient}>
-      <HelmetProvider>
-        <BrowserRouter>
-          <ErrorBoundary>
-            <ThemeProvider defaultTheme="light" storageKey="alertimmo-theme">
-              <AuthProvider>
-                <SubscriptionProvider>
-                  <CacheProvider>
-                    <SecurityAuditProvider>
-                      <NotificationsProvider>
-                        <AccessibilityProvider>
-                          {children}
-                          <SonnerToaster position="top-right" />
-                          <Toaster />
-                        </AccessibilityProvider>
-                      </NotificationsProvider>
-                    </SecurityAuditProvider>
-                  </CacheProvider>
-                </SubscriptionProvider>
-              </AuthProvider>
-            </ThemeProvider>
-          </ErrorBoundary>
-        </BrowserRouter>
-      </HelmetProvider>
-    </QueryClientProvider>
+    <React.StrictMode>
+      <QueryClientProvider client={queryClient}>
+        <HelmetProvider>
+          <BrowserRouter>
+            <ErrorBoundary>
+              <ThemeProvider defaultTheme="light" storageKey="alertimmo-theme">
+                <AuthProvider>
+                  <SubscriptionProvider>
+                    <CacheProvider>
+                      <SecurityAuditProvider>
+                        <NotificationsProvider>
+                          <AccessibilityProvider>
+                            {children}
+                            <SonnerToaster position="top-right" />
+                            <Toaster />
+                          </AccessibilityProvider>
+                        </NotificationsProvider>
+                      </SecurityAuditProvider>
+                    </CacheProvider>
+                  </SubscriptionProvider>
+                </AuthProvider>
+              </ThemeProvider>
+            </ErrorBoundary>
+          </BrowserRouter>
+        </HelmetProvider>
+      </QueryClientProvider>
+    </React.StrictMode>
   );
 }
