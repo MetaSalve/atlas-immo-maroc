@@ -28,30 +28,32 @@ const queryClient = new QueryClient({
 
 export function AppProviders({ children }: { children: React.ReactNode }) {
   return (
-    <QueryClientProvider client={queryClient}>
-      <HelmetProvider>
-        <BrowserRouter>
-          <ThemeProvider>
-            <ErrorBoundary>
-              <AuthProvider>
-                <SubscriptionProvider>
-                  <CacheProvider>
-                    <SecurityAuditProvider>
-                      <NotificationsProvider>
-                        <AccessibilityProvider>
-                          {children}
-                          <SonnerToaster position="top-right" />
-                          <Toaster />
-                        </AccessibilityProvider>
-                      </NotificationsProvider>
-                    </SecurityAuditProvider>
-                  </CacheProvider>
-                </SubscriptionProvider>
-              </AuthProvider>
-            </ErrorBoundary>
-          </ThemeProvider>
-        </BrowserRouter>
-      </HelmetProvider>
-    </QueryClientProvider>
+    <React.StrictMode>
+      <QueryClientProvider client={queryClient}>
+        <HelmetProvider>
+          <BrowserRouter>
+            <ThemeProvider>
+              <ErrorBoundary>
+                <AuthProvider>
+                  <SubscriptionProvider>
+                    <CacheProvider>
+                      <SecurityAuditProvider>
+                        <NotificationsProvider>
+                          <AccessibilityProvider>
+                            {children}
+                            <SonnerToaster position="top-right" />
+                            <Toaster />
+                          </AccessibilityProvider>
+                        </NotificationsProvider>
+                      </SecurityAuditProvider>
+                    </CacheProvider>
+                  </SubscriptionProvider>
+                </AuthProvider>
+              </ErrorBoundary>
+            </ThemeProvider>
+          </BrowserRouter>
+        </HelmetProvider>
+      </QueryClientProvider>
+    </React.StrictMode>
   );
 }
