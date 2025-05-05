@@ -1,15 +1,22 @@
 
-// Fix imports and theme implementation
+"use client";
+
+import * as React from "react";
 import { useTheme } from "next-themes";
 import { Toaster as Sonner, toast } from "sonner";
 
 type ToasterProps = React.ComponentProps<typeof Sonner>;
 
 const Toaster = ({ ...props }: ToasterProps) => {
+  const [mounted, setMounted] = React.useState(false);
   const { theme, resolvedTheme } = useTheme();
   
-  // Use a default theme if neither is available
-  const currentTheme = resolvedTheme || theme || "light";
+  React.useEffect(() => {
+    setMounted(true);
+  }, []);
+  
+  // Utiliser une valeur par défaut si mounted est false
+  const currentTheme = mounted ? (resolvedTheme || theme || "light") : "light";
 
   return (
     <Sonner
