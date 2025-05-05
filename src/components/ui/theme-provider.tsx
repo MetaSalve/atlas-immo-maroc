@@ -3,7 +3,13 @@
 
 import * as React from "react";
 import { ThemeProvider as NextThemesProvider } from "next-themes";
-import { type ThemeProviderProps } from "next-themes/dist/types";
+// Import from the main package instead of looking for the dist/types path
+import type { ThemeProviderProps as NextThemeProviderProps } from "next-themes";
+
+// Define our own interface that extends the base props
+type ThemeProviderProps = NextThemeProviderProps & {
+  // Add any additional props if needed
+};
 
 export function ThemeProvider({
   children,
