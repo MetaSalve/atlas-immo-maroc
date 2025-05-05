@@ -12,7 +12,7 @@ import { CacheProvider } from '@/providers/CacheProvider';
 import { ErrorBoundary } from '@/components/common/ErrorBoundary';
 import { SecurityAuditProvider } from '@/providers/SecurityAuditProvider';
 import { Toaster } from '@/components/ui/toaster';
-import { Toaster as SonnerToaster } from 'sonner';
+import { Toaster as SonnerToaster } from '@/components/ui/sonner';
 
 // Create a new QueryClient instance outside of the component
 const queryClient = new QueryClient({
@@ -32,8 +32,8 @@ export function AppProviders({ children }: { children: React.ReactNode }) {
       <QueryClientProvider client={queryClient}>
         <HelmetProvider>
           <BrowserRouter>
-            <ThemeProvider>
-              <ErrorBoundary>
+            <ErrorBoundary>
+              <ThemeProvider defaultTheme="light" storageKey="alertimmo-theme">
                 <AuthProvider>
                   <SubscriptionProvider>
                     <CacheProvider>
@@ -49,8 +49,8 @@ export function AppProviders({ children }: { children: React.ReactNode }) {
                     </CacheProvider>
                   </SubscriptionProvider>
                 </AuthProvider>
-              </ErrorBoundary>
-            </ThemeProvider>
+              </ThemeProvider>
+            </ErrorBoundary>
           </BrowserRouter>
         </HelmetProvider>
       </QueryClientProvider>
