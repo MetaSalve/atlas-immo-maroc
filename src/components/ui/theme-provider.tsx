@@ -2,7 +2,6 @@
 "use client";
 
 import * as React from "react";
-import { createContext, useContext, useEffect, useState } from "react";
 import { ThemeProvider as NextThemesProvider } from "next-themes";
 
 type ThemeProviderProps = {
@@ -18,9 +17,9 @@ export function ThemeProvider({
   ...props
 }: ThemeProviderProps) {
   // Create a client-only wrapper to avoid hydration mismatch
-  const [mounted, setMounted] = useState(false);
+  const [mounted, setMounted] = React.useState(false);
 
-  useEffect(() => {
+  React.useEffect(() => {
     setMounted(true);
   }, []);
 
@@ -39,10 +38,3 @@ export function ThemeProvider({
     </NextThemesProvider>
   );
 }
-
-// Export a theme toggle hook for convenience
-export const ThemeContext = createContext({ theme: "light", setTheme: (theme: string) => {} });
-
-export const useTheme = () => {
-  return useContext(ThemeContext);
-};
