@@ -1,9 +1,9 @@
-
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/providers/AuthProvider';
 import { useAuthValidation } from '@/hooks/useAuthValidation';
 import { useLoginAttempts } from '@/hooks/useLoginAttempts';
+import { usePasswordValidation } from '@/hooks/usePasswordValidation';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 
@@ -20,6 +20,7 @@ export const useAuthPage = () => {
   const navigate = useNavigate();
   const { errorMessage, setErrorMessage, validateLogin, validateSignup, validateEmail } = useAuthValidation();
   const { trackLoginAttempt } = useLoginAttempts();
+  const { validatePasswordFields } = usePasswordValidation();
 
   useEffect(() => {
     // Generate CSRF token
@@ -68,13 +69,14 @@ export const useAuthPage = () => {
     }
     
     const form = e.target as HTMLFormElement;
-    const passwordInput = form.querySelector('input[type="password"]') as HTMLInputElement;
+    const passwordInput = form.querySelector('input[name="password"]') as HTMLInputElement;
     const password = passwordInput.value;
     
     if (isLogin) {
       if (!validateLogin(email, password)) return;
     } else {
-      if (!validateSignup(email, password)) return;
+      if (!validateEmail(email)) return;
+      if (!validatePasswordFields(password)) return;
     }
     
     setIsLoading(true);

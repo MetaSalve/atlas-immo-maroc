@@ -5,10 +5,11 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card';
 import { toast } from 'sonner';
-import { Loader2 } from 'lucide-react';
+import { Loader2, AlertTriangle } from 'lucide-react';
 import { useAuth } from '@/providers/AuthProvider';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { supabase } from '@/integrations/supabase/client';
+import { usePasswordValidation } from '@/hooks/usePasswordValidation';
 
 const ResetPasswordPage = () => {
   const [password, setPassword] = useState('');
@@ -19,6 +20,12 @@ const ResetPasswordPage = () => {
   const { updatePassword } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
+  const { passwordErrors, validatePasswordFields, clearErrors } = usePasswordValidation();
+
+  // Clear errors when component unmounts
+  useEffect(() => {
+    return () => clearErrors();
+  }, []);
 
   // Vérifier si le token est présent dans l'URL
   useEffect(() => {
@@ -52,25 +59,12 @@ const ResetPasswordPage = () => {
     checkToken();
   }, [location]);
 
-  const validatePassword = (pass: string) => {
-    if (pass.length < 8) return "Le mot de passe doit contenir au moins 8 caractères";
-    if (!/[A-Z]/.test(pass)) return "Le mot de passe doit contenir au moins une majuscule";
-    if (!/[0-9]/.test(pass)) return "Le mot de passe doit contenir au moins un chiffre";
-    return null;
-  };
-
   const handlePasswordReset = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    // Validation de base
-    const passwordError = validatePassword(password);
-    if (passwordError) {
-      toast.error(passwordError);
-      return;
-    }
-    
-    if (password !== confirmPassword) {
-      toast.error('Les mots de passe ne correspondent pas');
+    // Validation using our custom hook
+    const isValid = validatePasswordFields(password, confirmPassword);
+    if (!isValid) {
       return;
     }
     
@@ -154,13 +148,17 @@ const ResetPasswordPage = () => {
                 onChange={(e) => setPassword(e.target.value)}
                 required
                 disabled={isLoading}
-                minLength={8}
                 className="border-input"
                 autoComplete="new-password"
               />
-              <p className="text-xs text-muted-foreground">
-                Minimum 8 caractères, avec au moins une majuscule et un chiffre
-              </p>
+              {passwordErrors.main && (
+                <p className="text-xs text-destructive">{passwordErrors.main}</p>
+              )}
+              {!passwordErrors.main && (
+                <p className="text-xs text-muted-foreground">
+                  Minimum 8 caractères, avec au moins une majuscule et un chiffre
+                </p>
+              )}
             </div>
             <div className="space-y-2">
               <label htmlFor="confirmPassword" className="text-sm font-medium">Confirmer le mot de passe</label>
@@ -175,6 +173,9 @@ const ResetPasswordPage = () => {
                 className="border-input"
                 autoComplete="new-password"
               />
+              {passwordErrors.confirmation && (
+                <p className="text-xs text-destructive">{passwordErrors.confirmation}</p>
+              )}
             </div>
             <Button 
               type="submit" 
