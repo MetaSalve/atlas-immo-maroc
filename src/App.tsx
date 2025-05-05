@@ -10,6 +10,7 @@ import { configureSecurityHeaders, runSecurityChecks } from "./utils/securityHea
 import { useAuth } from "./providers/AuthProvider";
 import { CookieConsent } from "@/components/common/CookieConsent";
 import { CustomRouteObject } from "./routes/types";
+import { ErrorBoundary } from "@/components/common/ErrorBoundary";
 
 function App() {
   const { user } = useAuth();
@@ -30,35 +31,37 @@ function App() {
 
   return (
     <>
-      <Routes>
-        {routes.map((route: CustomRouteObject, index: number) => (
+      <ErrorBoundary>
+        <Routes>
+          {routes.map((route: CustomRouteObject, index: number) => (
+            <Route
+              key={index}
+              path={route.path as string}
+              element={
+                <Layout>
+                  {route.adminRequired ? (
+                    <AdminRoute element={route.element} />
+                  ) : (
+                    <ProtectedRoute
+                      element={route.element}
+                      requiresAuth={route.authRequired}
+                      requiresSubscription={route.subscriptionRequired}
+                    />
+                  )}
+                </Layout>
+              }
+            />
+          ))}
           <Route
-            key={index}
-            path={route.path as string}
+            path="*"
             element={
               <Layout>
-                {route.adminRequired ? (
-                  <AdminRoute element={route.element} />
-                ) : (
-                  <ProtectedRoute
-                    element={route.element}
-                    requiresAuth={route.authRequired}
-                    requiresSubscription={route.subscriptionRequired}
-                  />
-                )}
+                <NotFound />
               </Layout>
             }
           />
-        ))}
-        <Route
-          path="*"
-          element={
-            <Layout>
-              <NotFound />
-            </Layout>
-          }
-        />
-      </Routes>
+        </Routes>
+      </ErrorBoundary>
       
       <CookieConsent />
     </>

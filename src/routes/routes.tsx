@@ -1,21 +1,33 @@
 
-import React from 'react';
-import HomePage from '@/pages/HomePage';
-import AuthPage from '@/pages/AuthPage'; 
-import ProfilePage from '@/pages/ProfilePage';
-import PropertyDetailPage from '@/pages/PropertyDetailPage';
-import FavoritesPage from '@/pages/FavoritesPage';
-import AlertsPage from '@/pages/AlertsPage';
-import AdminDashboardPage from '@/pages/AdminDashboard';
-import PropertiesPage from '@/pages/PropertiesPage';
-import NotificationsPage from '@/pages/NotificationsPage';
-import SubscriptionPage from '@/pages/SubscriptionPage';
-import PaymentPage from '@/pages/PaymentPage';
-import PaymentSuccessPage from '@/pages/PaymentSuccessPage';
-import ResetPasswordPage from '@/pages/ResetPasswordPage';
+import React, { lazy, Suspense } from 'react';
+import { LoadingFallback } from '@/components/common/LoadingFallback';
 import { NotFound } from '@/components/common/NotFound';
 import { CustomRouteObject } from './types';
+
+// Use regular import for the index page to ensure it loads quickly
 import Index from '@/pages/Index';
+import HomePage from '@/pages/HomePage';
+
+// Lazy load other pages to improve initial load performance
+const AuthPage = lazy(() => import('@/pages/AuthPage'));
+const ProfilePage = lazy(() => import('@/pages/ProfilePage'));
+const PropertyDetailPage = lazy(() => import('@/pages/PropertyDetailPage'));
+const FavoritesPage = lazy(() => import('@/pages/FavoritesPage'));
+const AlertsPage = lazy(() => import('@/pages/AlertsPage'));
+const AdminDashboardPage = lazy(() => import('@/pages/AdminDashboard'));
+const PropertiesPage = lazy(() => import('@/pages/PropertiesPage'));
+const NotificationsPage = lazy(() => import('@/pages/NotificationsPage'));
+const SubscriptionPage = lazy(() => import('@/pages/SubscriptionPage'));
+const PaymentPage = lazy(() => import('@/pages/PaymentPage'));
+const PaymentSuccessPage = lazy(() => import('@/pages/PaymentSuccessPage'));
+const ResetPasswordPage = lazy(() => import('@/pages/ResetPasswordPage'));
+
+// Wrap lazy-loaded components with Suspense
+const withSuspense = (Component) => (
+  <Suspense fallback={<LoadingFallback />}>
+    <Component />
+  </Suspense>
+);
 
 const routes: CustomRouteObject[] = [
   {
@@ -29,62 +41,62 @@ const routes: CustomRouteObject[] = [
   },
   {
     path: '/auth',
-    element: <AuthPage />
+    element: withSuspense(AuthPage)
   },
   {
     path: '/auth/callback',
-    element: <AuthPage />
+    element: withSuspense(AuthPage)
   },
   {
     path: '/auth/reset-password',
-    element: <ResetPasswordPage />
+    element: withSuspense(ResetPasswordPage)
   },
   {
     path: '/profile',
-    element: <ProfilePage />,
+    element: withSuspense(ProfilePage),
     authRequired: true
   },
   {
     path: '/properties',
-    element: <PropertiesPage />
+    element: withSuspense(PropertiesPage)
   },
   {
     path: '/property/:id',
-    element: <PropertyDetailPage />
+    element: withSuspense(PropertyDetailPage)
   },
   {
     path: '/favorites',
-    element: <FavoritesPage />,
+    element: withSuspense(FavoritesPage),
     authRequired: true
   },
   {
     path: '/alerts',
-    element: <AlertsPage />,
+    element: withSuspense(AlertsPage),
     authRequired: true
   },
   {
     path: '/notifications',
-    element: <NotificationsPage />,
+    element: withSuspense(NotificationsPage),
     authRequired: true
   },
   {
     path: '/subscription',
-    element: <SubscriptionPage />,
+    element: withSuspense(SubscriptionPage),
     authRequired: true
   },
   {
     path: '/payment',
-    element: <PaymentPage />,
+    element: withSuspense(PaymentPage),
     authRequired: true
   },
   {
     path: '/payment-success',
-    element: <PaymentSuccessPage />,
+    element: withSuspense(PaymentSuccessPage),
     authRequired: true
   },
   {
     path: '/admin',
-    element: <AdminDashboardPage />,
+    element: withSuspense(AdminDashboardPage),
     authRequired: true,
     adminRequired: true
   },
