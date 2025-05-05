@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { BrowserRouter } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
@@ -13,10 +13,54 @@ import { ErrorBoundary } from '@/components/common/ErrorBoundary';
 import { SecurityAuditProvider } from '@/providers/SecurityAuditProvider';
 import { Toaster } from '@/components/ui/toaster';
 import { Toaster as SonnerToaster } from 'sonner';
+import { initSentry } from '@/integrations/sentry';
+import { initializePerformanceMonitoring } from '@/utils/loadTesting';
+import { config } from '@/utils/environmentConfig';
 
-const queryClient = new QueryClient();
+// Initialiser Sentry pour le monitoring d'erreurs en production
+if (import.meta.env.PROD) {
+  initSentry();
+}
+
+// Initialiser la surveillance des performances en production
+if (config.enableAnalytics) {
+  initializePerformanceMonitoring();
+}
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      // Configuration par défaut pour les requêtes en prod
+      retry: 2,
+      staleTime: 30 * 1000, // 30 secondes
+      gcTime: 5 * 60 * 1000, // 5 minutes
+      refetchOnWindowFocus: import.meta.env.PROD,
+    },
+  },
+});
 
 export const AppProviders = ({ children }: { children: React.ReactNode }) => {
+  // Surveiller les performances réseau et la disponibilité
+  useEffect(() => {
+    if (import.meta.env.PROD) {
+      // Surveiller l'état de la connexion
+      const handleOnline = () => {
+        console.log('[Network] Connexion rétablie');
+      };
+      
+      const handleOffline = () => {
+        console.log('[Network] Connexion perdue');
+      };
+      
+      window.addEventListener('online', handleOnline);
+      window.addEventListener('offline', handleOffline);
+      
+      return () => {
+        window.removeEventListener('online', handleOnline);
+        window.removeEventListener('offline', handleOffline);
+      };
+    }
+  }, []);
   
   return (
     <React.StrictMode>
@@ -32,6 +76,8 @@ export const AppProviders = ({ children }: { children: React.ReactNode }) => {
                         <NotificationsProvider>
                           <AccessibilityProvider>
                             {children}
+                            <SonnerToaster position="top-right" />
+                            <Toaster />
                           </AccessibilityProvider>
                         </NotificationsProvider>
                       </SecurityAuditProvider>
