@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { BrowserRouter } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
@@ -40,8 +40,8 @@ const queryClient = new QueryClient({
 });
 
 export const AppProviders = ({ children }: { children: React.ReactNode }) => {
-  // Le hook useEffect doit être à l'intérieur du composant fonctionnel
-  React.useEffect(() => {
+  // Surveiller les performances réseau et la disponibilité
+  useEffect(() => {
     if (import.meta.env.PROD) {
       // Surveiller l'état de la connexion
       const handleOnline = () => {
