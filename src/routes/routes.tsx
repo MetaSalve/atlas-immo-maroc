@@ -12,18 +12,28 @@ import NotificationsPage from '@/pages/NotificationsPage';
 import SubscriptionPage from '@/pages/SubscriptionPage';
 import PaymentPage from '@/pages/PaymentPage';
 import PaymentSuccessPage from '@/pages/PaymentSuccessPage';
+import ResetPasswordPage from '@/pages/ResetPasswordPage';
 import { NotFound } from '@/components/common/NotFound';
 import { CustomRouteObject } from './types';
+import Index from '@/pages/Index';
 
 const routes: CustomRouteObject[] = [
   {
     path: '/',
-    element: <HomePage />,
+    element: <Index />,
     index: true
+  },
+  {
+    path: '/home',
+    element: <HomePage />
   },
   {
     path: '/auth',
     element: <AuthPage />
+  },
+  {
+    path: '/auth/reset-password',
+    element: <ResetPasswordPage />
   },
   {
     path: '/profile',
