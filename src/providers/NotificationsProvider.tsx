@@ -1,5 +1,5 @@
 
-import { createContext, useContext, useEffect, useState } from 'react';
+import React, { createContext, useContext, useEffect, useState } from 'react';
 import { useNotifications } from '@/hooks/useNotifications';
 import { useAuth } from '@/providers/AuthProvider';
 import { supabase } from '@/integrations/supabase/client';
@@ -33,7 +33,7 @@ const NotificationsContext = createContext<NotificationsContextType>({
   fetchNotifications: async () => {}
 });
 
-export const NotificationsProvider = ({ children }: { children: React.ReactNode }) => {
+export const NotificationsProvider: React.FC<{children: React.ReactNode}> = ({ children }) => {
   const { hasPermission } = useNotifications();
   const { user } = useAuth();
   const [notifications, setNotifications] = useState<Notification[]>([]);

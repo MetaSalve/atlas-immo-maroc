@@ -32,6 +32,10 @@ const routes: CustomRouteObject[] = [
     element: <AuthPage />
   },
   {
+    path: '/auth/callback',
+    element: <AuthPage />
+  },
+  {
     path: '/auth/reset-password',
     element: <ResetPasswordPage />
   },
