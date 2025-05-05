@@ -40,27 +40,8 @@ const queryClient = new QueryClient({
 });
 
 export const AppProviders = ({ children }: { children: React.ReactNode }) => {
-  // Surveiller les performances réseau et la disponibilité
-  useEffect(() => {
-    if (import.meta.env.PROD) {
-      // Surveiller l'état de la connexion
-      const handleOnline = () => {
-        console.log('[Network] Connexion rétablie');
-      };
-      
-      const handleOffline = () => {
-        console.log('[Network] Connexion perdue');
-      };
-      
-      window.addEventListener('online', handleOnline);
-      window.addEventListener('offline', handleOffline);
-      
-      return () => {
-        window.removeEventListener('online', handleOnline);
-        window.removeEventListener('offline', handleOffline);
-      };
-    }
-  }, []);
+  // We'll remove the useEffect causing problems for now to isolate the issue
+  // We can add it back once the app is working again
   
   return (
     <React.StrictMode>
