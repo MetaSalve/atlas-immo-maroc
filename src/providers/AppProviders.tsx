@@ -13,27 +13,14 @@ import { ErrorBoundary } from '@/components/common/ErrorBoundary';
 import { SecurityAuditProvider } from '@/providers/SecurityAuditProvider';
 import { Toaster } from '@/components/ui/toaster';
 import { Toaster as SonnerToaster } from 'sonner';
-import { initSentry } from '@/integrations/sentry';
-import { initializePerformanceMonitoring } from '@/utils/loadTesting';
-import { config } from '@/utils/environmentConfig';
 
-// Initialiser Sentry pour le monitoring d'erreurs en production
-if (import.meta.env.PROD) {
-  initSentry();
-}
-
-// Initialiser la surveillance des performances en production
-if (config.enableAnalytics) {
-  initializePerformanceMonitoring();
-}
-
+// Configuration for the QueryClient
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      // Configuration par défaut pour les requêtes en prod
       retry: 2,
-      staleTime: 30 * 1000, // 30 secondes
-      gcTime: 5 * 60 * 1000, // 5 minutes
+      staleTime: 30 * 1000,
+      gcTime: 5 * 60 * 1000,
       refetchOnWindowFocus: import.meta.env.PROD,
     },
   },

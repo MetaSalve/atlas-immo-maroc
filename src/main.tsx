@@ -5,16 +5,15 @@ import { AppProviders } from './providers/AppProviders'
 import App from './App.tsx'
 import './index.css'
 import { LoadingFallback } from './components/common/LoadingFallback'
-import { initSentry } from './integrations/sentry'
 
-// Initialiser Sentry avant tout le reste
-initSentry();
-
+// Initialize the root and render the application
 const root = createRoot(document.getElementById("root")!);
 root.render(
-  <AppProviders>
-    <React.Suspense fallback={<LoadingFallback />}>
-      <App />
-    </React.Suspense>
-  </AppProviders>
+  <React.StrictMode>
+    <AppProviders>
+      <React.Suspense fallback={<LoadingFallback />}>
+        <App />
+      </React.Suspense>
+    </AppProviders>
+  </React.StrictMode>
 );
