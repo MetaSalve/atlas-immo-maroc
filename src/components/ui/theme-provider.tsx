@@ -16,7 +16,6 @@ export function ThemeProvider({
   storageKey = "alertimmo-theme",
   ...props
 }: ThemeProviderProps) {
-  // Create a client-only wrapper to avoid hydration mismatch
   const [mounted, setMounted] = React.useState(false);
 
   React.useEffect(() => {

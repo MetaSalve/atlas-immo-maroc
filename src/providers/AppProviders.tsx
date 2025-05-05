@@ -14,7 +14,7 @@ import { SecurityAuditProvider } from '@/providers/SecurityAuditProvider';
 import { Toaster } from '@/components/ui/toaster';
 import { Toaster as SonnerToaster } from '@/components/ui/sonner';
 
-// Create a new QueryClient instance outside of the component
+// Create a QueryClient instance outside component to avoid recreation on rerenders
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {

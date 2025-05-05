@@ -1,15 +1,19 @@
 
+// Fix imports and theme implementation
 import { useTheme } from "next-themes";
 import { Toaster as Sonner, toast } from "sonner";
 
 type ToasterProps = React.ComponentProps<typeof Sonner>;
 
 const Toaster = ({ ...props }: ToasterProps) => {
-  const { resolvedTheme, theme = "system" } = useTheme();
+  const { theme, resolvedTheme } = useTheme();
+  
+  // Use a default theme if neither is available
+  const currentTheme = resolvedTheme || theme || "light";
 
   return (
     <Sonner
-      theme={resolvedTheme as ToasterProps["theme"] || theme as ToasterProps["theme"]}
+      theme={currentTheme as ToasterProps["theme"]}
       className="toaster group"
       toastOptions={{
         classNames: {
