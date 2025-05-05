@@ -16,6 +16,17 @@ interface PrivacySettings {
   thirdParties: boolean;
 }
 
+interface UserPrivacySettings {
+  id: string;
+  user_id: string;
+  collect_analytics: boolean;
+  marketing_consent: boolean;
+  tracking_consent: boolean;
+  third_party_consent: boolean;
+  created_at: string;
+  updated_at: string;
+}
+
 export const DataPrivacySettings = () => {
   const { user } = useAuth();
   const [settings, setSettings] = useState<PrivacySettings>({
@@ -49,11 +60,12 @@ export const DataPrivacySettings = () => {
       }
       
       if (data) {
+        const typedData = data as UserPrivacySettings;
         setSettings({
-          collectAnalytics: data.collect_analytics,
-          marketing: data.marketing_consent,
-          tracking: data.tracking_consent,
-          thirdParties: data.third_party_consent,
+          collectAnalytics: typedData.collect_analytics,
+          marketing: typedData.marketing_consent,
+          tracking: typedData.tracking_consent,
+          thirdParties: typedData.third_party_consent,
         });
       }
     } catch (err) {

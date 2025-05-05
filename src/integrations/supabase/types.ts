@@ -498,6 +498,39 @@ export type Database = {
         }
         Relationships: []
       }
+      user_privacy_settings: {
+        Row: {
+          collect_analytics: boolean
+          created_at: string
+          id: string
+          marketing_consent: boolean
+          third_party_consent: boolean
+          tracking_consent: boolean
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          collect_analytics?: boolean
+          created_at?: string
+          id?: string
+          marketing_consent?: boolean
+          third_party_consent?: boolean
+          tracking_consent?: boolean
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          collect_analytics?: boolean
+          created_at?: string
+          id?: string
+          marketing_consent?: boolean
+          third_party_consent?: boolean
+          tracking_consent?: boolean
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           created_at: string

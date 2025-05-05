@@ -14,13 +14,13 @@ serve(async (req) => {
   }
 
   try {
-    // Utiliser la clé de service pour les opérations d'administration
+    // Utilisez la clé de service pour les opérations d'administration
     const supabaseAdmin = createClient(
       Deno.env.get("SUPABASE_URL") ?? "",
       Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? ""
     );
 
-    // Authentifier l'utilisateur
+    // Authentifiez l'utilisateur
     const authHeader = req.headers.get("Authorization");
     if (!authHeader) {
       throw new Error("Jeton d'authentification manquant");
@@ -33,75 +33,86 @@ serve(async (req) => {
       throw new Error("Utilisateur non authentifié");
     }
 
-    // Vérifier si l'utilisateur est un administrateur
+    // Vérifiez si l'utilisateur est un administrateur
     const { data: isAdmin } = await supabaseAdmin.rpc('check_is_admin', { user_id_input: user.id });
     if (!isAdmin) {
       throw new Error("Autorisation refusée: droits d'administrateur requis");
     }
 
-    // Récupérer les paramètres de sauvegarde envoyés par le client
-    const { backupSchedule, retentionDays, backupLocation } = await req.json();
-    
-    // Valider les paramètres
-    if (!backupSchedule || !retentionDays || !backupLocation) {
-      throw new Error("Paramètres de sauvegarde incomplets");
+    // Vérifier si une entrée pour les sauvegardes existe déjà dans la table cron_jobs
+    const { data: existingJob, error: fetchError } = await supabaseAdmin.from('cron_jobs')
+      .select('*')
+      .eq('job_type', 'backup')
+      .maybeSingle();
+      
+    if (fetchError) {
+      throw fetchError;
     }
     
-    // Créer une entrée de configuration pour les sauvegardes
-    const { error: configError } = await supabaseAdmin
-      .from('backup_config')
-      .upsert({
-        id: 1, // Utilisé comme singleton pour la config
-        schedule: backupSchedule,
-        retention_days: retentionDays,
-        location: backupLocation,
-        enabled: true,
-        last_updated_by: user.id,
-        updated_at: new Date().toISOString()
-      }, {
-        onConflict: 'id'
-      });
+    // Configurations de sauvegarde
+    const backupConfig = {
+      schedule: req.method === "DELETE" ? null : "0 3 * * *", // 3h du matin tous les jours
+      retention_days: 30,
+      storage_bucket: "backups",
+      job_type: "backup",
+      enabled: req.method !== "DELETE",
+      last_run: null,
+      next_run: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString(), // Demain
+      created_by: user.id
+    };
     
-    if (configError) throw configError;
+    let result;
     
-    // Configurer le cron job pour les sauvegardes (simulation)
-    // Dans un environnement réel, cette opération nécessiterait un accès direct à pg_cron
-    const { error: cronError } = await supabaseAdmin
-      .from('cron_jobs')
-      .upsert({
-        job_name: 'automated_backup',
-        job_type: 'backup',
-        schedule: backupSchedule,
-        enabled: true,
-        last_run: null,
-        created_by: user.id,
-        updated_at: new Date().toISOString()
-      }, {
-        onConflict: 'job_name'
-      });
-    
-    if (cronError) throw cronError;
-    
-    // Enregistrer cet événement dans les logs de sécurité
-    await supabaseAdmin.functions.invoke('log-security-event', {
-      body: {
-        event: {
-          user_id: user.id,
-          action: 'backup_configured',
-          details: { backupSchedule, retentionDays, backupLocation }
-        }
+    // Si nous supprimons la configuration
+    if (req.method === "DELETE") {
+      if (existingJob) {
+        const { data, error: deleteError } = await supabaseAdmin.from('cron_jobs')
+          .delete()
+          .eq('id', existingJob.id);
+          
+        if (deleteError) throw deleteError;
+        result = { success: true, message: "Configuration de sauvegarde supprimée" };
+      } else {
+        result = { success: true, message: "Aucune configuration de sauvegarde à supprimer" };
       }
-    });
+    } 
+    // Si nous créons ou mettons à jour la configuration
+    else {
+      if (existingJob) {
+        // Mettre à jour la configuration existante
+        const { data, error: updateError } = await supabaseAdmin.from('cron_jobs')
+          .update(backupConfig)
+          .eq('id', existingJob.id);
+          
+        if (updateError) throw updateError;
+        result = { success: true, message: "Configuration de sauvegarde mise à jour" };
+      } else {
+        // Créer une nouvelle configuration
+        const { data, error: insertError } = await supabaseAdmin.from('cron_jobs')
+          .insert(backupConfig);
+          
+        if (insertError) throw insertError;
+        result = { success: true, message: "Configuration de sauvegarde créée" };
+      }
+    }
     
-    // Définir une variable d'environnement pour indiquer que les sauvegardes sont activées
-    // Note: Dans un environnement réel, cela nécessiterait des droits spécifiques
-    // Nous simulons simplement cela ici
-    // Deno.env.set("BACKUP_ENABLED", "true");
+    // Vérifier si la création d'un bucket de stockage est nécessaire
+    if (req.method !== "DELETE") {
+      try {
+        // Créer le bucket de stockage si nécessaire
+        const { data: bucketData, error: bucketError } = await supabaseAdmin.storage
+          .createBucket('backups', { public: false });
+          
+        if (bucketError && !bucketError.message.includes('already exists')) {
+          console.warn('Erreur lors de la création du bucket:', bucketError);
+        }
+      } catch (bucketErr) {
+        console.warn('Erreur lors de la création du bucket:', bucketErr);
+        // Ne pas échouer complètement si seulement la création du bucket échoue
+      }
+    }
 
-    return new Response(JSON.stringify({
-      success: true,
-      message: "Configuration des sauvegardes mise à jour avec succès",
-    }), {
+    return new Response(JSON.stringify(result), {
       headers: { ...corsHeaders, "Content-Type": "application/json" }
     });
 
