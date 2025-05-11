@@ -15,9 +15,11 @@ if (!rootElement) {
 // Create the root before rendering
 const root = createRoot(rootElement);
 
-// Render the app
+// Render the app with StrictMode to catch potential issues
 root.render(
-  <AppProviders>
-    <App />
-  </AppProviders>
+  <React.StrictMode>
+    <AppProviders>
+      <App />
+    </AppProviders>
+  </React.StrictMode>
 );

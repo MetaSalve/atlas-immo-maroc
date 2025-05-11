@@ -27,6 +27,8 @@ const queryClient = new QueryClient({
 });
 
 export function AppProviders({ children }: { children: React.ReactNode }) {
+  // Note: No useEffect hooks at the component level - move any needed effects to appropriate child components
+
   return (
     <QueryClientProvider client={queryClient}>
       <HelmetProvider>

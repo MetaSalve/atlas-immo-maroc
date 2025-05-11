@@ -27,8 +27,12 @@ function App() {
 
   // Configure security headers on application load
   useEffect(() => {
-    configureSecurityHeaders();
-    runSecurityChecks();
+    try {
+      configureSecurityHeaders();
+      runSecurityChecks();
+    } catch (error) {
+      console.error("Error configuring security features:", error);
+    }
   }, []);
 
   return (
@@ -40,7 +44,7 @@ function App() {
             path={route.path as string}
             element={
               <Layout>
-                <ErrorBoundary>
+                <ErrorBoundary fallback={<DynamicImportError />}>
                   <Suspense fallback={<LoadingFallback />}>
                     {route.adminRequired ? (
                       <AdminRoute element={route.element} />
