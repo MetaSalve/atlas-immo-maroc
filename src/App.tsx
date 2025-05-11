@@ -1,5 +1,5 @@
 
-import { useEffect } from "react";
+import { useEffect, Suspense } from "react";
 import { Routes, Route, useNavigate } from "react-router-dom";
 import { Layout } from "@/components/layout/Layout";
 import routes from "@/routes/routes";
@@ -10,6 +10,9 @@ import { configureSecurityHeaders, runSecurityChecks } from "./utils/securityHea
 import { useAuth } from "./providers/AuthProvider";
 import { CookieConsent } from "@/components/common/CookieConsent";
 import { CustomRouteObject } from "./routes/types";
+import { LoadingFallback } from "@/components/common/LoadingFallback";
+import { ErrorBoundary } from "@/components/common/ErrorBoundary";
+import { DynamicImportError } from "@/components/common/DynamicImportError";
 
 function App() {
   const { user } = useAuth();
@@ -37,15 +40,19 @@ function App() {
             path={route.path as string}
             element={
               <Layout>
-                {route.adminRequired ? (
-                  <AdminRoute element={route.element} />
-                ) : (
-                  <ProtectedRoute
-                    element={route.element}
-                    requiresAuth={route.authRequired}
-                    requiresSubscription={route.subscriptionRequired}
-                  />
-                )}
+                <ErrorBoundary>
+                  <Suspense fallback={<LoadingFallback />}>
+                    {route.adminRequired ? (
+                      <AdminRoute element={route.element} />
+                    ) : (
+                      <ProtectedRoute
+                        element={route.element}
+                        requiresAuth={route.authRequired}
+                        requiresSubscription={route.subscriptionRequired}
+                      />
+                    )}
+                  </Suspense>
+                </ErrorBoundary>
               </Layout>
             }
           />

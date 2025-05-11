@@ -88,9 +88,10 @@ export const useProfilePage = () => {
       return;
     }
     
-    const passwordError = validatePassword(newPassword);
-    if (passwordError) {
-      toast.error(passwordError);
+    // Fix here: extract the error string from validatePassword result
+    const passwordValidation = validatePassword(newPassword);
+    if (!passwordValidation.isValid) {
+      toast.error(passwordValidation.error || 'Mot de passe invalide');
       return;
     }
     
