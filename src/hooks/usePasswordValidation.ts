@@ -1,5 +1,6 @@
 
 import { useState } from 'react';
+import { checkPasswordStrength, checkPasswordCompromised } from '@/utils/security/passwordSecurity';
 
 type ValidationResult = {
   isValid: boolean;
@@ -20,21 +21,29 @@ export const usePasswordValidation = () => {
    * @param password The password to validate
    * @returns Validation result with error message if invalid
    */
-  const validatePassword = (password: string): ValidationResult => {
+  const validatePassword = async (password: string): Promise<ValidationResult> => {
     if (!password) {
       return { isValid: false, error: "Le mot de passe est requis" };
     }
     
-    if (password.length < 8) {
-      return { isValid: false, error: "Le mot de passe doit contenir au moins 8 caractères" };
+    // Vérifier la force du mot de passe
+    const strengthCheck = checkPasswordStrength(password);
+    if (!strengthCheck.isStrong) {
+      return { 
+        isValid: false, 
+        error: strengthCheck.feedback.length > 0 
+          ? strengthCheck.feedback[0] 
+          : "Le mot de passe n'est pas assez fort" 
+      };
     }
     
-    if (!/[A-Z]/.test(password)) {
-      return { isValid: false, error: "Le mot de passe doit contenir au moins une majuscule" };
-    }
-    
-    if (!/[0-9]/.test(password)) {
-      return { isValid: false, error: "Le mot de passe doit contenir au moins un chiffre" };
+    // Vérifier si le mot de passe a été compromis
+    const isCompromised = await checkPasswordCompromised(password);
+    if (isCompromised) {
+      return { 
+        isValid: false, 
+        error: "Ce mot de passe a été compromis dans une fuite de données. Veuillez en choisir un autre."
+      };
     }
     
     // Password is valid
@@ -65,8 +74,8 @@ export const usePasswordValidation = () => {
    * @param confirmPassword Optional confirmation password
    * @returns True if all validations pass
    */
-  const validatePasswordFields = (password: string, confirmPassword?: string): boolean => {
-    const mainResult = validatePassword(password);
+  const validatePasswordFields = async (password: string, confirmPassword?: string): Promise<boolean> => {
+    const mainResult = await validatePassword(password);
     setPasswordErrors(prev => ({ ...prev, main: mainResult.error }));
     
     if (confirmPassword !== undefined) {

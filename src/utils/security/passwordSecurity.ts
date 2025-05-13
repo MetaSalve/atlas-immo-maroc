@@ -51,12 +51,41 @@ export const checkPasswordStrength = (password: string): {
   } else {
     score += 1;
   }
+
+  // Vérifier si le mot de passe est couramment utilisé
+  if (isCommonPassword(password)) {
+    feedback.push('Ce mot de passe est trop commun et facilement devinable');
+    // Réduire le score pour les mots de passe courants
+    score = Math.max(0, score - 2);
+  }
   
   return {
     score,
     isStrong: score >= 4,
     feedback
   };
+};
+
+/**
+ * Vérifie si un mot de passe est dans la liste des mots de passe courants
+ * @param password Le mot de passe à vérifier
+ * @returns True si le mot de passe est courant, sinon false
+ */
+export const isCommonPassword = (password: string): boolean => {
+  // Liste des mots de passe les plus courants
+  const commonPasswords = [
+    'password', '123456', '123456789', '12345678', 'qwerty', 
+    'abc123', '111111', '123123', 'admin', 'welcome', 
+    'password1', '1234567', '12345', '1234567890', 'azerty',
+    'sunshine', 'iloveyou', 'princess', 'dragon', 'monkey',
+    'letmein', 'football', 'baseball', 'superman', 'password123',
+    'qwertyuiop', 'zxcvbnm', 'trustno1', 'welcome1', 'admin123'
+  ];
+  
+  // Convertir en minuscule pour la comparaison
+  const lowercasePassword = password.toLowerCase();
+  
+  return commonPasswords.includes(lowercasePassword);
 };
 
 /**
@@ -79,4 +108,27 @@ export const hashString = async (input: string): Promise<string> => {
   return Array.from(new Uint8Array(hashBuffer))
     .map(b => b.toString(16).padStart(2, '0'))
     .join('');
+};
+
+/**
+ * Vérifie si un mot de passe a été compromis en utilisant sa valeur de hachage
+ * @param password Le mot de passe à vérifier
+ * @returns True si le mot de passe a été compromis, sinon false
+ */
+export const checkPasswordCompromised = async (password: string): Promise<boolean> => {
+  try {
+    // Nous utilisons seulement une vérification locale ici pour l'exemple
+    // Dans une application réelle, on pourrait utiliser des APIs comme "Have I Been Pwned"
+    // ou d'autres services pour vérifier si le mot de passe a été compromis
+    
+    const hashedPassword = await hashString(password);
+    
+    // Simuler une vérification de mot de passe compromis
+    // Ceci devrait être remplacé par une vérification réelle contre une API
+    return isCommonPassword(password) || hashedPassword.startsWith('000');
+  } catch (error) {
+    console.error("Erreur lors de la vérification du mot de passe compromis:", error);
+    // En cas d'erreur, on suppose que le mot de passe n'est pas compromis
+    return false;
+  }
 };

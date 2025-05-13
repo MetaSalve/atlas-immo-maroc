@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/providers/AuthProvider';
@@ -11,6 +12,8 @@ export const useAuthPage = () => {
   const [isLogin, setIsLogin] = useState(true);
   const [isRecovery, setIsRecovery] = useState(false);
   const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [pageLoading, setPageLoading] = useState(true);
   const [csrfToken, setCsrfToken] = useState('');
@@ -68,15 +71,20 @@ export const useAuthPage = () => {
       return;
     }
     
-    const form = e.target as HTMLFormElement;
-    const passwordInput = form.querySelector('input[name="password"]') as HTMLInputElement;
-    const password = passwordInput.value;
-    
     if (isLogin) {
       if (!validateLogin(email, password)) return;
     } else {
       if (!validateEmail(email)) return;
-      if (!validatePasswordFields(password)) return;
+      
+      try {
+        // Utiliser la validation améliorée des mots de passe pour l'inscription
+        const isValidPassword = await validatePasswordFields(password, confirmPassword);
+        if (!isValidPassword) return;
+      } catch (error) {
+        console.error("Erreur lors de la validation du mot de passe:", error);
+        setErrorMessage("Une erreur est survenue lors de la validation du mot de passe");
+        return;
+      }
     }
     
     setIsLoading(true);
@@ -162,6 +170,10 @@ export const useAuthPage = () => {
     isRecovery,
     email,
     setEmail,
+    password,
+    setPassword,
+    confirmPassword,
+    setConfirmPassword,
     isLoading,
     pageLoading,
     csrfToken,
