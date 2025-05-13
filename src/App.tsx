@@ -1,6 +1,6 @@
 
 import { useEffect, Suspense } from "react";
-import { Routes, Route, useNavigate } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import { Layout } from "@/components/layout/Layout";
 import routes from "@/routes/routes";
 import { ProtectedRoute } from "@/components/auth/ProtectedRoute";
@@ -16,14 +16,14 @@ import { DynamicImportError } from "@/components/common/DynamicImportError";
 
 function App() {
   const { user } = useAuth();
-  const navigate = useNavigate();
 
   // Redirect to home page if arriving at /auth while already logged in
   useEffect(() => {
     if (user && window.location.pathname === '/auth') {
-      navigate('/');
+      // Utiliser window.location.href au lieu de navigate
+      window.location.href = '/';
     }
-  }, [user, navigate]);
+  }, [user]);
 
   // Configure security headers on application load
   useEffect(() => {
