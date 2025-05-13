@@ -1,4 +1,3 @@
-
 /**
  * Utilitaires de sécurité pour l'application AlertImmo
  * Contient des fonctions pour renforcer la sécurité de l'application
@@ -140,7 +139,7 @@ export const isValidJWT = (token: string): boolean => {
   if (!token) return false;
   
   try {
-    // Vérifier la structure du token (3 parties séparées par des points)
+    // Vérifier la structure du token (3 parties s��parées par des points)
     const parts = token.split('.');
     if (parts.length !== 3) return false;
     
@@ -302,4 +301,41 @@ export const logSecurityEvent = (
       description: `L'action "${action}" a été effectuée avec succès.`
     });
   }
+};
+
+/**
+ * Vérifie si l'application présente des vulnérabilités de sécurité courantes
+ * basées sur les recommandations des frameworks de sécurité standard
+ */
+export const checkSecurityVulnerabilities = () => {
+  // Vérifie les en-têtes de sécurité
+  const securityHeaders = {
+    'Content-Security-Policy': document.querySelector('meta[http-equiv="Content-Security-Policy"]')?.getAttribute('content'),
+    'X-XSS-Protection': document.querySelector('meta[http-equiv="X-XSS-Protection"]')?.getAttribute('content')
+  };
+  
+  const missingHeaders = Object.entries(securityHeaders)
+    .filter(([_, value]) => !value)
+    .map(([header]) => header);
+  
+  if (missingHeaders.length > 0) {
+    console.warn('En-têtes de sécurité manquants:', missingHeaders.join(', '));
+  }
+
+  // Vérifie les vulnérabilités de configuration
+  if (window.location.protocol !== 'https:' && 
+      window.location.hostname !== 'localhost' && 
+      window.location.hostname !== '127.0.0.1') {
+    console.warn('L\'application ne fonctionne pas en HTTPS. La sécurité peut être compromise.');
+  }
+
+  // Analyse du code pour des pratiques dangereuses (simulation)
+  console.info('Effectuer une analyse de sécurité complète à partir du client n\'est pas possible. Utilisez des outils spécialisés pour une vérification approfondie.');
+  
+  return {
+    missingHeaders,
+    isSecureConnection: window.location.protocol === 'https:' || 
+                         window.location.hostname === 'localhost' || 
+                         window.location.hostname === '127.0.0.1'
+  };
 };

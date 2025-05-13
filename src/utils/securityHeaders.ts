@@ -154,11 +154,16 @@ export const detectCSRFAttempts = () => {
  * Effectue un ensemble complet de vérifications de sécurité
  */
 export const runSecurityChecks = () => {
-  configureSecurityHeaders();
-  checkHttpsConfiguration();
-  checkFrameProtection();
-  detectXSSVulnerabilities();
-  detectCSRFAttempts();
-  
-  console.info('Vérifications de sécurité terminées.');
+  try {
+    configureSecurityHeaders();
+    checkHttpsConfiguration();
+    checkFrameProtection();
+    detectXSSVulnerabilities();
+    detectCSRFAttempts();
+    
+    console.info('Vérifications de sécurité terminées.');
+  } catch (error) {
+    console.error('Erreur lors des vérifications de sécurité:', error);
+  }
 };
+
