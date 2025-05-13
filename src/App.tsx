@@ -6,7 +6,7 @@ import routes from "@/routes/routes";
 import { ProtectedRoute } from "@/components/auth/ProtectedRoute";
 import { AdminRoute } from "@/components/auth/AdminRoute";
 import { NotFound } from "@/components/common/NotFound";
-import { configureSecurityHeaders, runSecurityChecks } from "./utils/securityHeaders";
+import { configureSecurityHeaders, runSecurityChecks } from "./utils/security";
 import { useAuth } from "./providers/AuthProvider";
 import { CookieConsent } from "@/components/common/CookieConsent";
 import { CustomRouteObject } from "./routes/types";
