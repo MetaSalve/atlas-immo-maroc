@@ -15,12 +15,13 @@ export * from './cryptoUtils';
 
 // Fonction principale pour effectuer toutes les vérifications de sécurité
 import {
-  configureSecurityHeaders, 
   checkHttpsConfiguration,
   checkFrameProtection,
   detectXSSVulnerabilities,
   detectCSRFAttempts
 } from './securityChecks';
+
+import { configureSecurityHeaders } from './securityHeaders';
 
 /**
  * Effectue un ensemble complet de vérifications de sécurité
