@@ -1,6 +1,7 @@
 
 import { useState } from 'react';
 import { checkPasswordStrength, checkPasswordCompromised } from '@/utils/security/passwordSecurity';
+import { toast } from '@/components/ui/use-toast';
 
 type ValidationResult = {
   isValid: boolean;
@@ -21,7 +22,7 @@ export const usePasswordValidation = () => {
    * @param password The password to validate
    * @returns Validation result with error message if invalid
    */
-  const validatePassword = async (password: string): Promise<ValidationResult> => {
+  const validatePassword = (password: string): ValidationResult => {
     if (!password) {
       return { isValid: false, error: "Le mot de passe est requis" };
     }
@@ -34,15 +35,6 @@ export const usePasswordValidation = () => {
         error: strengthCheck.feedback.length > 0 
           ? strengthCheck.feedback[0] 
           : "Le mot de passe n'est pas assez fort" 
-      };
-    }
-    
-    // Vérifier si le mot de passe a été compromis
-    const isCompromised = await checkPasswordCompromised(password);
-    if (isCompromised) {
-      return { 
-        isValid: false, 
-        error: "Ce mot de passe a été compromis dans une fuite de données. Veuillez en choisir un autre."
       };
     }
     
@@ -69,22 +61,56 @@ export const usePasswordValidation = () => {
   };
 
   /**
+   * Checks if password is potentially compromised
+   * @param password The password to check
+   */
+  const checkIfPasswordCompromised = async (password: string): Promise<ValidationResult> => {
+    try {
+      const isCompromised = await checkPasswordCompromised(password);
+      if (isCompromised) {
+        return { 
+          isValid: false, 
+          error: "Ce mot de passe a été compromis dans une fuite de données. Veuillez en choisir un autre."
+        };
+      }
+      return { isValid: true, error: null };
+    } catch (error) {
+      console.error("Erreur lors de la vérification des mots de passe compromis:", error);
+      // En cas d'erreur, on continue sans bloquer
+      return { isValid: true, error: null };
+    }
+  };
+
+  /**
    * Validates a password and optionally its confirmation
    * @param password The main password
    * @param confirmPassword Optional confirmation password
    * @returns True if all validations pass
    */
   const validatePasswordFields = async (password: string, confirmPassword?: string): Promise<boolean> => {
-    const mainResult = await validatePassword(password);
+    // Validation du format du mot de passe (synchrone)
+    const mainResult = validatePassword(password);
     setPasswordErrors(prev => ({ ...prev, main: mainResult.error }));
     
+    if (!mainResult.isValid) {
+      return false;
+    }
+    
+    // Vérification du mot de passe compromis (asynchrone)
+    const compromisedCheck = await checkIfPasswordCompromised(password);
+    if (!compromisedCheck.isValid) {
+      setPasswordErrors(prev => ({ ...prev, main: compromisedCheck.error }));
+      return false;
+    }
+    
+    // Vérification de la correspondance si confirmPassword est fourni
     if (confirmPassword !== undefined) {
       const matchResult = validatePasswordMatch(password, confirmPassword);
       setPasswordErrors(prev => ({ ...prev, confirmation: matchResult.error }));
-      return mainResult.isValid && matchResult.isValid;
+      return matchResult.isValid;
     }
     
-    return mainResult.isValid;
+    return true;
   };
 
   const clearErrors = () => {

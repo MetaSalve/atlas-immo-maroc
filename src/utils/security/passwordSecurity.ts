@@ -111,24 +111,45 @@ export const hashString = async (input: string): Promise<string> => {
 };
 
 /**
- * Vérifie si un mot de passe a été compromis en utilisant sa valeur de hachage
+ * Vérifie si un mot de passe a été compromis
+ * Cette version utilise uniquement une vérification locale
  * @param password Le mot de passe à vérifier
  * @returns True si le mot de passe a été compromis, sinon false
  */
 export const checkPasswordCompromised = async (password: string): Promise<boolean> => {
   try {
-    // Nous utilisons seulement une vérification locale ici pour l'exemple
-    // Dans une application réelle, on pourrait utiliser des APIs comme "Have I Been Pwned"
-    // ou d'autres services pour vérifier si le mot de passe a été compromis
+    // Nous utilisons seulement une vérification locale au lieu de HaveIBeenPwned
+    // Vérification basée sur les mots de passe communs et une heuristique simple
     
     const hashedPassword = await hashString(password);
     
+    // Vérifier si c'est un mot de passe commun
+    if (isCommonPassword(password)) {
+      return true;
+    }
+    
+    // Vérifications supplémentaires de complexité
+    const complexityCheck = checkPasswordStrength(password);
+    
+    // Si le score est trop faible, considérer comme compromis
+    if (complexityCheck.score <= 2) {
+      return true;
+    }
+    
+    // Vérifier les répétitions et séquences
+    if (/(.)\1{2,}/.test(password)) {  // 3 caractères répétés ou plus
+      return true;
+    }
+    
+    if (/^(123|abc|qwe|asd|zxc)/i.test(password)) {
+      return true;
+    }
+    
     // Simuler une vérification de mot de passe compromis
-    // Ceci devrait être remplacé par une vérification réelle contre une API
-    return isCommonPassword(password) || hashedPassword.startsWith('000');
+    // En production, on pourrait avoir une base locale de hachages compromis
+    return false;
   } catch (error) {
     console.error("Erreur lors de la vérification du mot de passe compromis:", error);
-    // En cas d'erreur, on suppose que le mot de passe n'est pas compromis
     return false;
   }
 };

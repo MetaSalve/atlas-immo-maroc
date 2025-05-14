@@ -31,7 +31,7 @@ export const useAuthValidation = () => {
     return true;
   };
 
-  const validateSignup = (email: string, password: string): boolean => {
+  const validateSignup = async (email: string, password: string): Promise<boolean> => {
     if (!validateEmail(email)) return false;
 
     // Use our specialized password validation for signup
