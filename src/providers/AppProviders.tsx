@@ -4,7 +4,7 @@ import { BrowserRouter } from 'react-router-dom';
 import { CacheProvider } from '@/providers/CacheProvider';
 import { ThemeProvider } from '@/components/ui/theme-provider';
 import { I18nextProvider } from 'react-i18next';
-import i18n from '@/i18n';
+import { i18n } from '@/i18n'; // Fixed import - using named import instead of default
 import { Suspense } from 'react';
 import { LoadingFallback } from '@/components/common/LoadingFallback';
 import { AuthProvider } from '@/providers/AuthProvider';

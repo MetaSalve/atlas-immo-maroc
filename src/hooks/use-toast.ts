@@ -1,5 +1,4 @@
 
-import { useState, useEffect } from "react";
 import { toast as sonnerToast } from "sonner";
 
 type ToastProps = {
@@ -20,6 +19,7 @@ export const toast = ({ title, description, variant }: ToastProps) => {
   }
 };
 
+// Simple hook that returns the toast function
 export const useToast = () => {
   return {
     toast

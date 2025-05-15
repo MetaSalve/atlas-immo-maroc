@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { 
@@ -64,8 +63,7 @@ const PropertyDetailPage = () => {
     setIsFavorite(!isFavorite);
     toast({
       title: isFavorite ? 'Retiré des favoris' : 'Ajouté aux favoris',
-      description: property?.title,
-      duration: 2000,
+      description: property?.title
     });
   };
   
@@ -80,8 +78,7 @@ const PropertyDetailPage = () => {
       navigator.clipboard.writeText(window.location.href);
       toast({
         title: 'Lien copié',
-        description: 'L\'URL a été copiée dans le presse-papiers',
-        duration: 2000,
+        description: 'L\'URL a été copiée dans le presse-papiers'
       });
     }
   };
