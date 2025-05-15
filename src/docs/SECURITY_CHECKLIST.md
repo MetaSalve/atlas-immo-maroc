@@ -13,7 +13,6 @@ Ce document fournit une liste complète des vérifications de sécurité à effe
 - [x] Sessions sécurisées (expiration, rotation d'identifiants)
 - [x] Vérification des adresses email
 - [x] Autorisation basée sur les rôles (RLS dans Supabase)
-- [x] Vérification de mots de passe compromis (implémentation locale)
 - [ ] Audit des actions sensibles
 - [x] Journalisation des connexions et des tentatives échouées
 
