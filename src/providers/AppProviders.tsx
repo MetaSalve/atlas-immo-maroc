@@ -12,7 +12,8 @@ import { CacheProvider } from '@/providers/CacheProvider';
 import { ErrorBoundary } from '@/components/common/ErrorBoundary';
 import { SecurityAuditProvider } from '@/providers/SecurityAuditProvider';
 import { Toaster } from '@/components/ui/toaster';
-import { Toaster as SonnerToaster } from '@/components/ui/sonner';
+// Remove duplicate Sonner import to prevent conflicts
+// import { Toaster as SonnerToaster } from '@/components/ui/sonner';
 
 // Create a QueryClient instance outside component to avoid recreation on rerenders
 const queryClient = new QueryClient({
@@ -42,7 +43,6 @@ export function AppProviders({ children }: { children: React.ReactNode }) {
                       <NotificationsProvider>
                         <AccessibilityProvider>
                           {children}
-                          <SonnerToaster position="top-right" />
                           <Toaster />
                         </AccessibilityProvider>
                       </NotificationsProvider>
