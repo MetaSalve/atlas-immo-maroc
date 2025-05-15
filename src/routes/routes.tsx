@@ -4,9 +4,9 @@ import { LoadingFallback } from '@/components/common/LoadingFallback';
 import { NotFound } from '@/components/common/NotFound';
 import { CustomRouteObject } from './types';
 
-// Use regular import for the index page to ensure it loads quickly
+// Import direct de HomePage au lieu de lazy loading
 import Index from '@/pages/Index';
-import HomePage from '@/pages/HomePage';
+import HomePage from '@/pages/HomePage'; 
 
 // Lazy load other pages to improve initial load performance
 const AuthPage = lazy(() => import('@/pages/AuthPage'));
@@ -37,7 +37,7 @@ const routes: CustomRouteObject[] = [
   },
   {
     path: '/home',
-    element: <HomePage />
+    element: <HomePage /> // Utiliser l'import direct au lieu du lazy loading
   },
   {
     path: '/auth',

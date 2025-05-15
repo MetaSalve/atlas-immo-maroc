@@ -13,6 +13,7 @@ import { CustomRouteObject } from "./routes/types";
 import { LoadingFallback } from "@/components/common/LoadingFallback";
 import { ErrorBoundary } from "@/components/common/ErrorBoundary";
 import { DynamicImportError } from "@/components/common/DynamicImportError";
+import { Toaster } from "@/components/ui/toaster";
 
 function App() {
   const { user } = useAuth();
@@ -71,6 +72,7 @@ function App() {
         />
       </Routes>
       
+      <Toaster />
       <CookieConsent />
     </>
   );
