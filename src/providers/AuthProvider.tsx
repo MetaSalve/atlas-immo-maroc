@@ -3,7 +3,7 @@ import React, { createContext, useContext, useEffect, useState } from 'react';
 import { User, Session } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
 import { useNavigate } from 'react-router-dom';
-import { toast } from 'sonner';
+import { toast } from '@/components/ui/use-toast';
 
 type AuthContextType = {
   user: User | null;
@@ -34,15 +34,24 @@ export const AuthProvider: React.FC<{children: React.ReactNode}> = ({ children }
         
         // Only show toast for specific events, not on initial load
         if (event === 'SIGNED_IN' && !loading) {
-          toast.success('Connexion réussie');
+          toast({
+            title: "Connexion réussie"
+          });
         } else if (event === 'SIGNED_OUT') {
-          toast.info('Déconnexion réussie');
+          toast({
+            title: "Déconnexion réussie"
+          });
         } else if (event === 'PASSWORD_RECOVERY') {
           // Rediriger vers la page de réinitialisation
           navigate('/auth/reset-password');
-          toast.info('Veuillez définir votre nouveau mot de passe');
+          toast({
+            title: "Réinitialisation du mot de passe",
+            description: 'Veuillez définir votre nouveau mot de passe'
+          });
         } else if (event === 'USER_UPDATED') {
-          toast.success('Profil mis à jour avec succès');
+          toast({
+            title: "Profil mis à jour avec succès"
+          });
         }
         
         setLoading(false);
@@ -113,7 +122,10 @@ export const AuthProvider: React.FC<{children: React.ReactNode}> = ({ children }
     
     // Si la mise à jour du mot de passe est réussie et que nous sommes sur la page de réinitialisation
     if (window.location.pathname.includes('/auth/reset-password')) {
-      toast.success('Mot de passe défini avec succès, vous pouvez maintenant vous connecter');
+      toast({
+        title: "Succès",
+        description: 'Mot de passe défini avec succès, vous pouvez maintenant vous connecter'
+      });
       navigate('/auth');
     }
   };
