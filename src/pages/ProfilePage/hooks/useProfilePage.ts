@@ -1,7 +1,8 @@
+
 import { useState, useEffect } from 'react';
 import { useAuth } from '@/providers/AuthProvider';
 import { supabase } from '@/integrations/supabase/client';
-import { toast } from '@/components/ui/use-toast';
+import { toast } from "sonner";
 import { useCSRFToken } from '@/hooks/useCSRFToken';
 import { useLoginAttempts } from '@/hooks/useLoginAttempts';
 import { usePasswordValidation } from '@/hooks/usePasswordValidation';
@@ -42,9 +43,7 @@ export const useProfilePage = () => {
       }
     } catch (error) {
       console.error('Error fetching profile:', error);
-      toast({
-        variant: "destructive",
-        title: "Erreur",
+      toast.error("Erreur", {
         description: 'Erreur lors du chargement du profil'
       });
     }
@@ -56,9 +55,7 @@ export const useProfilePage = () => {
     if (!user) return;
     
     if (!validateCSRFToken(csrfToken)) {
-      toast({
-        variant: "destructive",
-        title: "Erreur de sécurité",
+      toast.error("Erreur de sécurité", {
         description: 'Token CSRF invalide'
       });
       return;
@@ -77,14 +74,11 @@ export const useProfilePage = () => {
       
       if (error) throw error;
       
-      toast({
-        title: "Succès",
+      toast.success("Succès", {
         description: 'Profil mis à jour avec succès'
       });
     } catch (error: any) {
-      toast({
-        variant: "destructive",
-        title: "Erreur",
+      toast.error("Erreur", {
         description: error.message || 'Erreur lors de la mise à jour du profil'
       });
     } finally {
@@ -96,9 +90,7 @@ export const useProfilePage = () => {
     e.preventDefault();
     
     if (!validateCSRFToken(csrfToken)) {
-      toast({
-        variant: "destructive",
-        title: "Erreur de sécurité",
+      toast.error("Erreur de sécurité", {
         description: 'Token CSRF invalide'
       });
       return;
@@ -107,18 +99,14 @@ export const useProfilePage = () => {
     // Fix: validatePassword now returns ValidationResult directly
     const passwordValidation = validatePassword(newPassword);
     if (!passwordValidation.isValid) {
-      toast({
-        variant: "destructive",
-        title: "Mot de passe invalide",
+      toast.error("Mot de passe invalide", {
         description: passwordValidation.error || 'Mot de passe invalide'
       });
       return;
     }
     
     if (newPassword !== confirmPassword) {
-      toast({
-        variant: "destructive",
-        title: "Erreur",
+      toast.error("Erreur", {
         description: 'Les mots de passe ne correspondent pas'
       });
       return;
@@ -133,10 +121,10 @@ export const useProfilePage = () => {
       
       if (error) throw error;
       
-      toast({
-        title: "Succès",
+      toast.success("Succès", {
         description: 'Mot de passe mis à jour avec succès'
       });
+      
       setCurrentPassword('');
       setNewPassword('');
       setConfirmPassword('');
@@ -144,9 +132,7 @@ export const useProfilePage = () => {
       regenerateToken();
       
     } catch (error: any) {
-      toast({
-        variant: "destructive",
-        title: "Erreur",
+      toast.error("Erreur", {
         description: error.message || 'Erreur lors de la mise à jour du mot de passe'
       });
     } finally {

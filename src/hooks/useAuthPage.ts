@@ -6,7 +6,7 @@ import { useAuthValidation } from '@/hooks/useAuthValidation';
 import { useLoginAttempts } from '@/hooks/useLoginAttempts';
 import { usePasswordValidation } from '@/hooks/usePasswordValidation';
 import { supabase } from '@/integrations/supabase/client';
-import { toast } from '@/components/ui/use-toast';
+import { toast } from "sonner";
 
 export const useAuthPage = () => {
   const [isLogin, setIsLogin] = useState(true);
@@ -94,8 +94,7 @@ export const useAuthPage = () => {
         await signInWithEmail(email, password);
       } else {
         await signUp(email, password);
-        toast({
-          title: "Succès",
+        toast.success("Succès", {
           description: 'Compte créé avec succès. Veuillez vérifier votre email pour confirmer votre inscription.'
         });
         setIsLogin(true);
@@ -142,8 +141,7 @@ export const useAuthPage = () => {
       
       if (error) throw error;
       
-      toast({
-        title: "Instructions envoyées",
+      toast.success("Instructions envoyées", {
         description: 'Vérifiez votre boîte de réception pour réinitialiser votre mot de passe'
       });
       

@@ -1,22 +1,20 @@
 
 import React from 'react';
-import { createRoot } from 'react-dom/client';
-import { AppProviders } from './providers/AppProviders';
-import App from './App.tsx';
+import ReactDOM from 'react-dom/client';
+import App from './App';
 import './index.css';
+import { AppProviders } from './providers/AppProviders';
+import { runSecurityChecks } from './utils/security';
+import * as Sentry from '@sentry/react';
+import { initSentry } from './integrations/sentry';
 
-// Make sure the DOM is fully loaded before initializing React
-const rootElement = document.getElementById('root');
+// Initialize Sentry for error tracking
+initSentry();
 
-if (!rootElement) {
-  throw new Error('Root element not found');
-}
+// Run security checks
+runSecurityChecks();
 
-// Create the root before rendering
-const root = createRoot(rootElement);
-
-// Render the app with StrictMode to catch potential issues
-root.render(
+ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <AppProviders>
       <App />

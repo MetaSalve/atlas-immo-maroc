@@ -1,6 +1,7 @@
+
 import { useState } from 'react';
 import { checkPasswordStrength, checkPasswordCompromised } from '@/utils/security/passwordSecurity';
-import { toast } from '@/components/ui/use-toast';
+import { toast } from "sonner";
 
 type ValidationResult = {
   isValid: boolean;
