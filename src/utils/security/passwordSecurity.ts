@@ -109,3 +109,45 @@ export const hashString = async (input: string): Promise<string> => {
     .map(b => b.toString(16).padStart(2, '0'))
     .join('');
 };
+
+/**
+ * Vérifie si un mot de passe a été compromis (version simplifiée)
+ * @param password Le mot de passe à vérifier
+ * @returns Promise<boolean> True si le mot de passe est potentiellement compromis
+ */
+export const checkPasswordCompromised = async (password: string): Promise<boolean> => {
+  try {
+    // Vérification simplifiée des mots de passe compromis
+    
+    // 1. Vérifier les mots de passe communs
+    if (isCommonPassword(password)) {
+      return true;
+    }
+    
+    // 2. Vérifier les modèles simples
+    if (/^(?:abcdef|qwerty|asdfgh|zxcvbn|098765|654321)/i.test(password)) {
+      return true;
+    }
+    
+    // 3. Répétitions excessives
+    if (/(.)\1{3,}/.test(password)) {
+      return true;
+    }
+    
+    // 4. Mots de passe basés sur des dates
+    if (/^(19|20)\d{2}$/.test(password)) {
+      return true;
+    }
+    
+    // 5. Mots de passe trop simples (nom + chiffres)
+    if (/^[a-zA-Z]+[0-9]{1,4}$/.test(password) && password.length < 10) {
+      return true;
+    }
+    
+    return false;
+  } catch (error) {
+    console.error("Erreur lors de la vérification du mot de passe:", error);
+    return false;
+  }
+};
+

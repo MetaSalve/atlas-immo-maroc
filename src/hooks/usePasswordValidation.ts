@@ -1,6 +1,6 @@
 
 import { useState } from 'react';
-import { checkPasswordStrength } from '@/utils/security/passwordSecurity';
+import { checkPasswordStrength, checkPasswordCompromised } from '@/utils/security/passwordSecurity';
 import { toast } from "sonner";
 
 type ValidationResult = {
@@ -61,6 +61,27 @@ export const usePasswordValidation = () => {
   };
 
   /**
+   * Checks if password is potentially compromised
+   * @param password The password to check
+   */
+  const checkIfPasswordCompromised = async (password: string): Promise<ValidationResult> => {
+    try {
+      const isCompromised = await checkPasswordCompromised(password);
+      if (isCompromised) {
+        return { 
+          isValid: false, 
+          error: "Ce mot de passe a été compromis dans une fuite de données. Veuillez en choisir un autre."
+        };
+      }
+      return { isValid: true, error: null };
+    } catch (error) {
+      console.error("Erreur lors de la vérification des mots de passe compromis:", error);
+      // En cas d'erreur, on continue sans bloquer
+      return { isValid: true, error: null };
+    }
+  };
+
+  /**
    * Validates a password and optionally its confirmation
    * @param password The main password
    * @param confirmPassword Optional confirmation password
@@ -72,6 +93,13 @@ export const usePasswordValidation = () => {
     setPasswordErrors(prev => ({ ...prev, main: mainResult.error }));
     
     if (!mainResult.isValid) {
+      return false;
+    }
+    
+    // Vérification du mot de passe compromis (asynchrone)
+    const compromisedCheck = await checkIfPasswordCompromised(password);
+    if (!compromisedCheck.isValid) {
+      setPasswordErrors(prev => ({ ...prev, main: compromisedCheck.error }));
       return false;
     }
     
