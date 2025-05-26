@@ -1,5 +1,4 @@
 
-
 # Checklist de Sécurité AlertImmo
 
 Ce document fournit une liste complète des vérifications de sécurité à effectuer avant et après le déploiement en production de l'application AlertImmo.
