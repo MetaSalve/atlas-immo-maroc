@@ -1,4 +1,3 @@
-
 /**
  * Sécurité des mots de passe
  * Fonctions pour valider et gérer les mots de passe
@@ -6,6 +5,7 @@
 
 /**
  * Vérifie si un mot de passe est suffisamment fort
+ * Note: La vérification des mots de passe compromis est maintenant gérée par Supabase
  * @param password Le mot de passe à vérifier
  * @returns Un objet contenant la force du mot de passe et les messages d'erreur
  */
@@ -52,12 +52,8 @@ export const checkPasswordStrength = (password: string): {
     score += 1;
   }
 
-  // Vérifier si le mot de passe est couramment utilisé
-  if (isCommonPassword(password)) {
-    feedback.push('Ce mot de passe est trop commun et facilement devinable');
-    // Réduire le score pour les mots de passe courants
-    score = Math.max(0, score - 2);
-  }
+  // Note: La vérification des mots de passe compromis est désormais gérée par Supabase
+  // via leur fonctionnalité "Leaked Password Protection"
   
   return {
     score,
@@ -68,24 +64,15 @@ export const checkPasswordStrength = (password: string): {
 
 /**
  * Vérifie si un mot de passe est dans la liste des mots de passe courants
+ * @deprecated Cette fonction est maintenant remplacée par la protection Supabase
  * @param password Le mot de passe à vérifier
  * @returns True si le mot de passe est courant, sinon false
  */
 export const isCommonPassword = (password: string): boolean => {
-  // Liste des mots de passe les plus courants
-  const commonPasswords = [
-    'password', '123456', '123456789', '12345678', 'qwerty', 
-    'abc123', '111111', '123123', 'admin', 'welcome', 
-    'password1', '1234567', '12345', '1234567890', 'azerty',
-    'sunshine', 'iloveyou', 'princess', 'dragon', 'monkey',
-    'letmein', 'football', 'baseball', 'superman', 'password123',
-    'qwertyuiop', 'zxcvbnm', 'trustno1', 'welcome1', 'admin123'
-  ];
-  
-  // Convertir en minuscule pour la comparaison
-  const lowercasePassword = password.toLowerCase();
-  
-  return commonPasswords.includes(lowercasePassword);
+  // Cette vérification est maintenant gérée par Supabase
+  // Nous gardons la fonction pour la compatibilité mais elle retourne toujours false
+  console.info('Vérification des mots de passe compromis gérée par Supabase');
+  return false;
 };
 
 /**
