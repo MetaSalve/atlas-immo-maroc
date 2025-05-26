@@ -396,36 +396,6 @@ export type Database = {
           },
         ]
       }
-      security_audit_logs: {
-        Row: {
-          action: string
-          created_at: string
-          details: Json | null
-          id: string
-          ip_address: string | null
-          user_agent: string | null
-          user_id: string | null
-        }
-        Insert: {
-          action: string
-          created_at?: string
-          details?: Json | null
-          id?: string
-          ip_address?: string | null
-          user_agent?: string | null
-          user_id?: string | null
-        }
-        Update: {
-          action?: string
-          created_at?: string
-          details?: Json | null
-          id?: string
-          ip_address?: string | null
-          user_agent?: string | null
-          user_id?: string | null
-        }
-        Relationships: []
-      }
       subscriptions: {
         Row: {
           created_at: string | null
@@ -498,72 +468,11 @@ export type Database = {
         }
         Relationships: []
       }
-      user_privacy_settings: {
-        Row: {
-          collect_analytics: boolean
-          created_at: string
-          id: string
-          marketing_consent: boolean
-          third_party_consent: boolean
-          tracking_consent: boolean
-          updated_at: string
-          user_id: string
-        }
-        Insert: {
-          collect_analytics?: boolean
-          created_at?: string
-          id?: string
-          marketing_consent?: boolean
-          third_party_consent?: boolean
-          tracking_consent?: boolean
-          updated_at?: string
-          user_id: string
-        }
-        Update: {
-          collect_analytics?: boolean
-          created_at?: string
-          id?: string
-          marketing_consent?: boolean
-          third_party_consent?: boolean
-          tracking_consent?: boolean
-          updated_at?: string
-          user_id?: string
-        }
-        Relationships: []
-      }
-      user_roles: {
-        Row: {
-          created_at: string
-          id: string
-          role: string
-          updated_at: string
-          user_id: string
-        }
-        Insert: {
-          created_at?: string
-          id?: string
-          role: string
-          updated_at?: string
-          user_id: string
-        }
-        Update: {
-          created_at?: string
-          id?: string
-          role?: string
-          updated_at?: string
-          user_id?: string
-        }
-        Relationships: []
-      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      check_is_admin: {
-        Args: { user_id_input: string }
-        Returns: boolean
-      }
       create_test_user_alerts: {
         Args: Record<PropertyKey, never>
         Returns: undefined

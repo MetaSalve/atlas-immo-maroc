@@ -1,27 +1,14 @@
+import { useTheme } from "next-themes"
+import { Toaster as Sonner, toast } from "sonner"
 
-"use client";
-
-import * as React from "react";
-import { useTheme } from "next-themes";
-import { Toaster as Sonner, toast } from "sonner";
-
-type ToasterProps = React.ComponentProps<typeof Sonner>;
+type ToasterProps = React.ComponentProps<typeof Sonner>
 
 const Toaster = ({ ...props }: ToasterProps) => {
-  const [mounted, setMounted] = React.useState(false);
-  // Provide default value to prevent null during initial render
-  const { theme = "light", resolvedTheme = "light" } = useTheme();
-  
-  React.useEffect(() => {
-    setMounted(true);
-  }, []);
-  
-  // Use a default theme when not mounted yet
-  const currentTheme = mounted ? (resolvedTheme || theme || "light") : "light";
+  const { theme = "system" } = useTheme()
 
   return (
     <Sonner
-      theme={currentTheme as ToasterProps["theme"]}
+      theme={theme as ToasterProps["theme"]}
       className="toaster group"
       toastOptions={{
         classNames: {
@@ -36,7 +23,7 @@ const Toaster = ({ ...props }: ToasterProps) => {
       }}
       {...props}
     />
-  );
-};
+  )
+}
 
-export { Toaster, toast };
+export { Toaster, toast }

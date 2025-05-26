@@ -1,23 +1,22 @@
 
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import App from './App';
-import './index.css';
-import { AppProviders } from './providers/AppProviders';
-import { runSecurityChecks } from './utils/security';
-import * as Sentry from '@sentry/react';
-import { initSentry } from './integrations/sentry';
+import React from 'react'
+import { createRoot } from 'react-dom/client'
+import { AppProviders } from './providers/AppProviders'
+import App from './App.tsx'
+import './index.css'
+import { LoadingFallback } from './components/common/LoadingFallback'
+import { initSentry } from './integrations/sentry'
 
-// Initialize Sentry for error tracking
+// Initialiser Sentry avant tout le reste
 initSentry();
 
-// Run security checks
-runSecurityChecks();
-
-ReactDOM.createRoot(document.getElementById('root')!).render(
+const root = createRoot(document.getElementById("root")!);
+root.render(
   <React.StrictMode>
-    <AppProviders>
-      <App />
-    </AppProviders>
+    <React.Suspense fallback={<LoadingFallback />}>
+      <AppProviders>
+        <App />
+      </AppProviders>
+    </React.Suspense>
   </React.StrictMode>
 );

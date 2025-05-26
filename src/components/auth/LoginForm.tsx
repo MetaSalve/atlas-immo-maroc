@@ -1,10 +1,10 @@
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Mail, KeyRound, Eye, EyeOff, Loader2, AlertTriangle } from 'lucide-react';
-import { usePasswordValidation } from '@/hooks/usePasswordValidation';
+import { useAuth } from '@/providers/AuthProvider';
 
 interface LoginFormProps {
   email: string;
@@ -31,17 +31,10 @@ export const LoginForm = ({
 }: LoginFormProps) => {
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
-  const { clearErrors } = usePasswordValidation();
-
-  // Clear errors when component unmounts
-  useEffect(() => {
-    return () => clearErrors();
-  }, []);
 
   return (
     <form onSubmit={onSubmit} className="space-y-4">
       <input type="hidden" name="csrf_token" value={csrfToken} />
-      <input type="hidden" name="password" value={password} />
       
       {errorMessage && (
         <Alert variant="destructive">
@@ -111,6 +104,7 @@ export const LoginForm = ({
             className="pl-10 pr-10"
             required
             disabled={isLoading || isBlocked}
+            minLength={8}
             autoComplete="current-password"
           />
           <Button

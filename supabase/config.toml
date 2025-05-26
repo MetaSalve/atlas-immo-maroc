@@ -28,17 +28,4 @@ verify_jwt = true
 verify_jwt = true
 [functions.stripe-webhook]
 verify_jwt = false
-[functions.log-security-event]
-verify_jwt = true
-[functions.check-server-status]
-verify_jwt = true
-[functions.stripe-config]
-verify_jwt = true
-[functions.setup-backups]
-verify_jwt = true
-[functions.disaster-recovery-check]
-verify_jwt = true
-[functions.request-data-export]
-verify_jwt = true
-[functions.request-account-deletion]
-verify_jwt = true
+

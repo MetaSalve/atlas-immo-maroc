@@ -33,7 +33,7 @@ export const RecoveryForm = ({
           </AlertDescription>
         </Alert>
       )}
-
+      
       <div className="space-y-2">
         <label htmlFor="recovery-email" className="text-sm font-medium">Email</label>
         <div className="relative">
@@ -47,7 +47,6 @@ export const RecoveryForm = ({
             className="pl-10"
             required
             disabled={isLoading}
-            autoComplete="email"
           />
         </div>
       </div>
@@ -60,7 +59,7 @@ export const RecoveryForm = ({
         {isLoading ? (
           <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Envoi en cours...</>
         ) : (
-          'Récupérer mon mot de passe'
+          'Envoyer les instructions'
         )}
       </Button>
     </form>

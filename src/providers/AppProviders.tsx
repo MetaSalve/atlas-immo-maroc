@@ -1,64 +1,62 @@
 
-import React from 'react';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import React, { ReactNode } from 'react';
 import { BrowserRouter } from 'react-router-dom';
-import { CacheProvider } from '@/providers/CacheProvider';
-import { ThemeProvider } from '@/components/ui/theme-provider';
-import { I18nextProvider } from 'react-i18next';
-import { i18n } from '@/i18n';
-import { Suspense } from 'react';
-import { LoadingFallback } from '@/components/common/LoadingFallback';
-import { AuthProvider } from '@/providers/AuthProvider';
-import { SubscriptionProvider } from '@/providers/SubscriptionProvider';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { Toaster } from '@/components/ui/sonner';
+import { AuthProvider } from './AuthProvider';
+import { SubscriptionProvider } from './SubscriptionProvider';
+import { AccessibilityProvider } from './AccessibilityProvider';
+import { CacheProvider } from './CacheProvider';
+import { NotificationsProvider } from './NotificationsProvider';
+import { HelmetProvider } from 'react-helmet-async';
 import { ErrorBoundary } from '@/components/common/ErrorBoundary';
-import { SecurityAuditProvider } from '@/providers/SecurityAuditProvider';
-import { Toaster as SonnerToaster } from 'sonner';
-import { NotificationsProvider } from '@/providers/NotificationsProvider';
-import { AccessibilityProvider } from '@/providers/AccessibilityProvider';
+import { withErrorBoundary } from '@/integrations/sentry';
 
-// Create a QueryClient instance outside component to avoid recreation on rerenders
+// Intégration i18n
+import '@/i18n';
+
+type AppProvidersProps = {
+  children: ReactNode;
+};
+
+// Client pour React Query
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      staleTime: 60000,
+      refetchOnWindowFocus: false,
+      staleTime: 5 * 60 * 1000, // 5 minutes
       retry: 1,
     },
   },
 });
 
-interface AppProvidersProps {
-  children: React.ReactNode;
-}
-
-export const AppProviders = ({ children }: AppProvidersProps) => {
+// Composant AppProviders avec monitoring d'erreurs
+const AppProvidersComponent = ({ children }: AppProvidersProps) => {
   return (
-    <ErrorBoundary>
+    <HelmetProvider>
       <BrowserRouter>
         <QueryClientProvider client={queryClient}>
-          <I18nextProvider i18n={i18n}>
-            <ThemeProvider defaultTheme="light" storageKey="alertimmo-theme">
-              <CacheProvider>
-                <Suspense fallback={<LoadingFallback />}>
-                  <ErrorBoundary>
-                    <AuthProvider>
-                      <SubscriptionProvider>
-                        <SecurityAuditProvider>
-                          <NotificationsProvider>
-                            <AccessibilityProvider>
-                              {children}
-                              <SonnerToaster position="top-right" />
-                            </AccessibilityProvider>
-                          </NotificationsProvider>
-                        </SecurityAuditProvider>
-                      </SubscriptionProvider>
-                    </AuthProvider>
-                  </ErrorBoundary>
-                </Suspense>
-              </CacheProvider>
-            </ThemeProvider>
-          </I18nextProvider>
+          <ErrorBoundary>
+            <AuthProvider>
+              <SubscriptionProvider>
+                <CacheProvider>
+                  <AccessibilityProvider>
+                    <NotificationsProvider>
+                      {children}
+                      <Toaster richColors position="bottom-right" closeButton />
+                    </NotificationsProvider>
+                  </AccessibilityProvider>
+                </CacheProvider>
+              </SubscriptionProvider>
+            </AuthProvider>
+          </ErrorBoundary>
         </QueryClientProvider>
       </BrowserRouter>
-    </ErrorBoundary>
+    </HelmetProvider>
   );
 };
+
+// Exporter avec le suivi d'erreurs Sentry
+export const AppProviders = withErrorBoundary(AppProvidersComponent, {
+  fallback: <div className="p-8 text-center">Une erreur critique est survenue. Veuillez actualiser la page.</div>
+});

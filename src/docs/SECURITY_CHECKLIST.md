@@ -14,7 +14,7 @@ Ce document fournit une liste complète des vérifications de sécurité à effe
 - [x] Vérification des adresses email
 - [x] Autorisation basée sur les rôles (RLS dans Supabase)
 - [ ] Audit des actions sensibles
-- [x] Journalisation des connexions et des tentatives échouées
+- [ ] Journalisation des connexions et des tentatives échouées
 
 ### Protection des Données
 

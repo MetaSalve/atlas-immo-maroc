@@ -1,104 +1,53 @@
 
-import React, { lazy, Suspense } from 'react';
-import { LoadingFallback } from '@/components/common/LoadingFallback';
-import { NotFound } from '@/components/common/NotFound';
-import { CustomRouteObject } from './types';
-
-// Direct imports for critical pages to avoid lazy loading issues
-import Index from '@/pages/Index';
+import React from 'react';
 import HomePage from '@/pages/HomePage';
+import AuthPage from '@/pages/AuthPage'; 
+import ProfilePage from '@/pages/ProfilePage';
+import PropertyDetailPage from '@/pages/PropertyDetailPage';
+import FavoritesPage from '@/pages/FavoritesPage';
+import AlertsPage from '@/pages/AlertsPage';
+import AdminDashboardPage from '@/pages/AdminDashboard';
+import NotFound from '@/components/common/NotFound';
+import { RouteObject } from 'react-router-dom';
+import { ProtectedRoute } from '@/components/auth/ProtectedRoute';
 
-// Lazy load other pages to improve initial load performance
-const AuthPage = lazy(() => import('@/pages/AuthPage'));
-const ProfilePage = lazy(() => import('@/pages/ProfilePage'));
-const PropertyDetailPage = lazy(() => import('@/pages/PropertyDetailPage'));
-const FavoritesPage = lazy(() => import('@/pages/FavoritesPage'));
-const AlertsPage = lazy(() => import('@/pages/AlertsPage'));
-const AdminDashboardPage = lazy(() => import('@/pages/AdminDashboard'));
-const PropertiesPage = lazy(() => import('@/pages/PropertiesPage'));
-const NotificationsPage = lazy(() => import('@/pages/NotificationsPage'));
-const SubscriptionPage = lazy(() => import('@/pages/SubscriptionPage'));
-const PaymentPage = lazy(() => import('@/pages/PaymentPage'));
-const PaymentSuccessPage = lazy(() => import('@/pages/PaymentSuccessPage'));
-const ResetPasswordPage = lazy(() => import('@/pages/ResetPasswordPage'));
-
-// Wrap lazy-loaded components with Suspense
-const withSuspense = (Component) => (
-  <Suspense fallback={<LoadingFallback />}>
-    <Component />
-  </Suspense>
-);
-
-const routes: CustomRouteObject[] = [
+const routes: RouteObject[] = [
   {
     path: '/',
-    element: <Index />,
+    element: <HomePage />,
     index: true
   },
   {
-    path: '/home',
-    element: <HomePage /> // Direct import for HomePage
-  },
-  {
     path: '/auth',
-    element: withSuspense(AuthPage)
-  },
-  {
-    path: '/auth/callback',
-    element: withSuspense(AuthPage)
-  },
-  {
-    path: '/auth/reset-password',
-    element: withSuspense(ResetPasswordPage)
+    element: <AuthPage />
   },
   {
     path: '/profile',
-    element: withSuspense(ProfilePage),
-    authRequired: true
+    element: <ProtectedRoute><ProfilePage /></ProtectedRoute>
   },
   {
     path: '/properties',
-    element: withSuspense(PropertiesPage)
+    element: <HomePage /> // Utilisation de HomePage temporairement en attendant PropertiesPage
   },
   {
     path: '/property/:id',
-    element: withSuspense(PropertyDetailPage)
+    element: <PropertyDetailPage />
   },
   {
     path: '/favorites',
-    element: withSuspense(FavoritesPage),
-    authRequired: true
+    element: <ProtectedRoute><FavoritesPage /></ProtectedRoute>
   },
   {
     path: '/alerts',
-    element: withSuspense(AlertsPage),
-    authRequired: true
+    element: <ProtectedRoute><AlertsPage /></ProtectedRoute>
   },
   {
     path: '/notifications',
-    element: withSuspense(NotificationsPage),
-    authRequired: true
-  },
-  {
-    path: '/subscription',
-    element: withSuspense(SubscriptionPage),
-    authRequired: true
-  },
-  {
-    path: '/payment',
-    element: withSuspense(PaymentPage),
-    authRequired: true
-  },
-  {
-    path: '/payment-success',
-    element: withSuspense(PaymentSuccessPage),
-    authRequired: true
+    element: <ProtectedRoute><HomePage /></ProtectedRoute> // Utilisation de HomePage temporairement
   },
   {
     path: '/admin',
-    element: withSuspense(AdminDashboardPage),
-    authRequired: true,
-    adminRequired: true
+    element: <ProtectedRoute><AdminDashboardPage /></ProtectedRoute>
   },
   {
     path: '*',

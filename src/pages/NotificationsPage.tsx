@@ -1,12 +1,12 @@
 
 import React from 'react';
 import { Helmet } from 'react-helmet-async';
-import { useNotificationsContext } from '@/providers/NotificationsProvider';
+import { useNotifications } from '@/hooks/useNotifications';
 import { useTranslation } from '@/i18n';
 
 const NotificationsPage = () => {
   const { t } = useTranslation();
-  const { notifications, markAsRead } = useNotificationsContext();
+  const { notifications, markAsRead } = useNotifications();
 
   return (
     <div className="container py-6">
@@ -29,9 +29,9 @@ const NotificationsPage = () => {
               onClick={() => markAsRead(notification.id)}
             >
               <h3 className="font-medium">{notification.title}</h3>
-              <p className="text-gray-600">{notification.body}</p>
+              <p className="text-gray-600">{notification.message}</p>
               <span className="text-xs text-gray-400">
-                {new Date(notification.created_at).toLocaleString()}
+                {new Date(notification.createdAt).toLocaleString()}
               </span>
             </li>
           ))}
