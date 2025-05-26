@@ -1,3 +1,4 @@
+
 /**
  * Sécurité des mots de passe
  * Fonctions pour valider et gérer les mots de passe
@@ -5,7 +6,6 @@
 
 /**
  * Vérifie si un mot de passe est suffisamment fort
- * Note: La vérification des mots de passe compromis est maintenant gérée par Supabase
  * @param password Le mot de passe à vérifier
  * @returns Un objet contenant la force du mot de passe et les messages d'erreur
  */
@@ -51,28 +51,12 @@ export const checkPasswordStrength = (password: string): {
   } else {
     score += 1;
   }
-
-  // Note: La vérification des mots de passe compromis est désormais gérée par Supabase
-  // via leur fonctionnalité "Leaked Password Protection"
   
   return {
     score,
     isStrong: score >= 4,
     feedback
   };
-};
-
-/**
- * Vérifie si un mot de passe est dans la liste des mots de passe courants
- * @deprecated Cette fonction est maintenant remplacée par la protection Supabase
- * @param password Le mot de passe à vérifier
- * @returns True si le mot de passe est courant, sinon false
- */
-export const isCommonPassword = (password: string): boolean => {
-  // Cette vérification est maintenant gérée par Supabase
-  // Nous gardons la fonction pour la compatibilité mais elle retourne toujours false
-  console.info('Vérification des mots de passe compromis gérée par Supabase');
-  return false;
 };
 
 /**

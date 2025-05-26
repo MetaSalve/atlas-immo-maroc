@@ -1,4 +1,5 @@
 
+
 # Checklist de Sécurité AlertImmo
 
 Ce document fournit une liste complète des vérifications de sécurité à effectuer avant et après le déploiement en production de l'application AlertImmo.
@@ -8,8 +9,7 @@ Ce document fournit une liste complète des vérifications de sécurité à effe
 ### Authentification et Autorisation
 
 - [x] Implémentation de l'authentification à deux facteurs (2FA)
-- [x] Politiques de mots de passe robustes (gérées par Supabase)
-- [x] Protection contre les mots de passe compromis (Leaked Password Protection via Supabase)
+- [x] Politiques de mots de passe robustes
 - [x] Protection contre la force brute (verrouillage de compte)
 - [x] Sessions sécurisées (expiration, rotation d'identifiants)
 - [x] Vérification des adresses email
@@ -106,7 +106,6 @@ Ce document fournit une liste complète des vérifications de sécurité à effe
 - [x] Clés API sécurisées
 - [x] Contrôles d'accès aux buckets storage
 - [x] Isolation des données par utilisateur
-- [x] Protection contre les mots de passe compromis (Leaked Password Protection)
 - [ ] Revue régulière des politiques RLS
 - [ ] Audit des accès à la base de données
 - [ ] Validation des triggers et fonctions
@@ -173,15 +172,14 @@ Ce document fournit une liste complète des vérifications de sécurité à effe
 
 ## Actions Prioritaires Avant Lancement
 
-1. ✅ Activer "Leaked Password Protection" dans Supabase
-2. Configurer la journalisation des événements d'authentification
-3. Mettre en place le monitoring des erreurs avec Sentry
-4. Effectuer un test de pénétration complet
-5. Finaliser la politique de confidentialité conforme au RGPD
-6. Configurer les alertes de sécurité
-7. Vérifier la conformité des intégrations de paiement
-8. Tester tous les scénarios de récupération de données
-9. Former l'équipe support aux incidents de sécurité
+1. Configurer la journalisation des événements d'authentification
+2. Mettre en place le monitoring des erreurs avec Sentry
+3. Effectuer un test de pénétration complet
+4. Finaliser la politique de confidentialité conforme au RGPD
+5. Configurer les alertes de sécurité
+6. Vérifier la conformité des intégrations de paiement
+7. Tester tous les scénarios de récupération de données
+8. Former l'équipe support aux incidents de sécurité
 
 ## Procédure de Révision de Sécurité
 
@@ -190,12 +188,3 @@ Cette checklist doit être revue et mise à jour :
 - Trimestriellement pour les vérifications de routine
 - Immédiatement après tout incident de sécurité
 - Lors de l'intégration de nouvelles technologies ou fonctionnalités
-
-## Note sur la Protection des Mots de Passe
-
-La fonctionnalité "Leaked Password Protection" de Supabase est maintenant activée et gère automatiquement :
-- La vérification des mots de passe compromis dans les bases de données publiques
-- Le blocage des mots de passe connus pour être faibles ou compromis
-- La mise à jour automatique des listes de mots de passe compromis
-
-Cette approche est plus efficace que les vérifications côté client car elle utilise des bases de données en temps réel et constamment mises à jour.
