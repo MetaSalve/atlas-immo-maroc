@@ -2,13 +2,12 @@
 import { useEffect } from "react";
 import { Routes, Route, useNavigate } from "react-router-dom";
 import { Layout } from "@/components/layout/Layout";
-import { routes } from "@/routes/routes";
+import routes from "@/routes/routes";
 import { ProtectedRoute } from "@/components/auth/ProtectedRoute";
 import { NotFound } from "@/components/common/NotFound";
 import { configureSecurityHeaders, runSecurityChecks } from "./utils/securityHeaders";
 import { useAuth } from "./providers/AuthProvider";
 import { CookieConsent } from "@/components/common/CookieConsent";
-import { CustomRouteObject } from "./routes/types";
 
 function App() {
   const { user } = useAuth();
@@ -30,16 +29,13 @@ function App() {
   return (
     <>
       <Routes>
-        {routes.map((route: CustomRouteObject, index: number) => (
+        {routes.map((route, index) => (
           <Route
             key={index}
             path={route.path}
             element={
               <Layout>
-                <ProtectedRoute
-                  element={route.element}
-                  requiresAuth={route.authRequired}
-                />
+                {route.element}
               </Layout>
             }
           />
