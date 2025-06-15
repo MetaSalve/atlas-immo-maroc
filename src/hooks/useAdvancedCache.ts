@@ -1,5 +1,5 @@
 
-import { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useQueryClient, QueryKey } from '@tanstack/react-query';
 import { optimizedQueryKeys, cacheConfig } from './useCacheConfig';
 import { useNetwork } from './useNetwork';
