@@ -8,6 +8,7 @@ import { SearchResults } from './SearchResults';
 import { SearchSidebar } from './SearchSidebar';
 import { Property } from '@/types/property';
 import { useTranslation } from '@/i18n';
+import { toast } from 'sonner';
 
 const SearchPage = () => {
   const { t } = useTranslation();
@@ -30,6 +31,20 @@ const SearchPage = () => {
 
   const handleFilterChange = (newFilters: PropertyFilters) => {
     setFilters(newFilters);
+  };
+
+  const handleApplyFilters = () => {
+    // Logic to apply filters can be added here if needed
+    toast.success('Filtres appliqués');
+  };
+
+  const handleResetFilters = () => {
+    setFilters({ city: searchQuery });
+    toast.info('Filtres réinitialisés');
+  };
+
+  const handleSaveAlert = () => {
+    toast.success('Alerte sauvegardée avec succès');
   };
 
   const handleToggleView = () => {
@@ -65,6 +80,9 @@ const SearchPage = () => {
         <SearchSidebar
           filters={filters}
           onFilterChange={handleFilterChange}
+          onApplyFilters={handleApplyFilters}
+          onResetFilters={handleResetFilters}
+          onSaveAlert={handleSaveAlert}
           propertiesCount={properties.length}
         />
         

@@ -12,6 +12,7 @@ interface SearchSidebarProps {
   onApplyFilters: () => void;
   onResetFilters: () => void;
   onSaveAlert: () => void;
+  propertiesCount: number;
 }
 
 export const SearchSidebar = ({
@@ -20,6 +21,7 @@ export const SearchSidebar = ({
   onApplyFilters,
   onResetFilters,
   onSaveAlert,
+  propertiesCount,
 }: SearchSidebarProps) => {
   const { user } = useAuth();
   const navigate = useNavigate();
