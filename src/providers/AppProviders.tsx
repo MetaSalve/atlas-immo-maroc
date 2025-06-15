@@ -30,8 +30,8 @@ const queryClient = new QueryClient({
   },
 });
 
-// Composant AppProviders avec monitoring d'erreurs
-const AppProvidersComponent = ({ children }: AppProvidersProps) => {
+// Composant AppProviders principal
+const AppProvidersBase: React.FC<AppProvidersProps> = ({ children }) => {
   return (
     <HelmetProvider>
       <BrowserRouter>
@@ -57,6 +57,21 @@ const AppProvidersComponent = ({ children }: AppProvidersProps) => {
 };
 
 // Exporter avec le suivi d'erreurs Sentry
-export const AppProviders = withErrorBoundary(AppProvidersComponent, {
-  fallback: <div className="p-8 text-center">Une erreur critique est survenue. Veuillez actualiser la page.</div>
+export const AppProviders = withErrorBoundary(AppProvidersBase, {
+  fallback: (
+    <div className="flex items-center justify-center min-h-screen">
+      <div className="p-8 text-center max-w-md">
+        <h2 className="text-xl font-semibold text-red-600 mb-4">Erreur critique</h2>
+        <p className="text-gray-600 mb-4">
+          Une erreur critique est survenue lors du chargement de l'application.
+        </p>
+        <button 
+          onClick={() => window.location.reload()} 
+          className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+        >
+          Actualiser la page
+        </button>
+      </div>
+    </div>
+  )
 });
