@@ -3,9 +3,7 @@ import * as React from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Toaster } from '@/components/ui/sonner';
-
-// Intégration i18n
-import '@/i18n';
+import { I18nProvider } from './I18nProvider';
 
 type AppProvidersProps = {
   children: React.ReactNode;
@@ -22,18 +20,19 @@ const queryClient = new QueryClient({
   },
 });
 
-// Version simplifiée pour déboguer
+// Version simplifiée avec gestion sécurisée de i18n
 const AppProvidersBase = ({ children }: AppProvidersProps) => {
   console.log('AppProviders: Démarrage du rendu');
   console.log('React disponible:', !!React);
   console.log('React.useEffect disponible:', !!React.useEffect);
   
-  // Test simple sans providers complexes d'abord
   return (
     <BrowserRouter>
       <QueryClientProvider client={queryClient}>
-        {children}
-        <Toaster richColors position="bottom-right" closeButton />
+        <I18nProvider>
+          {children}
+          <Toaster richColors position="bottom-right" closeButton />
+        </I18nProvider>
       </QueryClientProvider>
     </BrowserRouter>
   );
