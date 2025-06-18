@@ -3,7 +3,6 @@ import * as React from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Toaster } from '@/components/ui/sonner';
-import { I18nProvider } from './I18nProvider';
 
 type AppProvidersProps = {
   children: React.ReactNode;
@@ -20,19 +19,24 @@ const queryClient = new QueryClient({
   },
 });
 
-// Version simplifiée avec gestion sécurisée de i18n
+// Version ultra-simplifiée sans aucun hook
 const AppProvidersBase = ({ children }: AppProvidersProps) => {
   console.log('AppProviders: Démarrage du rendu');
   console.log('React disponible:', !!React);
-  console.log('React.useEffect disponible:', !!React.useEffect);
+  
+  // Initialisation synchrone de i18n si possible
+  try {
+    require('@/i18n');
+    console.log('i18n initialisé avec succès');
+  } catch (error) {
+    console.log('i18n non disponible, continuer sans:', error);
+  }
   
   return (
     <BrowserRouter>
       <QueryClientProvider client={queryClient}>
-        <I18nProvider>
-          {children}
-          <Toaster richColors position="bottom-right" closeButton />
-        </I18nProvider>
+        {children}
+        <Toaster richColors position="bottom-right" closeButton />
       </QueryClientProvider>
     </BrowserRouter>
   );
