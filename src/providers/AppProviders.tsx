@@ -1,4 +1,5 @@
 
+import React from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Toaster } from '@/components/ui/sonner';
@@ -18,17 +19,11 @@ const queryClient = new QueryClient({
   },
 });
 
-// Version sans hooks et avec import React standard
+// Version sans hooks - fonction pure
 function AppProvidersBase({ children }: AppProvidersProps) {
-  console.log('AppProviders: Rendu sans hooks');
-  
-  // Initialiser i18n de manière synchrone sans hooks
-  try {
-    // Éviter l'initialisation de i18n pour l'instant
-    console.log('Sautant l\'initialisation i18n pour éviter les conflits');
-  } catch (error) {
-    console.log('Erreur i18n ignorée:', error);
-  }
+  console.log('AppProviders: Rendering without hooks');
+  console.log('React available:', !!React);
+  console.log('React.useEffect available:', !!(React && React.useEffect));
   
   return (
     <BrowserRouter>
