@@ -8,6 +8,7 @@ import { CacheProvider } from './CacheProvider';
 import { SubscriptionProvider } from './SubscriptionProvider';
 import { NotificationsProvider } from './NotificationsProvider';
 import { I18nProvider } from './I18nProvider';
+import { AccessibilityProvider } from './AccessibilityProvider';
 
 type AppProvidersProps = {
   children: React.ReactNode;
@@ -31,16 +32,18 @@ export function AppProviders({ children }: AppProvidersProps) {
     <BrowserRouter>
       <QueryClientProvider client={queryClient}>
         <I18nProvider>
-          <AuthProvider>
-            <SubscriptionProvider>
-              <NotificationsProvider>
-                <CacheProvider>
-                  {children}
-                  <Toaster richColors position="bottom-right" closeButton />
-                </CacheProvider>
-              </NotificationsProvider>
-            </SubscriptionProvider>
-          </AuthProvider>
+          <AccessibilityProvider>
+            <AuthProvider>
+              <SubscriptionProvider>
+                <NotificationsProvider>
+                  <CacheProvider>
+                    {children}
+                    <Toaster richColors position="bottom-right" closeButton />
+                  </CacheProvider>
+                </NotificationsProvider>
+              </SubscriptionProvider>
+            </AuthProvider>
+          </AccessibilityProvider>
         </I18nProvider>
       </QueryClientProvider>
     </BrowserRouter>
