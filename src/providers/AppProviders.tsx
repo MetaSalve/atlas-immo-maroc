@@ -1,5 +1,5 @@
 
-import React, { ReactNode } from 'react';
+import React, { ReactNode, useEffect } from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Toaster } from '@/components/ui/sonner';
@@ -32,6 +32,15 @@ const queryClient = new QueryClient({
 
 // Composant AppProviders principal
 const AppProvidersBase: React.FC<AppProvidersProps> = ({ children }) => {
+  // Configuration des en-têtes de sécurité au chargement de l'application
+  useEffect(() => {
+    console.log('AppProviders: Initialisation des providers');
+    
+    // Configurer les attributs de sécurité de base
+    document.documentElement.setAttribute('lang', 'fr');
+    document.documentElement.setAttribute('dir', 'ltr');
+  }, []);
+
   return (
     <HelmetProvider>
       <BrowserRouter>
