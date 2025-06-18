@@ -5,7 +5,8 @@ import { supabase } from '@/integrations/supabase/client';
 import { Property } from '@/types/property';
 import { optimizedQueryKeys, cacheConfig } from './useCacheConfig';
 import { useErrorHandler } from './useErrorHandler';
-import { useCacheContext } from '@/providers/CacheProvider';
+import { useCache } from '@/providers/CacheProvider';
+import { useNetwork } from '@/hooks/useNetwork';
 
 const PROPERTIES_PER_PAGE = 12;
 
@@ -26,7 +27,8 @@ export const useProperties = (
 ) => {
   const { handleError } = useErrorHandler();
   const queryClient = useQueryClient();
-  const { isOnline, getPersistedData, persistCriticalData } = useCacheContext();
+  const { prefetchQuery } = useCache();
+  const { isOnline } = useNetwork();
   
   const queryKey = useMemo(() => 
     optimizedQueryKeys.properties.list({ ...filters, page }), 
@@ -36,28 +38,18 @@ export const useProperties = (
   const prefetchNextPage = useCallback(() => {
     if (!enablePrefetching || !isOnline) return;
     
-    queryClient.prefetchQuery({
-      queryKey: optimizedQueryKeys.properties.list({ ...filters, page: page + 1 }),
-      queryFn: () => fetchProperties(filters, page + 1),
-      staleTime: cacheConfig.properties.staleTime,
-      gcTime: cacheConfig.properties.gcTime,
-    });
-  }, [queryClient, filters, page, enablePrefetching, isOnline]);
+    prefetchQuery(
+      optimizedQueryKeys.properties.list({ ...filters, page: page + 1 }),
+      () => fetchProperties(filters, page + 1)
+    );
+  }, [prefetchQuery, filters, page, enablePrefetching, isOnline]);
 
   const fetchProperties = async (currentFilters?: PropertyFilters, currentPage: number = 1) => {
     console.log(`Récupération des propriétés depuis Supabase - Page ${currentPage}...`);
     
-    // Si hors ligne, tenter de récupérer depuis le cache persistent
+    // Si hors ligne, retourner une erreur
     if (!isOnline) {
-      const cacheKey = `properties_${JSON.stringify(currentFilters)}_page_${currentPage}`;
-      const cachedData = getPersistedData(cacheKey);
-      
-      if (cachedData) {
-        console.log('Utilisation des données en cache (mode hors ligne)');
-        return cachedData;
-      } else {
-        throw new Error('Impossible de récupérer les données en mode hors ligne');
-      }
+      throw new Error('Impossible de récupérer les données en mode hors ligne');
     }
     
     const from = (currentPage - 1) * PROPERTIES_PER_PAGE;
@@ -143,10 +135,6 @@ export const useProperties = (
     }));
     
     const result = { properties, total: count || 0, page: currentPage };
-    
-    // Mettre en cache pour le mode hors ligne
-    const cacheKey = `properties_${JSON.stringify(currentFilters)}_page_${currentPage}`;
-    persistCriticalData(cacheKey, result);
     
     console.log(`${properties.length} propriétés transformées et prêtes à afficher`);
     return result;

@@ -1,6 +1,7 @@
+
 import React, { useState, useEffect } from 'react';
 import { OptimizedImage } from './OptimizedImage';
-import { useCacheContext } from '@/providers/CacheProvider';
+import { useCache } from '@/providers/CacheProvider';
 
 type ImageProps = Omit<React.ImgHTMLAttributes<HTMLImageElement>, 'width' | 'height'> & {
   fallbackSrc?: string;
@@ -23,15 +24,9 @@ export const Image: React.FC<ImageProps> = ({
 }) => {
   const [imageError, setImageError] = useState(false);
   const [shouldLoadHighRes, setShouldLoadHighRes] = useState(false);
-  const { connectionType } = useCacheContext();
 
   useEffect(() => {
     if (!lowQualitySrc) {
-      setShouldLoadHighRes(true);
-      return;
-    }
-
-    if (connectionType === '4g' || connectionType === 'wifi') {
       setShouldLoadHighRes(true);
       return;
     }
@@ -46,7 +41,7 @@ export const Image: React.FC<ImageProps> = ({
     return () => {
       window.removeEventListener('resize', checkScreenSize);
     };
-  }, [lowQualitySrc, connectionType, highResThreshold]);
+  }, [lowQualitySrc, highResThreshold]);
 
   const imageSrc = shouldLoadHighRes ? src : (lowQualitySrc || src);
 
