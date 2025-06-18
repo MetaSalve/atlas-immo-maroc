@@ -36,20 +36,20 @@ const AppProvidersBase: React.FC<AppProvidersProps> = ({ children }) => {
     <HelmetProvider>
       <BrowserRouter>
         <QueryClientProvider client={queryClient}>
-          <ErrorBoundary>
-            <AuthProvider>
-              <SubscriptionProvider>
-                <CacheProvider>
+          <CacheProvider>
+            <ErrorBoundary>
+              <AuthProvider>
+                <SubscriptionProvider>
                   <AccessibilityProvider>
                     <NotificationsProvider>
                       {children}
                       <Toaster richColors position="bottom-right" closeButton />
                     </NotificationsProvider>
                   </AccessibilityProvider>
-                </CacheProvider>
-              </SubscriptionProvider>
-            </AuthProvider>
-          </ErrorBoundary>
+                </SubscriptionProvider>
+              </AuthProvider>
+            </ErrorBoundary>
+          </CacheProvider>
         </QueryClientProvider>
       </BrowserRouter>
     </HelmetProvider>
