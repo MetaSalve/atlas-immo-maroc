@@ -14,3 +14,8 @@ export const useTranslation = () => {
 
   return { t };
 };
+
+// Ré-exporter les autres modules nécessaires
+export { useLanguageSwitch } from './hooks/useLanguageSwitch';
+export { languageNames, LANGUAGE_STORAGE_KEY } from './constants';
+export { default as i18n } from './i18nConfig';
