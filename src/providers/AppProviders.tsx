@@ -1,5 +1,4 @@
 
-import * as React from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Toaster } from '@/components/ui/sonner';
@@ -19,17 +18,16 @@ const queryClient = new QueryClient({
   },
 });
 
-// Version ultra-simplifiée sans aucun hook
-const AppProvidersBase = ({ children }: AppProvidersProps) => {
-  console.log('AppProviders: Démarrage du rendu');
-  console.log('React disponible:', !!React);
+// Version sans hooks et avec import React standard
+function AppProvidersBase({ children }: AppProvidersProps) {
+  console.log('AppProviders: Rendu sans hooks');
   
-  // Initialisation synchrone de i18n si possible
+  // Initialiser i18n de manière synchrone sans hooks
   try {
-    require('@/i18n');
-    console.log('i18n initialisé avec succès');
+    // Éviter l'initialisation de i18n pour l'instant
+    console.log('Sautant l\'initialisation i18n pour éviter les conflits');
   } catch (error) {
-    console.log('i18n non disponible, continuer sans:', error);
+    console.log('Erreur i18n ignorée:', error);
   }
   
   return (
@@ -40,6 +38,6 @@ const AppProvidersBase = ({ children }: AppProvidersProps) => {
       </QueryClientProvider>
     </BrowserRouter>
   );
-};
+}
 
 export const AppProviders = AppProvidersBase;
