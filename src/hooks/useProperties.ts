@@ -39,8 +39,9 @@ export const useProperties = (
     if (!enablePrefetching || !isOnline) return;
     
     const nextPageQueryKey = optimizedQueryKeys.properties.list({ ...filters, page: page + 1 });
+    const queryKeyArray = Array.from(nextPageQueryKey) as string[];
     prefetchQuery(
-      [...nextPageQueryKey] as string[],
+      queryKeyArray,
       () => fetchProperties(filters, page + 1)
     );
   }, [prefetchQuery, filters, page, enablePrefetching, isOnline]);
@@ -48,7 +49,6 @@ export const useProperties = (
   const fetchProperties = async (currentFilters?: PropertyFilters, currentPage: number = 1) => {
     console.log(`Récupération des propriétés depuis Supabase - Page ${currentPage}...`);
     
-    // Si hors ligne, retourner une erreur
     if (!isOnline) {
       throw new Error('Impossible de récupérer les données en mode hors ligne');
     }
