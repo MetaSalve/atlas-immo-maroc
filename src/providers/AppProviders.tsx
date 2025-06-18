@@ -19,9 +19,8 @@ const queryClient = new QueryClient({
   },
 });
 
-// Version sans hooks - fonction pure
-function AppProvidersBase({ children }: AppProvidersProps) {
-  console.log('AppProviders: Rendering without hooks');
+export function AppProviders({ children }: AppProvidersProps) {
+  console.log('AppProviders: Rendering with correct React import');
   console.log('React available:', !!React);
   console.log('React.useEffect available:', !!(React && React.useEffect));
   
@@ -34,5 +33,3 @@ function AppProvidersBase({ children }: AppProvidersProps) {
     </BrowserRouter>
   );
 }
-
-export const AppProviders = AppProvidersBase;

@@ -53,7 +53,6 @@ export function useCache() {
   return context;
 }
 
-// Hook personnalisé pour vérifier si le cache est disponible
 export function useCacheAvailable() {
   const context = useContext(CacheContext);
   return context !== null;
