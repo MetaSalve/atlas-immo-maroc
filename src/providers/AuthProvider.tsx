@@ -1,5 +1,5 @@
 
-import * as React from 'react';
+import React from 'react';
 import { User, Session } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
 import { useNavigate } from 'react-router-dom';
@@ -20,43 +20,16 @@ type AuthContextType = {
 const AuthContext = React.createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
+  // Test with simple state first
   const [user, setUser] = React.useState<User | null>(null);
   const [session, setSession] = React.useState<Session | null>(null);
   const [loading, setLoading] = React.useState(true);
   const navigate = useNavigate();
 
+  // Simplified useEffect for testing
   React.useEffect(() => {
-    // Set up auth state listener FIRST
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      (event, session) => {
-        setSession(session);
-        setUser(session?.user ?? null);
-        
-        // Only show toast for specific events, not on initial load
-        if (event === 'SIGNED_IN' && !loading) {
-          toast.success('Connexion réussie');
-        } else if (event === 'SIGNED_OUT') {
-          toast.info('Déconnexion réussie');
-        } else if (event === 'PASSWORD_RECOVERY') {
-          // Rediriger vers la page de réinitialisation
-          navigate('/auth/reset-password');
-          toast.info('Veuillez définir votre nouveau mot de passe');
-        } else if (event === 'USER_UPDATED') {
-          toast.success('Profil mis à jour avec succès');
-        }
-        
-        setLoading(false);
-      }
-    );
-
-    // THEN check for existing session
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session);
-      setUser(session?.user ?? null);
-      setLoading(false);
-    });
-
-    return () => subscription.unsubscribe();
+    console.log('AuthProvider useEffect running');
+    setLoading(false);
   }, []);
 
   const signInWithEmail = async (email: string, password: string) => {
@@ -111,7 +84,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const { error } = await supabase.auth.updateUser({ password });
     if (error) throw error;
     
-    // Si la mise à jour du mot de passe est réussie et que nous sommes sur la page de réinitialisation
     if (window.location.pathname.includes('/auth/reset-password')) {
       toast.success('Mot de passe défini avec succès, vous pouvez maintenant vous connecter');
       navigate('/auth');
