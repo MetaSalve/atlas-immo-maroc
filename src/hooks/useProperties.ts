@@ -38,8 +38,9 @@ export const useProperties = (
   const prefetchNextPage = useCallback(() => {
     if (!enablePrefetching || !isOnline) return;
     
+    const nextPageQueryKey = optimizedQueryKeys.properties.list({ ...filters, page: page + 1 });
     prefetchQuery(
-      optimizedQueryKeys.properties.list({ ...filters, page: page + 1 }),
+      [...nextPageQueryKey] as string[],
       () => fetchProperties(filters, page + 1)
     );
   }, [prefetchQuery, filters, page, enablePrefetching, isOnline]);
