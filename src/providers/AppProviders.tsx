@@ -3,6 +3,11 @@ import React from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Toaster } from '@/components/ui/sonner';
+import { AuthProvider } from './AuthProvider';
+import { CacheProvider } from './CacheProvider';
+import { SubscriptionProvider } from './SubscriptionProvider';
+import { NotificationsProvider } from './NotificationsProvider';
+import { I18nProvider } from './I18nProvider';
 
 type AppProvidersProps = {
   children: React.ReactNode;
@@ -20,15 +25,23 @@ const queryClient = new QueryClient({
 });
 
 export function AppProviders({ children }: AppProvidersProps) {
-  console.log('AppProviders: Rendering with correct React import');
-  console.log('React available:', !!React);
-  console.log('React.useEffect available:', !!(React && React.useEffect));
+  console.log('AppProviders: Starting provider hierarchy setup');
   
   return (
     <BrowserRouter>
       <QueryClientProvider client={queryClient}>
-        {children}
-        <Toaster richColors position="bottom-right" closeButton />
+        <I18nProvider>
+          <AuthProvider>
+            <SubscriptionProvider>
+              <NotificationsProvider>
+                <CacheProvider>
+                  {children}
+                  <Toaster richColors position="bottom-right" closeButton />
+                </CacheProvider>
+              </NotificationsProvider>
+            </SubscriptionProvider>
+          </AuthProvider>
+        </I18nProvider>
       </QueryClientProvider>
     </BrowserRouter>
   );

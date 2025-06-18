@@ -12,7 +12,7 @@ interface NavMenuProps {
 }
 
 export const NavMenu = ({ className = '', onItemClick }: NavMenuProps) => {
-  const { user } = useAuth();
+  const { user, loading } = useAuth();
   const location = useLocation();
   const { t } = useTranslation();
 
@@ -57,8 +57,9 @@ export const NavMenu = ({ className = '', onItemClick }: NavMenuProps) => {
     },
   ];
 
+  // Ne pas afficher les éléments protégés pendant le chargement
   const visibleItems = menuItems.filter(item => 
-    item.public || (item.protected && user)
+    item.public || (item.protected && !loading && user)
   );
 
   return (
