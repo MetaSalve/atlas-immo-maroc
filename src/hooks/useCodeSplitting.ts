@@ -19,6 +19,11 @@ export const useCodeSplitting = () => {
     // Génère une clé unique basée sur la fonction moduleLoader
     const moduleKey = moduleLoader.toString();
 
+    // Sécurise l'initialisation du Set
+    if (!preloadedModules.current) {
+      preloadedModules.current = new Set();
+    }
+
     // Évite de précharger le même module plusieurs fois
     if (preloadedModules.current.has(moduleKey)) {
       return;

@@ -1,5 +1,6 @@
 
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { NavBar } from './NavBar';
 import { BottomNav } from './BottomNav';
 import { useIsMobile } from '@/hooks/use-mobile';
@@ -33,8 +34,8 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
           <span>Agrégateur d'annonces immobilières depuis 2023</span>
         </div>
         <div className="mt-2 flex justify-center space-x-4">
-          <a href="/legal" className="hover:underline">Mentions légales</a>
-          <a href="/privacy" className="hover:underline">Politique de confidentialité</a>
+          <Link to="/legal" className="hover:underline">Mentions légales</Link>
+          <Link to="/privacy" className="hover:underline">Politique de confidentialité</Link>
         </div>
       </footer>
       {isMobile && <BottomNav />}
