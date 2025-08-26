@@ -86,13 +86,6 @@ export type Database = {
             referencedRelation: "properties"
             referencedColumns: ["id"]
           },
-          {
-            foreignKeyName: "favorites_property_id_fkey"
-            columns: ["property_id"]
-            isOneToOne: false
-            referencedRelation: "properties_public"
-            referencedColumns: ["id"]
-          },
         ]
       }
       notifications: {
@@ -569,81 +562,7 @@ export type Database = {
       }
     }
     Views: {
-      properties_public: {
-        Row: {
-          address: string | null
-          area: number | null
-          bathrooms: number | null
-          bedrooms: number | null
-          city: string | null
-          created_at: string | null
-          description: string | null
-          district: string | null
-          features: string[] | null
-          id: string | null
-          images: string[] | null
-          lat: number | null
-          lng: number | null
-          price: number | null
-          price_unit: string | null
-          source_logo: string | null
-          source_name: string | null
-          source_url: string | null
-          status: string | null
-          title: string | null
-          type: string | null
-          updated_at: string | null
-        }
-        Insert: {
-          address?: string | null
-          area?: number | null
-          bathrooms?: number | null
-          bedrooms?: number | null
-          city?: string | null
-          created_at?: string | null
-          description?: string | null
-          district?: string | null
-          features?: string[] | null
-          id?: string | null
-          images?: string[] | null
-          lat?: number | null
-          lng?: number | null
-          price?: number | null
-          price_unit?: string | null
-          source_logo?: string | null
-          source_name?: string | null
-          source_url?: string | null
-          status?: string | null
-          title?: string | null
-          type?: string | null
-          updated_at?: string | null
-        }
-        Update: {
-          address?: string | null
-          area?: number | null
-          bathrooms?: number | null
-          bedrooms?: number | null
-          city?: string | null
-          created_at?: string | null
-          description?: string | null
-          district?: string | null
-          features?: string[] | null
-          id?: string | null
-          images?: string[] | null
-          lat?: number | null
-          lng?: number | null
-          price?: number | null
-          price_unit?: string | null
-          source_logo?: string | null
-          source_name?: string | null
-          source_url?: string | null
-          status?: string | null
-          title?: string | null
-          type?: string | null
-          updated_at?: string | null
-        }
-        Relationships: []
-      }
+      [_ in never]: never
     }
     Functions: {
       check_is_admin: {
@@ -653,6 +572,33 @@ export type Database = {
       create_test_user_alerts: {
         Args: Record<PropertyKey, never>
         Returns: undefined
+      }
+      get_public_properties: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          address: string
+          area: number
+          bathrooms: number
+          bedrooms: number
+          city: string
+          created_at: string
+          description: string
+          district: string
+          features: string[]
+          id: string
+          images: string[]
+          lat: number
+          lng: number
+          price: number
+          price_unit: string
+          source_logo: string
+          source_name: string
+          source_url: string
+          status: string
+          title: string
+          type: string
+          updated_at: string
+        }[]
       }
       update_test_user_profiles: {
         Args: Record<PropertyKey, never>

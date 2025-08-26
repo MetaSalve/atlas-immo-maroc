@@ -26,15 +26,16 @@ export const usePropertyDetail = (propertyId: string) => {
       data = result.data;
       error = result.error;
     } else {
-      // Anonymous users can only access public view without contact info
-      const result = await supabase
-        .from('properties_public')
-        .select('*')
-        .eq('id', propertyId)
-        .maybeSingle();
+      // Anonymous users call public function without contact info
+      const result = await supabase.rpc('get_public_properties');
       
-      data = result.data;
-      error = result.error;
+      if (result.error) {
+        error = result.error;
+        data = null;
+      } else {
+        // Find the specific property by ID from the function result
+        data = result.data?.find((property: any) => property.id === propertyId) || null;
+      }
     }
 
     if (error) {

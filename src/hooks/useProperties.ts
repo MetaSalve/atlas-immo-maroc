@@ -100,41 +100,48 @@ export const useProperties = (
       error = result.error;
       count = result.count;
     } else {
-      // Anonymous users can only access public view without contact info
-      let query = supabase
-        .from('properties_public')
-        .select('*', { count: 'exact' })
-        .order('created_at', { ascending: false })
-        .range(from, to);
-
-      if (currentFilters) {
-        if (currentFilters.city) {
-          query = query.ilike('city', `%${currentFilters.city}%`);
-        }
-        if (currentFilters.type) {
-          query = query.eq('type', currentFilters.type);
-        }
-        if (currentFilters.status) {
-          query = query.eq('status', currentFilters.status);
-        }
-        if (currentFilters.minPrice !== undefined) {
-          query = query.gte('price', currentFilters.minPrice);
-        }
-        if (currentFilters.maxPrice !== undefined) {
-          query = query.lte('price', currentFilters.maxPrice);
-        }
-        if (currentFilters.bedrooms !== undefined) {
-          query = query.gte('bedrooms', currentFilters.bedrooms);
-        }
-        if (currentFilters.bathrooms !== undefined) {
-          query = query.gte('bathrooms', currentFilters.bathrooms);
-        }
-      }
-
-      const result = await query;
-      data = result.data;
+      // Anonymous users call public function without contact info
+      // Note: For anonymous users, we need to get all data first then apply filters in JavaScript
+      // since RPC calls don't support the same chaining as table queries
+      const result = await supabase.rpc('get_public_properties');
+      
+      let allData = result.data || [];
       error = result.error;
-      count = result.count;
+      
+      // Apply filters in JavaScript for anonymous users
+      if (currentFilters && allData.length > 0) {
+        allData = allData.filter((property: any) => {
+          if (currentFilters.city && !property.city?.toLowerCase().includes(currentFilters.city.toLowerCase())) {
+            return false;
+          }
+          if (currentFilters.type && property.type !== currentFilters.type) {
+            return false;
+          }
+          if (currentFilters.status && property.status !== currentFilters.status) {
+            return false;
+          }
+          if (currentFilters.minPrice !== undefined && Number(property.price) < currentFilters.minPrice) {
+            return false;
+          }
+          if (currentFilters.maxPrice !== undefined && Number(property.price) > currentFilters.maxPrice) {
+            return false;
+          }
+          if (currentFilters.bedrooms !== undefined && (property.bedrooms || 0) < currentFilters.bedrooms) {
+            return false;
+          }
+          if (currentFilters.bathrooms !== undefined && (property.bathrooms || 0) < currentFilters.bathrooms) {
+            return false;
+          }
+          return true;
+        });
+      }
+      
+      // Sort by created_at descending (newest first)
+      allData = allData.sort((a: any, b: any) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
+      
+      // Apply pagination manually
+      count = allData.length;
+      data = allData.slice(from, to + 1);
     }
     
     if (error) {
