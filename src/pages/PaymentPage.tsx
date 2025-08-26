@@ -1,6 +1,6 @@
 
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '@/providers/AuthProvider';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -185,7 +185,7 @@ const PaymentPage = () => {
       </Card>
       
       <p className="text-center text-sm text-muted-foreground mt-6">
-        En procédant au paiement, vous acceptez nos <a href="/terms" className="underline">conditions générales</a>.
+        En procédant au paiement, vous acceptez nos <Link to="/terms" className="underline">conditions générales</Link>.
       </p>
     </div>
   );

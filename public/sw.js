@@ -1,5 +1,5 @@
-const CACHE_NAME = 'alertimmo-cache-v1';
-const DYNAMIC_CACHE = 'alertimmo-dynamic-cache-v1';
+const CACHE_NAME = 'alertimmo-cache-v3';
+const DYNAMIC_CACHE = 'alertimmo-dynamic-cache-v3';
 
 const urlsToCache = [
   '/',
@@ -48,46 +48,44 @@ self.addEventListener('fetch', (event) => {
   }
   
   if (event.request.method !== 'GET') return;
+
+  // Navigation requests: always try network first to avoid stale HTML/JS
+  if (event.request.mode === 'navigate') {
+    event.respondWith(
+      fetch(event.request)
+        .then((response) => {
+          // Update cache for offline support
+          const copy = response.clone();
+          caches.open(CACHE_NAME).then(cache => cache.put(event.request, copy));
+          return response;
+        })
+        .catch(() => caches.match('/offline.html'))
+    );
+    return;
+  }
   
+  // Assets and other GET requests: cache-first, then network fallback
   event.respondWith(
     caches.match(event.request)
       .then((response) => {
         if (response) {
-          console.log('[Service Worker] Utilisation du cache pour:', event.request.url);
           return response;
         }
-        
-        console.log('[Service Worker] Récupération depuis le réseau:', event.request.url);
-        return fetch(event.request)
-          .then((response) => {
-            if (!response || response.status !== 200 || response.type !== 'basic') {
-              return response;
-            }
-            
-            const responseToCache = response.clone();
-            caches.open(DYNAMIC_CACHE)
-              .then((cache) => {
-                cache.put(event.request, responseToCache);
-                console.log('[Service Worker] Nouvelle ressource mise en cache:', event.request.url);
-              });
-            
-            return response;
-          })
-          .catch((error) => {
-            console.error('[Service Worker] Erreur de récupération:', error);
-            
-            if (event.request.mode === 'navigate') {
-              console.log('[Service Worker] Redirection vers la page hors ligne');
-              return caches.match('/offline.html');
-            }
-            
-            if (event.request.destination === 'image') {
-              console.log('[Service Worker] Utilisation de l\'image placeholder');
-              return caches.match('/placeholder.svg');
-            }
-            
-            return new Response('Contenu non disponible hors ligne');
+        return fetch(event.request).then((networkResponse) => {
+          if (!networkResponse || networkResponse.status !== 200 || networkResponse.type !== 'basic') {
+            return networkResponse;
+          }
+          const responseToCache = networkResponse.clone();
+          caches.open(DYNAMIC_CACHE).then((cache) => {
+            cache.put(event.request, responseToCache);
           });
+          return networkResponse;
+        }).catch(() => {
+          if (event.request.destination === 'image') {
+            return caches.match('/placeholder.svg');
+          }
+          return new Response('Contenu non disponible hors ligne');
+        });
       })
   );
 });
