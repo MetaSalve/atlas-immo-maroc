@@ -31,7 +31,7 @@ const NotificationsPage = () => {
               <h3 className="font-medium">{notification.title}</h3>
               <p className="text-gray-600">{notification.body}</p>
               <span className="text-xs text-gray-400">
-                {new Date(notification.created_at).toLocaleString()}
+                {notification.created_at ? new Date(notification.created_at).toLocaleString() : 'Date inconnue'}
               </span>
             </li>
           ))}

@@ -46,7 +46,7 @@ export const PropertyCompare = ({ properties, onClose }: PropertyCompareProps) =
                     <TableCell className="font-medium">Prix</TableCell>
                     {properties.map((property) => (
                       <TableCell key={`${property.id}-price`}>
-                        {property.price.toLocaleString('fr-FR')} {property.priceUnit}
+                        {property.price != null ? property.price.toLocaleString('fr-FR') : '0'} {property.priceUnit}
                       </TableCell>
                     ))}
                   </TableRow>

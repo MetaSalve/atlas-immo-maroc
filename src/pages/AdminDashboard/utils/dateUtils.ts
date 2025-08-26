@@ -3,8 +3,13 @@
  * Formate une date ISO en date/heure locale
  */
 export const formatDateTime = (dateString: string): string => {
-  const date = new Date(dateString);
-  return date.toLocaleString();
+  if (!dateString) return 'Date invalide';
+  try {
+    const date = new Date(dateString);
+    return date.toLocaleString();
+  } catch (error) {
+    return 'Date invalide';
+  }
 };
 
 /**

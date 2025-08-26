@@ -108,7 +108,7 @@ export const SimpleSearchFilters = ({
             <div className="flex justify-between">
               <Label htmlFor="price-range">Prix</Label>
               <div className="text-sm">
-                {priceRange[0].toLocaleString('fr-FR')}€ - {priceRange[1].toLocaleString('fr-FR')}€
+                {(priceRange[0] || 0).toLocaleString('fr-FR')}€ - {(priceRange[1] || 0).toLocaleString('fr-FR')}€
               </div>
             </div>
             <Slider

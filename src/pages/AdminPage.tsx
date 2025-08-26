@@ -232,7 +232,11 @@ const AdminPage = () => {
   
   const formatDate = (dateString: string | null) => {
     if (!dateString) return 'Jamais';
-    return new Date(dateString).toLocaleString('fr-FR');
+    try {
+      return new Date(dateString).toLocaleString('fr-FR');
+    } catch (error) {
+      return 'Date invalide';
+    }
   };
   
   const getSourceById = (id: string | null) => {

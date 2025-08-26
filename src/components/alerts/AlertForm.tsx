@@ -96,8 +96,8 @@ export const AlertForm = ({
     
     if (filters.priceMin > 0 || filters.priceMax < 10000000) {
       const priceRange = [];
-      if (filters.priceMin > 0) priceRange.push(`min ${filters.priceMin.toLocaleString('fr-FR')} MAD`);
-      if (filters.priceMax < 10000000) priceRange.push(`max ${filters.priceMax.toLocaleString('fr-FR')} MAD`);
+      if (filters.priceMin > 0) priceRange.push(`min ${(filters.priceMin || 0).toLocaleString('fr-FR')} MAD`);
+      if (filters.priceMax < 10000000) priceRange.push(`max ${(filters.priceMax || 0).toLocaleString('fr-FR')} MAD`);
       parts.push(`Prix: ${priceRange.join(' - ')}`);
     }
     

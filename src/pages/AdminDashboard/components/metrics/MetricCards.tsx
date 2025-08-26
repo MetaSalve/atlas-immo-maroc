@@ -16,7 +16,7 @@ export const MetricCards = ({ metrics }: MetricCardsProps) => {
             <div className="flex flex-col gap-1">
               <p className="text-sm text-muted-foreground">{metric.name}</p>
               <div className="flex items-end justify-between">
-                <p className="text-3xl font-bold">{metric.value.toLocaleString()}</p>
+                <p className="text-3xl font-bold">{metric.value != null ? metric.value.toLocaleString() : '0'}</p>
                 {metric.change && (
                   <div className={`flex items-center ${metric.trend === 'up' ? 'text-green-600' : metric.trend === 'down' ? 'text-red-600' : 'text-yellow-600'}`}>
                     {metric.trend === 'up' ? '↑' : metric.trend === 'down' ? '↓' : '→'}
