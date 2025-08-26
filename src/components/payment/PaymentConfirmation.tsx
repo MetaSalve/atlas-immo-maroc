@@ -4,7 +4,7 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/componen
 import { Button } from '@/components/ui/button';
 import { CheckCircle } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import { MetaTags } from '@/components/common/MetaTags';
+import { DocumentHead } from '@/components/common/DocumentHead';
 
 interface PaymentConfirmationProps {
   transactionId?: string;
@@ -29,7 +29,7 @@ export const PaymentConfirmation = ({
   
   return (
     <>
-      <MetaTags 
+      <DocumentHead 
         title="Paiement confirmé - AlertImmo" 
         description="Votre paiement a été confirmé. Profitez maintenant de votre abonnement premium sur AlertImmo."
       />

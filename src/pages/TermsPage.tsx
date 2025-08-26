@@ -2,12 +2,12 @@
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
-import { MetaTags } from '@/components/common/MetaTags';
+import { DocumentHead } from '@/components/common/DocumentHead';
 
 const TermsPage = () => {
   return (
     <>
-      <MetaTags 
+      <DocumentHead 
         title="Conditions Générales d'Utilisation - AlertImmo" 
         description="Conditions Générales d'Utilisation du service AlertImmo, plateforme d'alertes immobilières au Maroc."
       />

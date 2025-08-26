@@ -5,7 +5,7 @@ import { useFavorites } from '@/hooks/useFavorites';
 import { PropertyGrid } from '@/components/property/PropertyGrid';
 import { SearchFilters } from '@/components/search/SearchFilters';
 import { useTranslation } from '@/i18n';
-import { MetaTags } from '@/components/common/MetaTags';
+import { DocumentHead } from '@/components/common/DocumentHead';
 
 const PropertiesPage = () => {
   const { t } = useTranslation();
@@ -19,7 +19,7 @@ const PropertiesPage = () => {
 
   return (
     <div className="container py-6">
-      <MetaTags title={`${t('properties.title')} | AlertImmo`} />
+      <DocumentHead title={`${t('properties.title')} | AlertImmo`} />
 
       <h1 className="text-3xl font-bold mb-6">{t('properties.title')}</h1>
       <div className="grid grid-cols-1 md:grid-cols-[300px_1fr] gap-6">

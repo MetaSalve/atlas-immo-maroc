@@ -2,14 +2,14 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { useNavigate } from 'react-router-dom';
-import { MetaTags } from './MetaTags';
+import { DocumentHead } from './DocumentHead';
 
 export const NotFound = () => {
   const navigate = useNavigate();
 
   return (
     <>
-      <MetaTags 
+      <DocumentHead 
         title="Page non trouvée - AlertImmo" 
         description="La page que vous recherchez n'existe pas ou a été déplacée."
       />

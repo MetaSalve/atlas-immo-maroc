@@ -1,13 +1,12 @@
 
 import React from 'react';
-import { Helmet } from 'react-helmet-async';
 import { useProperties } from '@/hooks/useProperties';
 import { useFavorites } from '@/hooks/useFavorites';
 import { HeroSearchSection } from '@/components/home/HeroSearchSection';
 import { FeaturesSection } from '@/components/home/FeaturesSection';
 import { PropertiesSection } from '@/components/home/PropertiesSection';
 import { ContactSection } from '@/components/home/ContactSection';
-import { MetaTags } from '@/components/common/MetaTags';
+import { DocumentHead } from '@/components/common/DocumentHead';
 import { useTranslation } from '@/i18n';
 
 const HomePage = () => {
@@ -20,7 +19,7 @@ const HomePage = () => {
 
   return (
     <>
-      <MetaTags />
+      <DocumentHead />
       <div className="space-y-10">
         <HeroSearchSection />
         <div className="container">

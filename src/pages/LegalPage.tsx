@@ -2,12 +2,12 @@
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
-import { MetaTags } from '@/components/common/MetaTags';
+import { DocumentHead } from '@/components/common/DocumentHead';
 
 const LegalPage = () => {
   return (
     <>
-      <MetaTags 
+      <DocumentHead 
         title="Mentions Légales - AlertImmo" 
         description="Mentions légales et informations juridiques concernant AlertImmo, votre plateforme d'alertes immobilières au Maroc."
       />

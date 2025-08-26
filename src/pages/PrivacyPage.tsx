@@ -2,12 +2,12 @@
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
-import { MetaTags } from '@/components/common/MetaTags';
+import { DocumentHead } from '@/components/common/DocumentHead';
 
 const PrivacyPage = () => {
   return (
     <>
-      <MetaTags 
+      <DocumentHead 
         title="Politique de Confidentialité - AlertImmo" 
         description="Politique de confidentialité d'AlertImmo: comment nous protégeons vos données personnelles et respectons votre vie privée."
       />

@@ -2,7 +2,7 @@
 import React from 'react';
 import { useNotificationsContext } from '@/providers/NotificationsProvider';
 import { useTranslation } from '@/i18n';
-import { MetaTags } from '@/components/common/MetaTags';
+import { DocumentHead } from '@/components/common/DocumentHead';
 
 const NotificationsPage = () => {
   const { t } = useTranslation();
@@ -10,7 +10,7 @@ const NotificationsPage = () => {
 
   return (
     <div className="container py-6">
-      <MetaTags title={`${t('notifications.title')} | AlertImmo`} />
+      <DocumentHead title={`${t('notifications.title')} | AlertImmo`} />
 
       <h1 className="text-3xl font-bold mb-6">{t('notifications.title')}</h1>
       
