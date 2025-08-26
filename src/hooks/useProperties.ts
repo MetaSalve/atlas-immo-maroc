@@ -7,6 +7,7 @@ import { optimizedQueryKeys, cacheConfig } from './useCacheConfig';
 import { useErrorHandler } from './useErrorHandler';
 import { useCache } from '@/providers/CacheProvider';
 import { useNetwork } from '@/hooks/useNetwork';
+import { useAuth } from '@/providers/AuthProvider';
 
 const PROPERTIES_PER_PAGE = 12;
 
@@ -29,6 +30,7 @@ export const useProperties = (
   const queryClient = useQueryClient();
   const { prefetchQuery } = useCache();
   const { isOnline } = useNetwork();
+  const { session } = useAuth();
   
   const queryKey = useMemo(() => 
     optimizedQueryKeys.properties.list({ ...filters, page }), 
@@ -56,37 +58,84 @@ export const useProperties = (
     const from = (currentPage - 1) * PROPERTIES_PER_PAGE;
     const to = from + PROPERTIES_PER_PAGE - 1;
     
-    let query = supabase
-      .from('properties')
-      .select('*', { count: 'exact' })
-      .order('created_at', { ascending: false })
-      .range(from, to);
+    let data: any = null;
+    let error: any = null;
+    let count: number | null = null;
+    
+    // Use appropriate table/view based on authentication status
+    if (session) {
+      // Authenticated users can access full properties table with contact info
+      let query = supabase
+        .from('properties')
+        .select('*', { count: 'exact' })
+        .order('created_at', { ascending: false })
+        .range(from, to);
 
-    if (currentFilters) {
-      if (currentFilters.city) {
-        query = query.ilike('city', `%${currentFilters.city}%`);
+      if (currentFilters) {
+        if (currentFilters.city) {
+          query = query.ilike('city', `%${currentFilters.city}%`);
+        }
+        if (currentFilters.type) {
+          query = query.eq('type', currentFilters.type);
+        }
+        if (currentFilters.status) {
+          query = query.eq('status', currentFilters.status);
+        }
+        if (currentFilters.minPrice !== undefined) {
+          query = query.gte('price', currentFilters.minPrice);
+        }
+        if (currentFilters.maxPrice !== undefined) {
+          query = query.lte('price', currentFilters.maxPrice);
+        }
+        if (currentFilters.bedrooms !== undefined) {
+          query = query.gte('bedrooms', currentFilters.bedrooms);
+        }
+        if (currentFilters.bathrooms !== undefined) {
+          query = query.gte('bathrooms', currentFilters.bathrooms);
+        }
       }
-      if (currentFilters.type) {
-        query = query.eq('type', currentFilters.type);
+
+      const result = await query;
+      data = result.data;
+      error = result.error;
+      count = result.count;
+    } else {
+      // Anonymous users can only access public view without contact info
+      let query = supabase
+        .from('properties_public')
+        .select('*', { count: 'exact' })
+        .order('created_at', { ascending: false })
+        .range(from, to);
+
+      if (currentFilters) {
+        if (currentFilters.city) {
+          query = query.ilike('city', `%${currentFilters.city}%`);
+        }
+        if (currentFilters.type) {
+          query = query.eq('type', currentFilters.type);
+        }
+        if (currentFilters.status) {
+          query = query.eq('status', currentFilters.status);
+        }
+        if (currentFilters.minPrice !== undefined) {
+          query = query.gte('price', currentFilters.minPrice);
+        }
+        if (currentFilters.maxPrice !== undefined) {
+          query = query.lte('price', currentFilters.maxPrice);
+        }
+        if (currentFilters.bedrooms !== undefined) {
+          query = query.gte('bedrooms', currentFilters.bedrooms);
+        }
+        if (currentFilters.bathrooms !== undefined) {
+          query = query.gte('bathrooms', currentFilters.bathrooms);
+        }
       }
-      if (currentFilters.status) {
-        query = query.eq('status', currentFilters.status);
-      }
-      if (currentFilters.minPrice !== undefined) {
-        query = query.gte('price', currentFilters.minPrice);
-      }
-      if (currentFilters.maxPrice !== undefined) {
-        query = query.lte('price', currentFilters.maxPrice);
-      }
-      if (currentFilters.bedrooms !== undefined) {
-        query = query.gte('bedrooms', currentFilters.bedrooms);
-      }
-      if (currentFilters.bathrooms !== undefined) {
-        query = query.gte('bathrooms', currentFilters.bathrooms);
-      }
+
+      const result = await query;
+      data = result.data;
+      error = result.error;
+      count = result.count;
     }
-
-    const { data, error, count } = await query;
     
     if (error) {
       console.error('Erreur lors de la récupération des propriétés:', error);
@@ -127,9 +176,10 @@ export const useProperties = (
         url: property.source_url,
       },
       contactInfo: {
-        name: property.contact_name,
-        phone: property.contact_phone,
-        email: property.contact_email,
+        // Only include contact info for authenticated users
+        name: session ? (property.contact_name || 'Contact non disponible') : 'Connexion requise',
+        phone: session ? property.contact_phone : undefined,
+        email: session ? property.contact_email : undefined,
       },
       createdAt: property.created_at,
       updatedAt: property.updated_at,

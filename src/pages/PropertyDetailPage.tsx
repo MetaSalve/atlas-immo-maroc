@@ -1,35 +1,27 @@
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { 
   Heart, ArrowLeft, MapPin, Phone, Mail, Share2, 
-  Clock, Home, Bed, Bath, Maximize, ExternalLink
+  Clock, Home, Bed, Bath, Maximize, ExternalLink, LogIn
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { PropertyImageCarousel } from '@/components/property/PropertyImageCarousel';
 import { PropertyFeatureList } from '@/components/property/PropertyFeatureList';
-import { Property } from '@/types/property';
-import { mockProperties } from '@/data/mockProperties';
+import { usePropertyDetail } from '@/hooks/usePropertyDetail';
 import { useToast } from '@/hooks/use-toast';
+import { useFavorites } from '@/hooks/useFavorites';
+import { useAuth } from '@/providers/AuthProvider';
 import { cn } from '@/lib/utils';
 
 const PropertyDetailPage = () => {
   const { id } = useParams<{ id: string }>();
   const { toast } = useToast();
-  const [property, setProperty] = useState<Property | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [isFavorite, setIsFavorite] = useState(false);
+  const { session } = useAuth();
+  const { data: property, isLoading, error } = usePropertyDetail(id || '');
+  const { favorites, toggleFavorite } = useFavorites();
   
-  useEffect(() => {
-    // Simulate API fetch with a timeout
-    const timer = setTimeout(() => {
-      const foundProperty = mockProperties.find(p => p.id === id);
-      setProperty(foundProperty || null);
-      setIsLoading(false);
-    }, 500);
-    
-    return () => clearTimeout(timer);
-  }, [id]);
+  const isFavorite = property ? favorites.includes(property.id) : false;
   
   const formatPrice = (price: number) => {
     return new Intl.NumberFormat('fr-FR').format(price);
@@ -45,7 +37,8 @@ const PropertyDetailPage = () => {
   };
   
   const handleToggleFavorite = () => {
-    setIsFavorite(!isFavorite);
+    if (!property) return;
+    toggleFavorite(property.id);
     toast({
       title: isFavorite ? 'Retiré des favoris' : 'Ajouté aux favoris',
       description: property?.title,
@@ -245,7 +238,24 @@ const PropertyDetailPage = () => {
               <div className="text-muted-foreground">
                 <p>{property.contactInfo.name}</p>
                 
-                {property.contactInfo.phone && (
+                {!session && (
+                  <div className="bg-muted/50 border border-muted rounded-lg p-4 mt-3">
+                    <div className="flex items-center gap-2 text-muted-foreground mb-2">
+                      <LogIn className="h-4 w-4" />
+                      <span className="text-sm font-medium">Connexion requise</span>
+                    </div>
+                    <p className="text-sm text-muted-foreground mb-3">
+                      Connectez-vous pour voir les informations de contact
+                    </p>
+                    <Link to="/auth">
+                      <Button size="sm" className="w-full">
+                        Se connecter
+                      </Button>
+                    </Link>
+                  </div>
+                )}
+                
+                {session && property.contactInfo.phone && (
                   <a 
                     href={`tel:${property.contactInfo.phone}`}
                     className="flex items-center gap-2 text-primary hover:text-primary/80 mt-3"
@@ -255,7 +265,7 @@ const PropertyDetailPage = () => {
                   </a>
                 )}
                 
-                {property.contactInfo.email && (
+                {session && property.contactInfo.email && (
                   <a 
                     href={`mailto:${property.contactInfo.email}`}
                     className="flex items-center gap-2 text-primary hover:text-primary/80 mt-2"
@@ -266,16 +276,18 @@ const PropertyDetailPage = () => {
                 )}
               </div>
               
-              <div className="mt-6 space-y-2">
-                <Button className="w-full flex items-center gap-2">
-                  <Phone className="h-4 w-4" />
-                  <span>Appeler</span>
-                </Button>
-                <Button variant="outline" className="w-full flex items-center gap-2">
-                  <Mail className="h-4 w-4" />
-                  <span>Envoyer un message</span>
-                </Button>
-              </div>
+              {session && (
+                <div className="mt-6 space-y-2">
+                  <Button className="w-full flex items-center gap-2">
+                    <Phone className="h-4 w-4" />
+                    <span>Appeler</span>
+                  </Button>
+                  <Button variant="outline" className="w-full flex items-center gap-2">
+                    <Mail className="h-4 w-4" />
+                    <span>Envoyer un message</span>
+                  </Button>
+                </div>
+              )}
             </div>
           </div>
         </div>
