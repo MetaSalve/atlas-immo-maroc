@@ -1,5 +1,5 @@
 
-import { Helmet, HelmetProvider } from 'react-helmet-async';
+import { Helmet } from 'react-helmet-async';
 
 interface MetaTagsProps {
   title?: string;
@@ -21,7 +21,6 @@ export const MetaTags = ({
   const siteName = 'AlertImmo';
   
   return (
-    <HelmetProvider>
       <Helmet>
         {/* Balises de base */}
         <title>{title}</title>
@@ -54,7 +53,6 @@ export const MetaTags = ({
           </script>
         )}
       </Helmet>
-    </HelmetProvider>
   );
 };
 
