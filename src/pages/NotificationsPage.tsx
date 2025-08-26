@@ -1,8 +1,8 @@
 
 import React from 'react';
-import { Helmet } from 'react-helmet-async';
 import { useNotificationsContext } from '@/providers/NotificationsProvider';
 import { useTranslation } from '@/i18n';
+import { MetaTags } from '@/components/common/MetaTags';
 
 const NotificationsPage = () => {
   const { t } = useTranslation();
@@ -10,9 +10,7 @@ const NotificationsPage = () => {
 
   return (
     <div className="container py-6">
-      <Helmet>
-        <title>{t('notifications.title')} | AlertImmo</title>
-      </Helmet>
+      <MetaTags title={`${t('notifications.title')} | AlertImmo`} />
 
       <h1 className="text-3xl font-bold mb-6">{t('notifications.title')}</h1>
       
