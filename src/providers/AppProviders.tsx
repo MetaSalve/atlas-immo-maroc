@@ -3,6 +3,7 @@ import React from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ThemeProvider } from 'next-themes';
+import { HelmetProvider } from 'react-helmet-async';
 import { Toaster } from '@/components/ui/sonner';
 import { AuthProvider } from './AuthProvider';
 import { CacheProvider } from './CacheProvider';
@@ -31,29 +32,31 @@ export function AppProviders({ children }: AppProvidersProps) {
   
   return (
     <BrowserRouter>
-      <QueryClientProvider client={queryClient}>
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
-          <I18nProvider>
-            <AccessibilityProvider>
-              <AuthProvider>
-                <SubscriptionProvider>
-                  <NotificationsProvider>
-                    <CacheProvider>
-                      {children}
-                      <Toaster richColors position="bottom-right" closeButton />
-                    </CacheProvider>
-                  </NotificationsProvider>
-                </SubscriptionProvider>
-              </AuthProvider>
-            </AccessibilityProvider>
-          </I18nProvider>
-        </ThemeProvider>
-      </QueryClientProvider>
+      <HelmetProvider>
+        <QueryClientProvider client={queryClient}>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            <I18nProvider>
+              <AccessibilityProvider>
+                <AuthProvider>
+                  <SubscriptionProvider>
+                    <NotificationsProvider>
+                      <CacheProvider>
+                        {children}
+                        <Toaster richColors position="bottom-right" closeButton />
+                      </CacheProvider>
+                    </NotificationsProvider>
+                  </SubscriptionProvider>
+                </AuthProvider>
+              </AccessibilityProvider>
+            </I18nProvider>
+          </ThemeProvider>
+        </QueryClientProvider>
+      </HelmetProvider>
     </BrowserRouter>
   );
 }
