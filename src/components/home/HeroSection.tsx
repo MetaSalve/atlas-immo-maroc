@@ -9,7 +9,7 @@ export const HeroSection = () => {
   const { t } = useTranslation();
   
   return (
-    <section className="relative py-12 px-4 rounded-2xl bg-gradient-to-br from-navy/90 to-skyblue/80 text-white overflow-hidden min-h-[340px]">
+    <section className="relative py-12 px-4 rounded-2xl bg-gradient-to-br from-navy/30 to-skyblue/20 text-white overflow-hidden min-h-[340px]">
       <MoroccanHeroImage />
       <div className="relative max-w-2xl mx-auto text-center z-10">
         <div className="mb-2 pb-1 font-bold text-lg uppercase tracking-wider text-gold">

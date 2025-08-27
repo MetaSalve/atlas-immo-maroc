@@ -4,8 +4,8 @@ import React from 'react';
 export const MoroccanHeroImage = () => (
   <img
     src="/lovable-uploads/ed94eaf4-699c-4b4d-b440-4ae06aba60a0.png"
-    alt="Zellige marocain traditionnel"
-    className="absolute inset-0 w-full h-full object-cover opacity-20 z-0"
+    alt="Salon marocain traditionnel avec zellige"
+    className="absolute inset-0 w-full h-full object-cover opacity-60 z-0"
     draggable={false}
     style={{ objectFit: 'cover', borderRadius: '1.25rem' }}
   />
