@@ -1,8 +1,7 @@
-
 {
   "app": {
-    "name": "AlertImmo",
-    "tagline": "Find your ideal property in Morocco"
+    "title": "AlertImmo",
+    "tagline": "Real estate listing aggregator since 2023"
   },
   "common": {
     "search": "Search",
@@ -10,163 +9,165 @@
     "sort": "Sort",
     "save": "Save",
     "cancel": "Cancel",
-    "delete": "Delete",
-    "edit": "Edit",
-    "add": "Add",
-    "yes": "Yes",
-    "no": "No",
-    "loading": "Loading",
+    "loading": "Loading...",
     "error": "Error",
     "success": "Success",
-    "info": "Information",
-    "warning": "Warning",
-    "confirm": "Confirm",
+    "close": "Close",
+    "open": "Open",
     "back": "Back",
     "next": "Next",
     "previous": "Previous",
-    "language": "Language"
+    "yes": "Yes",
+    "no": "No",
+    "confirm": "Confirm",
+    "delete": "Delete",
+    "edit": "Edit",
+    "add": "Add",
+    "update": "Update",
+    "view": "View",
+    "share": "Share",
+    "download": "Download",
+    "upload": "Upload",
+    "language": "Language",
+    "theme": "Theme",
+    "settings": "Settings",
+    "help": "Help",
+    "contact": "Contact",
+    "about": "About",
+    "legal": "Legal Notice",
+    "privacy": "Privacy Policy",
+    "terms": "Terms of Service",
+    "mainContent": "Main content"
+  },
+  "nav": {
+    "home": "Home",
+    "properties": "Properties",
+    "search": "Search",
+    "favorites": "Favorites",
+    "alerts": "Alerts",
+    "profile": "Profile",
+    "admin": "Administration",
+    "notifications": "Notifications"
   },
   "auth": {
-    "login": "Login",
-    "signup": "Sign up",
-    "logout": "Logout",
+    "login": "Sign In",
+    "signup": "Sign Up",
+    "logout": "Sign Out",
     "email": "Email",
     "password": "Password",
-    "forgotPassword": "Forgot password?",
-    "resetPassword": "Reset password",
-    "createAccount": "Create an account",
-    "alreadyHaveAccount": "Already registered?",
-    "dontHaveAccount": "Don't have an account?",
-    "twoFactor": {
-      "title": "Two-factor authentication",
-      "setup": "Set up two-factor authentication",
-      "enter": "Enter 6-digit code"
-    }
+    "confirmPassword": "Confirm Password",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "forgotPassword": "Forgot Password?",
+    "resetPassword": "Reset Password",
+    "rememberMe": "Remember Me",
+    "createAccount": "Create Account",
+    "haveAccount": "Already have an account?",
+    "noAccount": "Don't have an account?",
+    "emailRequired": "Email is required",
+    "passwordRequired": "Password is required",
+    "invalidEmail": "Invalid email address",
+    "passwordTooShort": "Password must be at least 8 characters",
+    "twoFactor": "Two-Factor Authentication",
+    "verificationCode": "Verification Code"
   },
   "profile": {
     "title": "Profile",
-    "personalInfo": "Personal information",
+    "personalInfo": "Personal Information",
     "security": "Security",
-    "subscription": "Subscription",
     "preferences": "Preferences",
-    "signOut": "Sign out",
-    "deleteAccount": "Delete my account",
-    "firstName": "First name",
-    "lastName": "Last name",
-    "email": "Email",
-    "phone": "Phone",
-    "updateProfile": "Update profile",
-    "passwordChange": "Password change",
-    "currentPassword": "Current password",
-    "newPassword": "New password",
-    "confirmPassword": "Confirm password"
+    "subscription": "Subscription",
+    "deleteAccount": "Delete Account",
+    "changePassword": "Change Password",
+    "currentPassword": "Current Password",
+    "newPassword": "New Password",
+    "enable2FA": "Enable 2FA",
+    "disable2FA": "Disable 2FA"
   },
   "subscription": {
-    "plans": "Subscription plans",
-    "features": "Features",
     "free": "Free",
     "premium": "Premium",
-    "current": "Current subscription",
-    "upgrade": "Upgrade to Premium",
-    "manage": "Manage subscription",
-    "cancel": "Cancel subscription",
-    "price": {
-      "monthly": "{{price}} per month",
-      "yearly": "{{price}} per year"
-    },
-    "status": {
-      "active": "Active",
-      "canceled": "Canceled",
-      "incomplete": "Incomplete",
-      "incomplete_expired": "Expired",
-      "past_due": "Past due",
-      "trialing": "Trial",
-      "unpaid": "Unpaid"
-    }
+    "current": "Current Plan",
+    "upgrade": "Upgrade",
+    "downgrade": "Downgrade",
+    "cancel": "Cancel Subscription",
+    "renews": "Renews on",
+    "expires": "Expires on",
+    "features": "Features",
+    "unlimited": "Unlimited",
+    "limited": "Limited"
   },
   "properties": {
     "title": "Properties",
-    "search": "Search properties",
-    "featured": "Featured properties",
-    "recent": "Recent additions",
-    "filters": {
-      "type": "Property type",
-      "priceRange": "Price range",
-      "bedrooms": "Bedrooms",
-      "bathrooms": "Bathrooms",
-      "area": "Area",
-      "keywords": "Keywords"
-    },
-    "types": {
-      "all": "All",
-      "apartment": "Apartment",
-      "house": "House",
-      "villa": "Villa",
-      "office": "Office",
-      "land": "Land",
-      "other": "Other"
-    },
-    "status": {
-      "sale": "For sale",
-      "rent": "For rent"
-    },
-    "details": {
-      "price": "Price",
-      "area": "Area",
-      "bedrooms": "Bedrooms",
-      "bathrooms": "Bathrooms",
-      "address": "Address",
-      "description": "Description",
-      "features": "Features",
-      "map": "View on map"
-    }
+    "type": "Type",
+    "price": "Price",
+    "surface": "Surface",
+    "rooms": "Rooms",
+    "location": "Location",
+    "status": "Status",
+    "description": "Description",
+    "features": "Features",
+    "contact": "Contact",
+    "visit": "Schedule Visit",
+    "interested": "I'm Interested",
+    "notAvailable": "Not Available",
+    "sold": "Sold",
+    "rented": "Rented",
+    "forSale": "For Sale",
+    "forRent": "For Rent",
+    "apartment": "Apartment",
+    "house": "House",
+    "villa": "Villa",
+    "office": "Office",
+    "land": "Land",
+    "garage": "Garage",
+    "commercial": "Commercial"
   },
   "alerts": {
     "title": "Alerts",
-    "create": "Create alert",
-    "edit": "Edit alert",
-    "delete": "Delete alert",
-    "empty": "No alerts defined",
-    "form": {
-      "name": "Alert name",
-      "criteria": "Criteria",
-      "frequency": "Frequency",
-      "notifications": "Notifications"
-    },
-    "frequency": {
-      "instant": "Instant",
-      "daily": "Daily",
-      "weekly": "Weekly"
-    }
+    "create": "Create Alert",
+    "edit": "Edit Alert",
+    "active": "Active",
+    "inactive": "Inactive",
+    "frequency": "Frequency",
+    "criteria": "Criteria",
+    "notifications": "Get notifications when new properties match your criteria",
+    "daily": "Daily",
+    "weekly": "Weekly",
+    "instant": "Instant"
   },
   "favorites": {
     "title": "Favorites",
-    "empty": "No favorites saved",
-    "add": "Add to favorites",
-    "remove": "Remove from favorites"
+    "add": "Add to Favorites",
+    "remove": "Remove from Favorites",
+    "empty": "No favorites yet",
+    "saved": "Saved Properties"
   },
   "notifications": {
     "title": "Notifications",
+    "markAsRead": "Mark as Read",
+    "markAllAsRead": "Mark All as Read",
     "empty": "No notifications",
-    "markAllRead": "Mark all as read",
-    "settings": "Notification settings"
+    "newProperty": "New property matching your criteria",
+    "priceChange": "Price change for a property you're watching",
+    "statusChange": "Status change for a property you're watching"
   },
   "admin": {
     "dashboard": "Admin Dashboard",
-    "overview": "Overview",
     "users": "Users",
     "properties": "Properties",
     "alerts": "Alerts",
-    "reports": "Reports",
+    "statistics": "Statistics",
     "settings": "Settings",
-    "performance": "Performance",
-    "errors": "Errors"
+    "logs": "Logs"
   },
   "errors": {
-    "network": "Connection problem. Please check your internet connection.",
-    "auth": "You are no longer authenticated. Please login again.",
-    "validation": "The entered data is invalid.",
-    "server": "An error occurred on our servers. Our teams have been notified.",
-    "unknown": "An unexpected error occurred."
+    "network": "Network error. Please check your connection.",
+    "server": "Server error. Please try again later.",
+    "notFound": "Page not found",
+    "unauthorized": "Unauthorized access",
+    "forbidden": "Access forbidden",
+    "validation": "Please check the information entered",
+    "unknown": "An unexpected error occurred"
   }
 }

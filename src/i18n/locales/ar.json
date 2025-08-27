@@ -1,158 +1,172 @@
-
 {
   "app": {
-    "name": "AlertImmo",
-    "tagline": "ابحث عن العقار المثالي الخاص بك في المغرب"
+    "title": "AlertImmo",
+    "tagline": "مجمع إعلانات العقارات منذ 2023"
   },
   "common": {
     "search": "بحث",
     "filter": "تصفية",
-    "sort": "فرز",
     "save": "حفظ",
     "cancel": "إلغاء",
+    "loading": "جاري التحميل...",
+    "error": "خطأ",
+    "success": "نجح",
+    "close": "إغلاق",
+    "open": "فتح",
+    "back": "رجوع",
+    "next": "التالي",
+    "previous": "السابق",
+    "yes": "نعم",
+    "no": "لا",
+    "confirm": "تأكيد",
     "delete": "حذف",
     "edit": "تعديل",
     "add": "إضافة",
-    "yes": "نعم",
-    "no": "لا",
-    "loading": "جاري التحميل",
-    "error": "خطأ",
-    "success": "نجاح",
-    "info": "معلومات",
-    "warning": "تحذير",
-    "confirm": "تأكيد",
-    "back": "رجوع",
-    "next": "التالي",
-    "previous": "السابق"
+    "update": "تحديث",
+    "view": "عرض",
+    "share": "مشاركة",
+    "download": "تحميل",
+    "upload": "رفع",
+    "language": "اللغة",
+    "theme": "المظهر",
+    "settings": "الإعدادات",
+    "help": "مساعدة",
+    "contact": "اتصل بنا",
+    "about": "حول",
+    "legal": "إشعار قانوني",
+    "privacy": "سياسة الخصوصية",
+    "terms": "شروط الخدمة",
+    "mainContent": "المحتوى الرئيسي"
+  },
+  "nav": {
+    "home": "الرئيسية",
+    "properties": "العقارات",
+    "search": "البحث",
+    "favorites": "المفضلة",
+    "alerts": "التنبيهات",
+    "profile": "الملف الشخصي",
+    "admin": "الإدارة",
+    "notifications": "الإشعارات"
   },
   "auth": {
     "login": "تسجيل الدخول",
-    "signup": "التسجيل",
+    "signup": "إنشاء حساب",
     "logout": "تسجيل الخروج",
     "email": "البريد الإلكتروني",
     "password": "كلمة المرور",
+    "confirmPassword": "تأكيد كلمة المرور",
+    "firstName": "الاسم الأول",
+    "lastName": "اسم العائلة",
     "forgotPassword": "نسيت كلمة المرور؟",
     "resetPassword": "إعادة تعيين كلمة المرور",
+    "rememberMe": "تذكرني",
     "createAccount": "إنشاء حساب",
-    "alreadyHaveAccount": "لديك حساب بالفعل؟",
-    "dontHaveAccount": "ليس لديك حساب؟",
-    "twoFactor": {
-      "title": "المصادقة الثنائية",
-      "setup": "إعداد المصادقة الثنائية",
-      "enter": "أدخل الرمز المكون من 6 أرقام"
-    }
+    "haveAccount": "هل لديك حساب بالفعل؟",
+    "noAccount": "ليس لديك حساب؟",
+    "emailRequired": "البريد الإلكتروني مطلوب",
+    "passwordRequired": "كلمة المرور مطلوبة",
+    "invalidEmail": "عنوان بريد إلكتروني غير صالح",
+    "passwordTooShort": "يجب أن تكون كلمة المرور 8 أحرف على الأقل",
+    "twoFactor": "المصادقة الثنائية",
+    "verificationCode": "رمز التحقق"
   },
   "profile": {
     "title": "الملف الشخصي",
     "personalInfo": "المعلومات الشخصية",
     "security": "الأمان",
-    "subscription": "الاشتراك",
     "preferences": "التفضيلات",
-    "signOut": "تسجيل الخروج",
-    "deleteAccount": "حذف حسابي",
-    "firstName": "الاسم الأول",
-    "lastName": "اسم العائلة",
-    "email": "البريد الإلكتروني",
-    "phone": "الهاتف",
-    "updateProfile": "تحديث الملف الشخصي",
-    "passwordChange": "تغيير كلمة المرور",
+    "subscription": "الاشتراك",
+    "deleteAccount": "حذف الحساب",
+    "changePassword": "تغيير كلمة المرور",
     "currentPassword": "كلمة المرور الحالية",
     "newPassword": "كلمة المرور الجديدة",
-    "confirmPassword": "تأكيد كلمة المرور"
+    "enable2FA": "تفعيل المصادقة الثنائية",
+    "disable2FA": "إلغاء المصادقة الثنائية"
   },
   "subscription": {
-    "plans": "خطط الاشتراك",
-    "features": "المميزات",
     "free": "مجاني",
-    "premium": "متميز",
-    "current": "الاشتراك الحالي",
-    "upgrade": "الترقية إلى متميز",
-    "manage": "إدارة الاشتراك",
+    "premium": "مميز",
+    "current": "الخطة الحالية",
+    "upgrade": "ترقية",
+    "downgrade": "تقليل",
     "cancel": "إلغاء الاشتراك",
-    "price": {
-      "monthly": "{{price}} شهريًا",
-      "yearly": "{{price}} سنويًا"
-    },
-    "status": {
-      "active": "نشط",
-      "canceled": "ملغى",
-      "incomplete": "غير مكتمل",
-      "incomplete_expired": "منتهي الصلاحية",
-      "past_due": "متأخر",
-      "trialing": "تجريبي",
-      "unpaid": "غير مدفوع"
-    }
+    "renews": "يتجدد في",
+    "expires": "ينتهي في",
+    "features": "الميزات",
+    "unlimited": "غير محدود",
+    "limited": "محدود"
   },
   "properties": {
     "title": "العقارات",
-    "search": "البحث عن العقارات",
-    "filters": {
-      "type": "نوع العقار",
-      "priceRange": "نطاق السعر",
-      "bedrooms": "غرف النوم",
-      "bathrooms": "الحمامات",
-      "area": "المساحة",
-      "keywords": "الكلمات المفتاحية"
-    },
-    "types": {
-      "all": "الكل",
-      "apartment": "شقة",
-      "house": "منزل",
-      "villa": "فيلا",
-      "office": "مكتب",
-      "land": "أرض",
-      "other": "أخرى"
-    },
-    "status": {
-      "sale": "للبيع",
-      "rent": "للإيجار"
-    },
-    "details": {
-      "price": "السعر",
-      "area": "المساحة",
-      "bedrooms": "غرف النوم",
-      "bathrooms": "الحمامات",
-      "address": "العنوان",
-      "description": "الوصف",
-      "features": "المميزات",
-      "map": "عرض على الخريطة"
-    }
+    "type": "النوع",
+    "price": "السعر",
+    "surface": "المساحة",
+    "rooms": "الغرف",
+    "location": "الموقع",
+    "status": "الحالة",
+    "description": "الوصف",
+    "features": "المميزات",
+    "contact": "اتصال",
+    "visit": "جدولة زيارة",
+    "interested": "مهتم",
+    "notAvailable": "غير متاح",
+    "sold": "مباع",
+    "rented": "مؤجر",
+    "forSale": "للبيع",
+    "forRent": "للإيجار",
+    "apartment": "شقة",
+    "house": "منزل",
+    "villa": "فيلا",
+    "office": "مكتب",
+    "land": "أرض",
+    "garage": "كراج",
+    "commercial": "تجاري"
   },
   "alerts": {
     "title": "التنبيهات",
     "create": "إنشاء تنبيه",
     "edit": "تعديل التنبيه",
-    "delete": "حذف التنبيه",
-    "empty": "لا توجد تنبيهات محددة",
-    "form": {
-      "name": "اسم التنبيه",
-      "criteria": "المعايير",
-      "frequency": "التكرار",
-      "notifications": "الإشعارات"
-    },
-    "frequency": {
-      "instant": "فوري",
-      "daily": "يومي",
-      "weekly": "أسبوعي"
-    }
+    "active": "نشط",
+    "inactive": "غير نشط",
+    "frequency": "التكرار",
+    "criteria": "المعايير",
+    "notifications": "احصل على إشعارات عند وجود عقارات جديدة تطابق معاييرك",
+    "daily": "يومي",
+    "weekly": "أسبوعي",
+    "instant": "فوري"
   },
   "favorites": {
     "title": "المفضلة",
-    "empty": "لا توجد عناصر مفضلة محفوظة",
     "add": "إضافة إلى المفضلة",
-    "remove": "إزالة من المفضلة"
+    "remove": "إزالة من المفضلة",
+    "empty": "لا توجد مفضلة بعد",
+    "saved": "العقارات المحفوظة"
   },
   "notifications": {
     "title": "الإشعارات",
+    "markAsRead": "تحديد كمقروء",
+    "markAllAsRead": "تحديد الكل كمقروء",
     "empty": "لا توجد إشعارات",
-    "markAllRead": "تحديد الكل كمقروء",
-    "settings": "إعدادات الإشعارات"
+    "newProperty": "عقار جديد يطابق معاييرك",
+    "priceChange": "تغيير في سعر عقار تتابعه",
+    "statusChange": "تغيير في حالة عقار تتابعه"
+  },
+  "admin": {
+    "dashboard": "لوحة الإدارة",
+    "users": "المستخدمون",
+    "properties": "العقارات",
+    "alerts": "التنبيهات",
+    "statistics": "الإحصائيات",
+    "settings": "الإعدادات",
+    "logs": "السجلات"
   },
   "errors": {
-    "network": "مشكلة في الاتصال. يرجى التحقق من اتصال الإنترنت الخاص بك.",
-    "auth": "أنت لم تعد مصادقًا. يرجى تسجيل الدخول مرة أخرى.",
-    "validation": "البيانات المدخلة غير صالحة.",
-    "server": "حدث خطأ في خوادمنا. تم إخطار فرقنا.",
-    "unknown": "حدث خطأ غير متوقع."
+    "network": "خطأ في الشبكة. يرجى التحقق من اتصالك.",
+    "server": "خطأ في الخادم. يرجى المحاولة مرة أخرى لاحقًا.",
+    "notFound": "الصفحة غير موجودة",
+    "unauthorized": "وصول غير مصرح به",
+    "forbidden": "وصول محظور",
+    "validation": "يرجى التحقق من المعلومات المدخلة",
+    "unknown": "حدث خطأ غير متوقع"
   }
 }

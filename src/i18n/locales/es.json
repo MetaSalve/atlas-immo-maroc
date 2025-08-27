@@ -1,158 +1,172 @@
-
 {
   "app": {
-    "name": "AlertImmo",
-    "tagline": "Encuentra tu propiedad ideal en Marruecos"
+    "title": "AlertImmo",
+    "tagline": "Agregador de anuncios inmobiliarios desde 2023"
   },
   "common": {
     "search": "Buscar",
     "filter": "Filtrar",
-    "sort": "Ordenar",
     "save": "Guardar",
     "cancel": "Cancelar",
+    "loading": "Cargando...",
+    "error": "Error",
+    "success": "Éxito",
+    "close": "Cerrar",
+    "open": "Abrir",
+    "back": "Volver",
+    "next": "Siguiente",
+    "previous": "Anterior",
+    "yes": "Sí",
+    "no": "No",
+    "confirm": "Confirmar",
     "delete": "Eliminar",
     "edit": "Editar",
     "add": "Añadir",
-    "yes": "Sí",
-    "no": "No",
-    "loading": "Cargando",
-    "error": "Error",
-    "success": "Éxito",
-    "info": "Información",
-    "warning": "Advertencia",
-    "confirm": "Confirmar",
-    "back": "Atrás",
-    "next": "Siguiente",
-    "previous": "Anterior"
+    "update": "Actualizar",
+    "view": "Ver",
+    "share": "Compartir",
+    "download": "Descargar",
+    "upload": "Subir",
+    "language": "Idioma",
+    "theme": "Tema",
+    "settings": "Configuración",
+    "help": "Ayuda",
+    "contact": "Contacto",
+    "about": "Acerca de",
+    "legal": "Aviso Legal",
+    "privacy": "Política de Privacidad",
+    "terms": "Términos de Servicio",
+    "mainContent": "Contenido principal"
+  },
+  "nav": {
+    "home": "Inicio",
+    "properties": "Propiedades",
+    "search": "Buscar",
+    "favorites": "Favoritos",
+    "alerts": "Alertas",
+    "profile": "Perfil",
+    "admin": "Administración",
+    "notifications": "Notificaciones"
   },
   "auth": {
-    "login": "Iniciar sesión",
+    "login": "Iniciar Sesión",
     "signup": "Registrarse",
-    "logout": "Cerrar sesión",
-    "email": "Correo electrónico",
+    "logout": "Cerrar Sesión",
+    "email": "Correo Electrónico",
     "password": "Contraseña",
+    "confirmPassword": "Confirmar Contraseña",
+    "firstName": "Nombre",
+    "lastName": "Apellidos",
     "forgotPassword": "¿Olvidaste tu contraseña?",
-    "resetPassword": "Restablecer contraseña",
-    "createAccount": "Crear una cuenta",
-    "alreadyHaveAccount": "¿Ya tienes cuenta?",
-    "dontHaveAccount": "¿No tienes cuenta?",
-    "twoFactor": {
-      "title": "Autenticación de dos factores",
-      "setup": "Configurar autenticación de dos factores",
-      "enter": "Ingresa el código de 6 dígitos"
-    }
+    "resetPassword": "Restablecer Contraseña",
+    "rememberMe": "Recordarme",
+    "createAccount": "Crear Cuenta",
+    "haveAccount": "¿Ya tienes una cuenta?",
+    "noAccount": "¿No tienes una cuenta?",
+    "emailRequired": "El correo electrónico es obligatorio",
+    "passwordRequired": "La contraseña es obligatoria",
+    "invalidEmail": "Dirección de correo electrónico inválida",
+    "passwordTooShort": "La contraseña debe tener al menos 8 caracteres",
+    "twoFactor": "Autenticación de Dos Factores",
+    "verificationCode": "Código de Verificación"
   },
   "profile": {
     "title": "Perfil",
-    "personalInfo": "Información personal",
+    "personalInfo": "Información Personal",
     "security": "Seguridad",
-    "subscription": "Suscripción",
     "preferences": "Preferencias",
-    "signOut": "Cerrar sesión",
-    "deleteAccount": "Eliminar mi cuenta",
-    "firstName": "Nombre",
-    "lastName": "Apellido",
-    "email": "Correo electrónico",
-    "phone": "Teléfono",
-    "updateProfile": "Actualizar perfil",
-    "passwordChange": "Cambio de contraseña",
-    "currentPassword": "Contraseña actual",
-    "newPassword": "Nueva contraseña",
-    "confirmPassword": "Confirmar contraseña"
+    "subscription": "Suscripción",
+    "deleteAccount": "Eliminar Cuenta",
+    "changePassword": "Cambiar Contraseña",
+    "currentPassword": "Contraseña Actual",
+    "newPassword": "Nueva Contraseña",
+    "enable2FA": "Activar 2FA",
+    "disable2FA": "Desactivar 2FA"
   },
   "subscription": {
-    "plans": "Planes de suscripción",
-    "features": "Características",
     "free": "Gratuito",
     "premium": "Premium",
-    "current": "Suscripción actual",
-    "upgrade": "Actualizar a Premium",
-    "manage": "Gestionar suscripción",
-    "cancel": "Cancelar suscripción",
-    "price": {
-      "monthly": "{{price}} por mes",
-      "yearly": "{{price}} por año"
-    },
-    "status": {
-      "active": "Activa",
-      "canceled": "Cancelada",
-      "incomplete": "Incompleta",
-      "incomplete_expired": "Expirada",
-      "past_due": "Vencida",
-      "trialing": "En prueba",
-      "unpaid": "No pagada"
-    }
+    "current": "Plan Actual",
+    "upgrade": "Mejorar",
+    "downgrade": "Degradar",
+    "cancel": "Cancelar Suscripción",
+    "renews": "Se renueva el",
+    "expires": "Expira el",
+    "features": "Características",
+    "unlimited": "Ilimitado",
+    "limited": "Limitado"
   },
   "properties": {
     "title": "Propiedades",
-    "search": "Buscar propiedades",
-    "filters": {
-      "type": "Tipo de propiedad",
-      "priceRange": "Rango de precio",
-      "bedrooms": "Dormitorios",
-      "bathrooms": "Baños",
-      "area": "Superficie",
-      "keywords": "Palabras clave"
-    },
-    "types": {
-      "all": "Todos",
-      "apartment": "Apartamento",
-      "house": "Casa",
-      "villa": "Villa",
-      "office": "Oficina",
-      "land": "Terreno",
-      "other": "Otro"
-    },
-    "status": {
-      "sale": "En venta",
-      "rent": "En alquiler"
-    },
-    "details": {
-      "price": "Precio",
-      "area": "Superficie",
-      "bedrooms": "Dormitorios",
-      "bathrooms": "Baños",
-      "address": "Dirección",
-      "description": "Descripción",
-      "features": "Características",
-      "map": "Ver en el mapa"
-    }
+    "type": "Tipo",
+    "price": "Precio",
+    "surface": "Superficie",
+    "rooms": "Habitaciones",
+    "location": "Ubicación",
+    "status": "Estado",
+    "description": "Descripción",
+    "features": "Características",
+    "contact": "Contacto",
+    "visit": "Programar Visita",
+    "interested": "Me Interesa",
+    "notAvailable": "No Disponible",
+    "sold": "Vendido",
+    "rented": "Alquilado",
+    "forSale": "En Venta",
+    "forRent": "En Alquiler",
+    "apartment": "Apartamento",
+    "house": "Casa",
+    "villa": "Villa",
+    "office": "Oficina",
+    "land": "Terreno",
+    "garage": "Garaje",
+    "commercial": "Comercial"
   },
   "alerts": {
     "title": "Alertas",
-    "create": "Crear alerta",
-    "edit": "Editar alerta",
-    "delete": "Eliminar alerta",
-    "empty": "No hay alertas definidas",
-    "form": {
-      "name": "Nombre de la alerta",
-      "criteria": "Criterios",
-      "frequency": "Frecuencia",
-      "notifications": "Notificaciones"
-    },
-    "frequency": {
-      "instant": "Instantánea",
-      "daily": "Diaria",
-      "weekly": "Semanal"
-    }
+    "create": "Crear Alerta",
+    "edit": "Editar Alerta",
+    "active": "Activa",
+    "inactive": "Inactiva",
+    "frequency": "Frecuencia",
+    "criteria": "Criterios",
+    "notifications": "Recibe notificaciones cuando nuevas propiedades coincidan con tus criterios",
+    "daily": "Diaria",
+    "weekly": "Semanal",
+    "instant": "Instantánea"
   },
   "favorites": {
     "title": "Favoritos",
-    "empty": "No hay favoritos guardados",
-    "add": "Añadir a favoritos",
-    "remove": "Eliminar de favoritos"
+    "add": "Añadir a Favoritos",
+    "remove": "Eliminar de Favoritos",
+    "empty": "No hay favoritos aún",
+    "saved": "Propiedades Guardadas"
   },
   "notifications": {
     "title": "Notificaciones",
+    "markAsRead": "Marcar como Leída",
+    "markAllAsRead": "Marcar Todas como Leídas",
     "empty": "No hay notificaciones",
-    "markAllRead": "Marcar todas como leídas",
-    "settings": "Configuración de notificaciones"
+    "newProperty": "Nueva propiedad que coincide con tus criterios",
+    "priceChange": "Cambio de precio en una propiedad que sigues",
+    "statusChange": "Cambio de estado en una propiedad que sigues"
+  },
+  "admin": {
+    "dashboard": "Panel de Administración",
+    "users": "Usuarios",
+    "properties": "Propiedades",
+    "alerts": "Alertas",
+    "statistics": "Estadísticas",
+    "settings": "Configuración",
+    "logs": "Registros"
   },
   "errors": {
-    "network": "Problema de conexión. Por favor comprueba tu conexión a internet.",
-    "auth": "Ya no estás autenticado. Por favor inicia sesión nuevamente.",
-    "validation": "Los datos ingresados son inválidos.",
-    "server": "Ocurrió un error en nuestros servidores. Nuestros equipos han sido notificados.",
-    "unknown": "Ocurrió un error inesperado."
+    "network": "Error de red. Por favor, verifica tu conexión.",
+    "server": "Error del servidor. Inténtalo de nuevo más tarde.",
+    "notFound": "Página no encontrada",
+    "unauthorized": "Acceso no autorizado",
+    "forbidden": "Acceso prohibido",
+    "validation": "Por favor, verifica la información ingresada",
+    "unknown": "Ocurrió un error inesperado"
   }
 }

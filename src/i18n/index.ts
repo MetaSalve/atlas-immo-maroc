@@ -1,11 +1,6 @@
 
-import { useI18n } from '@/providers/I18nProvider';
-
-// Fonction de traduction qui utilise notre provider
-export const useTranslation = () => {
-  const { t } = useI18n();
-  return { t };
-};
+// Re-export du hook useTranslation de react-i18next
+export { useTranslation } from 'react-i18next';
 
 // Re-export des autres modules
 export { useLanguageSwitch } from './hooks/useLanguageSwitch';

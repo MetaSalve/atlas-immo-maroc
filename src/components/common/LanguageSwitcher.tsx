@@ -11,7 +11,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
 } from '@/components/ui/dropdown-menu';
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from '@/i18n';
 
 export const LanguageSwitcher = () => {
   const { t } = useTranslation();

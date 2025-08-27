@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import { RefreshCw } from 'lucide-react';
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from '@/i18n';
 
 interface AdminDashboardHeaderProps {
   onRefresh?: () => void;

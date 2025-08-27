@@ -8,7 +8,6 @@ import { AuthProvider } from './AuthProvider';
 import { CacheProvider } from './CacheProvider';
 import { SubscriptionProvider } from './SubscriptionProvider';
 import { NotificationsProvider } from './NotificationsProvider';
-import { I18nProvider } from './I18nProvider';
 import { AccessibilityProvider } from './AccessibilityProvider';
 
 type AppProvidersProps = {
@@ -37,20 +36,18 @@ export function AppProviders({ children }: AppProvidersProps) {
         enableSystem
         disableTransitionOnChange
       >
-        <I18nProvider>
-          <AccessibilityProvider>
-            <AuthProvider>
-              <SubscriptionProvider>
-                <NotificationsProvider>
-                  <CacheProvider>
-                    {children}
-                    <Toaster richColors position="bottom-right" closeButton />
-                  </CacheProvider>
-                </NotificationsProvider>
-              </SubscriptionProvider>
-            </AuthProvider>
-          </AccessibilityProvider>
-        </I18nProvider>
+        <AccessibilityProvider>
+          <AuthProvider>
+            <SubscriptionProvider>
+              <NotificationsProvider>
+                <CacheProvider>
+                  {children}
+                  <Toaster richColors position="bottom-right" closeButton />
+                </CacheProvider>
+              </NotificationsProvider>
+            </SubscriptionProvider>
+          </AuthProvider>
+        </AccessibilityProvider>
       </ThemeProvider>
     </QueryClientProvider>
   );

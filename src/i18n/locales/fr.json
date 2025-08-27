@@ -1,172 +1,172 @@
-
 {
   "app": {
-    "name": "AlertImmo",
-    "tagline": "Trouvez votre bien immobilier idéal au Maroc"
+    "title": "AlertImmo",
+    "tagline": "Agrégateur d'annonces immobilières depuis 2023"
   },
   "common": {
     "search": "Rechercher",
     "filter": "Filtrer",
-    "sort": "Trier",
     "save": "Enregistrer",
     "cancel": "Annuler",
-    "delete": "Supprimer",
-    "edit": "Modifier",
-    "add": "Ajouter",
-    "yes": "Oui",
-    "no": "Non",
-    "loading": "Chargement",
+    "loading": "Chargement...",
     "error": "Erreur",
     "success": "Succès",
-    "info": "Information",
-    "warning": "Attention",
-    "confirm": "Confirmer",
+    "close": "Fermer",
+    "open": "Ouvrir",
     "back": "Retour",
     "next": "Suivant",
     "previous": "Précédent",
-    "language": "Langue"
+    "yes": "Oui",
+    "no": "Non",
+    "confirm": "Confirmer",
+    "delete": "Supprimer",
+    "edit": "Modifier",
+    "add": "Ajouter",
+    "update": "Mettre à jour",
+    "view": "Voir",
+    "share": "Partager",
+    "download": "Télécharger",
+    "upload": "Uploader",
+    "language": "Langue",
+    "theme": "Thème",
+    "settings": "Paramètres",
+    "help": "Aide",
+    "contact": "Contact",
+    "about": "À propos",
+    "legal": "Mentions légales",
+    "privacy": "Politique de confidentialité",
+    "terms": "Conditions d'utilisation",
+    "mainContent": "Contenu principal"
+  },
+  "nav": {
+    "home": "Accueil",
+    "properties": "Propriétés",
+    "search": "Recherche",
+    "favorites": "Favoris",
+    "alerts": "Alertes",
+    "profile": "Profil",
+    "admin": "Administration",
+    "notifications": "Notifications"
   },
   "auth": {
     "login": "Connexion",
     "signup": "Inscription",
     "logout": "Déconnexion",
-    "email": "Email",
+    "email": "E-mail",
     "password": "Mot de passe",
-    "forgotPassword": "Mot de passe oublié?",
+    "confirmPassword": "Confirmer le mot de passe",
+    "firstName": "Prénom",
+    "lastName": "Nom",
+    "forgotPassword": "Mot de passe oublié ?",
     "resetPassword": "Réinitialiser le mot de passe",
+    "rememberMe": "Se souvenir de moi",
     "createAccount": "Créer un compte",
-    "alreadyHaveAccount": "Déjà inscrit?",
-    "dontHaveAccount": "Pas encore de compte?",
-    "twoFactor": {
-      "title": "Authentification à deux facteurs",
-      "setup": "Configurer l'authentification à deux facteurs",
-      "enter": "Entrez le code à 6 chiffres"
-    }
+    "haveAccount": "Vous avez déjà un compte ?",
+    "noAccount": "Vous n'avez pas de compte ?",
+    "emailRequired": "L'e-mail est requis",
+    "passwordRequired": "Le mot de passe est requis",
+    "invalidEmail": "Adresse e-mail invalide",
+    "passwordTooShort": "Le mot de passe doit contenir au moins 8 caractères",
+    "twoFactor": "Authentification à deux facteurs",
+    "verificationCode": "Code de vérification"
   },
   "profile": {
     "title": "Profil",
     "personalInfo": "Informations personnelles",
     "security": "Sécurité",
-    "subscription": "Abonnement",
     "preferences": "Préférences",
-    "signOut": "Déconnexion",
-    "deleteAccount": "Supprimer mon compte",
-    "firstName": "Prénom",
-    "lastName": "Nom",
-    "email": "Email",
-    "phone": "Téléphone",
-    "updateProfile": "Mettre à jour le profil",
-    "passwordChange": "Modification du mot de passe",
+    "subscription": "Abonnement",
+    "deleteAccount": "Supprimer le compte",
+    "changePassword": "Changer le mot de passe",
     "currentPassword": "Mot de passe actuel",
     "newPassword": "Nouveau mot de passe",
-    "confirmPassword": "Confirmer le mot de passe"
+    "enable2FA": "Activer l'A2F",
+    "disable2FA": "Désactiver l'A2F"
   },
   "subscription": {
-    "plans": "Forfaits d'abonnement",
-    "features": "Fonctionnalités",
     "free": "Gratuit",
     "premium": "Premium",
-    "current": "Abonnement actuel",
-    "upgrade": "Passer à Premium",
-    "manage": "Gérer l'abonnement",
+    "current": "Plan actuel",
+    "upgrade": "Mettre à niveau",
+    "downgrade": "Rétrograder",
     "cancel": "Annuler l'abonnement",
-    "price": {
-      "monthly": "{{price}} par mois",
-      "yearly": "{{price}} par an"
-    },
-    "status": {
-      "active": "Actif",
-      "canceled": "Annulé",
-      "incomplete": "Incomplet",
-      "incomplete_expired": "Expiré",
-      "past_due": "En retard",
-      "trialing": "Période d'essai",
-      "unpaid": "Non payé"
-    }
+    "renews": "Se renouvelle le",
+    "expires": "Expire le",
+    "features": "Fonctionnalités",
+    "unlimited": "Illimité",
+    "limited": "Limité"
   },
   "properties": {
-    "title": "Biens immobiliers",
-    "search": "Rechercher des biens",
-    "featured": "Biens en vedette",
-    "recent": "Ajouts récents",
-    "filters": {
-      "type": "Type de bien",
-      "priceRange": "Fourchette de prix",
-      "bedrooms": "Chambres",
-      "bathrooms": "Salles de bain",
-      "area": "Surface",
-      "keywords": "Mots-clés"
-    },
-    "types": {
-      "all": "Tous",
-      "apartment": "Appartement",
-      "house": "Maison",
-      "villa": "Villa",
-      "office": "Bureau",
-      "land": "Terrain",
-      "other": "Autre"
-    },
-    "status": {
-      "sale": "À vendre",
-      "rent": "À louer"
-    },
-    "details": {
-      "price": "Prix",
-      "area": "Surface",
-      "bedrooms": "Chambres",
-      "bathrooms": "Salles de bain",
-      "address": "Adresse",
-      "description": "Description",
-      "features": "Caractéristiques",
-      "map": "Voir sur la carte"
-    }
+    "title": "Propriétés",
+    "type": "Type",
+    "price": "Prix",
+    "surface": "Surface",
+    "rooms": "Pièces",
+    "location": "Localisation",
+    "status": "Statut",
+    "description": "Description",
+    "features": "Caractéristiques",
+    "contact": "Contact",
+    "visit": "Programmer une visite",
+    "interested": "Je suis intéressé(e)",
+    "notAvailable": "Non disponible",
+    "sold": "Vendu",
+    "rented": "Loué",
+    "forSale": "À vendre",
+    "forRent": "À louer",
+    "apartment": "Appartement",
+    "house": "Maison",
+    "villa": "Villa",
+    "office": "Bureau",
+    "land": "Terrain",
+    "garage": "Garage",
+    "commercial": "Commercial"
   },
   "alerts": {
     "title": "Alertes",
     "create": "Créer une alerte",
     "edit": "Modifier l'alerte",
-    "delete": "Supprimer l'alerte",
-    "empty": "Aucune alerte définie",
-    "form": {
-      "name": "Nom de l'alerte",
-      "criteria": "Critères",
-      "frequency": "Fréquence",
-      "notifications": "Notifications"
-    },
-    "frequency": {
-      "instant": "Instantanée",
-      "daily": "Quotidienne",
-      "weekly": "Hebdomadaire"
-    }
+    "active": "Active",
+    "inactive": "Inactive",
+    "frequency": "Fréquence",
+    "criteria": "Critères",
+    "notifications": "Recevez des notifications lorsque de nouvelles propriétés correspondent à vos critères",
+    "daily": "Quotidienne",
+    "weekly": "Hebdomadaire",
+    "instant": "Instantanée"
   },
   "favorites": {
     "title": "Favoris",
-    "empty": "Aucun favori enregistré",
     "add": "Ajouter aux favoris",
-    "remove": "Retirer des favoris"
+    "remove": "Retirer des favoris",
+    "empty": "Aucun favori pour le moment",
+    "saved": "Propriétés sauvegardées"
   },
   "notifications": {
     "title": "Notifications",
+    "markAsRead": "Marquer comme lu",
+    "markAllAsRead": "Tout marquer comme lu",
     "empty": "Aucune notification",
-    "markAllRead": "Marquer tout comme lu",
-    "settings": "Paramètres de notification"
+    "newProperty": "Nouvelle propriété correspondant à vos critères",
+    "priceChange": "Changement de prix pour une propriété que vous suivez",
+    "statusChange": "Changement de statut pour une propriété que vous suivez"
   },
   "admin": {
-    "dashboard": "Tableau de bord administrateur",
-    "overview": "Vue d'ensemble",
+    "dashboard": "Tableau de bord Admin",
     "users": "Utilisateurs",
     "properties": "Propriétés",
     "alerts": "Alertes",
-    "reports": "Rapports",
+    "statistics": "Statistiques",
     "settings": "Paramètres",
-    "performance": "Performance",
-    "errors": "Erreurs"
+    "logs": "Journaux"
   },
   "errors": {
-    "network": "Problème de connexion. Veuillez vérifier votre connexion internet.",
-    "auth": "Vous n'êtes plus authentifié. Veuillez vous reconnecter.",
-    "validation": "Les données saisies sont invalides.",
-    "server": "Une erreur est survenue sur nos serveurs. Nos équipes ont été notifiées.",
-    "unknown": "Une erreur inattendue est survenue."
+    "network": "Erreur réseau. Veuillez vérifier votre connexion.",
+    "server": "Erreur serveur. Veuillez réessayer plus tard.",
+    "notFound": "Page non trouvée",
+    "unauthorized": "Accès non autorisé",
+    "forbidden": "Accès interdit",
+    "validation": "Veuillez vérifier les informations saisies",
+    "unknown": "Une erreur inattendue s'est produite"
   }
 }
