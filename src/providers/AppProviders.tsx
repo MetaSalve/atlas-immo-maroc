@@ -1,6 +1,5 @@
 
 import React from 'react';
-import { BrowserRouter } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ThemeProvider } from 'next-themes';
 
@@ -31,30 +30,28 @@ export function AppProviders({ children }: AppProvidersProps) {
   console.log('AppProviders: Starting provider hierarchy setup');
   
   return (
-    <BrowserRouter>
-        <QueryClientProvider client={queryClient}>
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
-          >
-            <I18nProvider>
-              <AccessibilityProvider>
-                <AuthProvider>
-                  <SubscriptionProvider>
-                    <NotificationsProvider>
-                      <CacheProvider>
-                        {children}
-                        <Toaster richColors position="bottom-right" closeButton />
-                      </CacheProvider>
-                    </NotificationsProvider>
-                  </SubscriptionProvider>
-                </AuthProvider>
-              </AccessibilityProvider>
-            </I18nProvider>
-          </ThemeProvider>
-        </QueryClientProvider>
-    </BrowserRouter>
+    <QueryClientProvider client={queryClient}>
+      <ThemeProvider
+        attribute="class"
+        defaultTheme="system"
+        enableSystem
+        disableTransitionOnChange
+      >
+        <I18nProvider>
+          <AccessibilityProvider>
+            <AuthProvider>
+              <SubscriptionProvider>
+                <NotificationsProvider>
+                  <CacheProvider>
+                    {children}
+                    <Toaster richColors position="bottom-right" closeButton />
+                  </CacheProvider>
+                </NotificationsProvider>
+              </SubscriptionProvider>
+            </AuthProvider>
+          </AccessibilityProvider>
+        </I18nProvider>
+      </ThemeProvider>
+    </QueryClientProvider>
   );
 }

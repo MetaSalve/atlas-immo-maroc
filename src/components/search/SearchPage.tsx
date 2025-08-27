@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { useProperties, PropertyFilters } from '@/hooks/useProperties';
 import { useFavorites } from '@/hooks/useFavorites';
 import { SearchHeader } from './SearchHeader';
@@ -10,15 +11,14 @@ import { toast } from 'sonner';
 
 const SearchPage = () => {
   const { t } = useTranslation();
-  
-  // Read URL param without React Router hook to avoid context issues
-  const getSearchQuery = () => new URLSearchParams(window.location.search).get('q') || '';
+  const [searchParams, setSearchParams] = useSearchParams();
   const [showMap, setShowMap] = useState(false);
   const [selectedProperties, setSelectedProperties] = useState<Property[]>([]);
-  const [searchQuery, setSearchQuery] = useState<string>(getSearchQuery());
+  
+  const initialQuery = searchParams.get('q') || '';
   
   const [filters, setFilters] = useState<PropertyFilters>({
-    city: searchQuery,
+    city: initialQuery,
     status: undefined,
     type: undefined,
     minPrice: 0,
@@ -30,14 +30,13 @@ const SearchPage = () => {
   const { data: properties = [], isLoading } = useProperties(filters);
   const { favorites, toggleFavorite } = useFavorites();
 
+  const searchQuery = searchParams.get('q') || '';
+
   const handleSearch = (query: string) => {
     setFilters(prev => ({ ...prev, city: query }));
-    setSearchQuery(query);
-    const url = new URL(window.location.href);
-    if (query) url.searchParams.set('q', query);
-    else url.searchParams.delete('q');
-    window.history.replaceState({}, '', url);
+    setSearchParams(query ? { q: query } : {});
   };
+
   const handleFilterChange = (newFilters: PropertyFilters) => {
     setFilters(newFilters);
   };
