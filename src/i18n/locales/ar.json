@@ -3,6 +3,63 @@
     "title": "AlertImmo",
     "tagline": "مجمع إعلانات العقارات منذ 2023"
   },
+  "hero": {
+    "realTimeNotifications": "إشعارات في الوقت الفعلي",
+    "title": "أول مجمع إعلانات عقارية في المغرب",
+    "subtitle": "ابحث من بين آلاف الإعلانات المحدثة في الوقت الفعلي",
+    "multipleSources": "مصادر متعددة",
+    "intelligentCollection": "جمع ذكي",
+    "intelligentCollectionDesc": "يحلل نظامنا باستمرار مواقع العقارات وشبكات التواصل الاجتماعي المغربية.",
+    "centralization": "المركزية",
+    "centralizationDesc": "يتم تجميع جميع الإعلانات وتصنيفها لتسهيل البحث.",
+    "realTimeAlertsDesc": "احصل على إشعارات فورية للإعلانات الجديدة التي تطابق معاييرك.",
+    "howItWorks": "كيف يعمل Alert Immo؟"
+  },
+  "search": {
+    "title": "البحث",
+    "description": "اعثر على العقار المثالي من بين آلاف الإعلانات",
+    "placeholder": "البحث بالمدينة أو الحي أو نوع العقار...",
+    "filters": "المرشحات",
+    "reset": "إعادة تعيين",
+    "apply": "تطبيق",
+    "resetAll": "إعادة تعيين الكل"
+  },
+  "filters": {
+    "listingType": "نوع الإعلان",
+    "all": "الكل",
+    "forSale": "للبيع",
+    "forRent": "للإيجار",
+    "cityOrNeighborhood": "المدينة أو الحي",
+    "cityPlaceholder": "الدار البيضاء، مراكش، أكدال...",
+    "propertyType": "نوع العقار",
+    "allTypes": "جميع الأنواع",
+    "apartment": "شقة",
+    "house": "منزل",
+    "villa": "فيلا",
+    "riad": "رياض",
+    "land": "أرض",
+    "commercial": "تجاري",
+    "price": "السعر",
+    "priceMin": "أدنى سعر",
+    "priceMax": "أعلى سعر",
+    "rooms": "غرف النوم والحمامات",
+    "bedroomsMin": "غرف نوم دنيا",
+    "bathroomsMin": "حمامات دنيا",
+    "surface": "المساحة",
+    "surfaceMin": "أدنى مساحة"
+  },
+  "contact": {
+    "title": "اتصل بنا",
+    "description": "سؤال؟ تعليق؟ لا تتردد في الاتصال بنا",
+    "name": "الاسم",
+    "namePlaceholder": "اسمك",
+    "email": "البريد الإلكتروني",
+    "emailPlaceholder": "your@email.com",
+    "message": "الرسالة",
+    "messagePlaceholder": "رسالتك...",
+    "send": "إرسال",
+    "sending": "جاري الإرسال..."
+  },
   "common": {
     "search": "بحث",
     "filter": "تصفية",
@@ -68,7 +125,8 @@
     "invalidEmail": "عنوان بريد إلكتروني غير صالح",
     "passwordTooShort": "يجب أن تكون كلمة المرور 8 أحرف على الأقل",
     "twoFactor": "المصادقة الثنائية",
-    "verificationCode": "رمز التحقق"
+    "verificationCode": "رمز التحقق",
+    "loginRequired": "يرجى تسجيل الدخول للوصول إلى هذه الميزة"
   },
   "profile": {
     "title": "الملف الشخصي",
@@ -98,6 +156,8 @@
   },
   "properties": {
     "title": "العقارات",
+    "featured": "عقارات مميزة",
+    "recent": "عقارات حديثة",
     "type": "النوع",
     "price": "السعر",
     "surface": "المساحة",
@@ -120,7 +180,14 @@
     "office": "مكتب",
     "land": "أرض",
     "garage": "كراج",
-    "commercial": "تجاري"
+    "commercial": "تجاري",
+    "bedrooms": "غرفة نوم",
+    "bedroomsPlural": "غرف نوم",
+    "bathrooms": "حمام",
+    "bathroomsPlural": "حمامات",
+    "source": "المصدر",
+    "addToFavorites": "إضافة للمفضلة",
+    "removeFromFavorites": "إزالة من المفضلة"
   },
   "alerts": {
     "title": "التنبيهات",

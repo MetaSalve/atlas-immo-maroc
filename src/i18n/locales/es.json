@@ -1,7 +1,64 @@
 {
   "app": {
-    "title": "AlertImmo",
+    "title": "AlertImmo", 
     "tagline": "Agregador de anuncios inmobiliarios desde 2023"
+  },
+  "hero": {
+    "realTimeNotifications": "Notificaciones en tiempo real",
+    "title": "El primer agregador de anuncios inmobiliarios de Marruecos",
+    "subtitle": "Busca entre miles de anuncios actualizados en tiempo real",
+    "multipleSources": "Múltiples fuentes",
+    "intelligentCollection": "Recopilación Inteligente",
+    "intelligentCollectionDesc": "Nuestro sistema analiza continuamente sitios inmobiliarios y redes sociales marroquíes.",
+    "centralization": "Centralización",
+    "centralizationDesc": "Todos los anuncios se agrupan y categorizan para facilitar tu búsqueda.",
+    "realTimeAlertsDesc": "Recibe notificaciones instantáneas de nuevos anuncios que coincidan con tus criterios.",
+    "howItWorks": "¿Cómo funciona Alert Immo?"
+  },
+  "search": {
+    "title": "Búsqueda",
+    "description": "Encuentra tu propiedad ideal entre miles de anuncios",
+    "placeholder": "Buscar por ciudad, barrio o tipo de propiedad...",
+    "filters": "Filtros",
+    "reset": "Restablecer",
+    "apply": "Aplicar",
+    "resetAll": "Restablecer todo"
+  },
+  "filters": {
+    "listingType": "Tipo de anuncio",
+    "all": "Todos",
+    "forSale": "En Venta",
+    "forRent": "En Alquiler",
+    "cityOrNeighborhood": "Ciudad o barrio",
+    "cityPlaceholder": "Casablanca, Marrakech, Agdal...",
+    "propertyType": "Tipo de propiedad",
+    "allTypes": "Todos los tipos",
+    "apartment": "Apartamento",
+    "house": "Casa",
+    "villa": "Villa",
+    "riad": "Riad",
+    "land": "Terreno",
+    "commercial": "Comercial",
+    "price": "Precio",
+    "priceMin": "Precio mínimo",
+    "priceMax": "Precio máximo",
+    "rooms": "Habitaciones y Baños",
+    "bedroomsMin": "Hab. mínimas",
+    "bathroomsMin": "Baños mínimos",
+    "surface": "Superficie",
+    "surfaceMin": "Superficie mínima"
+  },
+  "contact": {
+    "title": "Contáctanos",
+    "description": "¿Una pregunta? ¿Un comentario? No dudes en contactarnos",
+    "name": "Nombre",
+    "namePlaceholder": "Tu nombre",
+    "email": "Email",
+    "emailPlaceholder": "tu@email.com",
+    "message": "Mensaje",
+    "messagePlaceholder": "Tu mensaje...",
+    "send": "Enviar",
+    "sending": "Enviando..."
   },
   "common": {
     "search": "Buscar",
@@ -68,7 +125,8 @@
     "invalidEmail": "Dirección de correo electrónico inválida",
     "passwordTooShort": "La contraseña debe tener al menos 8 caracteres",
     "twoFactor": "Autenticación de Dos Factores",
-    "verificationCode": "Código de Verificación"
+    "verificationCode": "Código de Verificación",
+    "loginRequired": "Por favor, inicia sesión para acceder a esta función"
   },
   "profile": {
     "title": "Perfil",
@@ -98,6 +156,8 @@
   },
   "properties": {
     "title": "Propiedades",
+    "featured": "Propiedades destacadas",
+    "recent": "Propiedades recientes",
     "type": "Tipo",
     "price": "Precio",
     "surface": "Superficie",
@@ -120,7 +180,14 @@
     "office": "Oficina",
     "land": "Terreno",
     "garage": "Garaje",
-    "commercial": "Comercial"
+    "commercial": "Comercial",
+    "bedrooms": "habitación",
+    "bedroomsPlural": "habitaciones",
+    "bathrooms": "baño",
+    "bathroomsPlural": "baños",
+    "source": "Fuente",
+    "addToFavorites": "Añadir a favoritos",
+    "removeFromFavorites": "Eliminar de favoritos"
   },
   "alerts": {
     "title": "Alertas",

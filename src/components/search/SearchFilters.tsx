@@ -28,6 +28,7 @@ import {
   SheetTrigger,
 } from '@/components/ui/sheet';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { useTranslation } from '@/i18n';
 
 export interface SearchFiltersValues {
   status: 'for-sale' | 'for-rent' | 'all';
@@ -60,6 +61,7 @@ export const SearchFilters = ({
   initialValues,
   onFilterChange
 }: SearchFiltersProps) => {
+  const { t } = useTranslation();
   const isMobile = useIsMobile();
   const [filters, setFilters] = useState<SearchFiltersValues>({
     ...defaultFilters,
@@ -137,7 +139,7 @@ export const SearchFilters = ({
   const FiltersContent = () => (
     <div className="space-y-6" onClick={(e) => e.stopPropagation()}>
       <div>
-        <Label>Type d'annonce</Label>
+        <Label>{t('filters.listingType')}</Label>
         <div className="grid grid-cols-3 gap-2 mt-2">
           <Button
             variant={filters.status === 'all' ? 'default' : 'outline'}
@@ -148,7 +150,7 @@ export const SearchFilters = ({
             }}
             type="button"
           >
-            Tous
+            {t('filters.all')}
           </Button>
           <Button
             variant={filters.status === 'for-sale' ? 'default' : 'outline'}
@@ -159,7 +161,7 @@ export const SearchFilters = ({
             }}
             type="button"
           >
-            À vendre
+            {t('filters.forSale')}
           </Button>
           <Button
             variant={filters.status === 'for-rent' ? 'default' : 'outline'}
@@ -170,16 +172,16 @@ export const SearchFilters = ({
             }}
             type="button"
           >
-            À louer
+            {t('filters.forRent')}
           </Button>
         </div>
       </div>
       
       <div>
-        <Label htmlFor="location">Ville ou quartier</Label>
+        <Label htmlFor="location">{t('filters.cityOrNeighborhood')}</Label>
         <Input
           id="location"
-          placeholder="Casablanca, Marrakech, Agdal..."
+          placeholder={t('filters.cityPlaceholder')}
           className="mt-2"
           value={filters.location}
           onChange={(e) => handleLocationChange(e.target.value)}
@@ -189,22 +191,22 @@ export const SearchFilters = ({
       </div>
       
       <div>
-        <Label htmlFor="type">Type de bien</Label>
+        <Label htmlFor="type">{t('filters.propertyType')}</Label>
         <Select
           value={filters.type}
           onValueChange={(value) => handleFilterChange('type', value)}
         >
           <SelectTrigger id="type" className="mt-2" onClick={(e) => e.stopPropagation()}>
-            <SelectValue placeholder="Tous types" />
+            <SelectValue placeholder={t('filters.allTypes')} />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="all">Tous types</SelectItem>
-            <SelectItem value="apartment">Appartement</SelectItem>
-            <SelectItem value="house">Maison</SelectItem>
-            <SelectItem value="villa">Villa</SelectItem>
-            <SelectItem value="riad">Riad</SelectItem>
-            <SelectItem value="land">Terrain</SelectItem>
-            <SelectItem value="commercial">Commercial</SelectItem>
+            <SelectItem value="all">{t('filters.allTypes')}</SelectItem>
+            <SelectItem value="apartment">{t('filters.apartment')}</SelectItem>
+            <SelectItem value="house">{t('filters.house')}</SelectItem>
+            <SelectItem value="villa">{t('filters.villa')}</SelectItem>
+            <SelectItem value="riad">{t('filters.riad')}</SelectItem>
+            <SelectItem value="land">{t('filters.land')}</SelectItem>
+            <SelectItem value="commercial">{t('filters.commercial')}</SelectItem>
           </SelectContent>
         </Select>
       </div>
@@ -213,7 +215,7 @@ export const SearchFilters = ({
         <AccordionItem value="price">
           <AccordionTrigger onClick={(e) => e.stopPropagation()}>
             <div className="flex items-center gap-2">
-              <span>Prix</span>
+              <span>{t('filters.price')}</span>
               <span className="text-xs text-muted-foreground">
                 {formatPrice(filters.priceMin)} - {formatPrice(filters.priceMax)}
               </span>
@@ -223,7 +225,7 @@ export const SearchFilters = ({
             <div className="space-y-6 pt-2" onClick={(e) => e.stopPropagation()}>
               <div>
                 <div className="flex justify-between">
-                  <Label htmlFor="priceMin">Prix minimum</Label>
+                  <Label htmlFor="priceMin">{t('filters.priceMin')}</Label>
                   <span className="text-xs text-muted-foreground">
                     {formatPrice(filters.priceMin)}
                   </span>
@@ -243,7 +245,7 @@ export const SearchFilters = ({
               
               <div>
                 <div className="flex justify-between">
-                  <Label htmlFor="priceMax">Prix maximum</Label>
+                  <Label htmlFor="priceMax">{t('filters.priceMax')}</Label>
                   <span className="text-xs text-muted-foreground">
                     {formatPrice(filters.priceMax)}
                   </span>
@@ -267,7 +269,7 @@ export const SearchFilters = ({
         <AccordionItem value="rooms">
           <AccordionTrigger onClick={(e) => e.stopPropagation()}>
             <div className="flex items-center gap-2">
-              <span>Chambres & Salles de bain</span>
+              <span>{t('filters.rooms')}</span>
               <span className="text-xs text-muted-foreground">
                 {filters.bedroomsMin}+ ch. / {filters.bathroomsMin}+ sdb
               </span>
@@ -277,7 +279,7 @@ export const SearchFilters = ({
             <div className="space-y-6 pt-2" onClick={(e) => e.stopPropagation()}>
               <div>
                 <div className="flex justify-between">
-                  <Label htmlFor="bedroomsMin">Chambres min.</Label>
+                  <Label htmlFor="bedroomsMin">{t('filters.bedroomsMin')}</Label>
                   <span className="text-xs text-muted-foreground">
                     {filters.bedroomsMin}+
                   </span>
@@ -297,7 +299,7 @@ export const SearchFilters = ({
               
               <div>
                 <div className="flex justify-between">
-                  <Label htmlFor="bathroomsMin">Salles de bain min.</Label>
+                  <Label htmlFor="bathroomsMin">{t('filters.bathroomsMin')}</Label>
                   <span className="text-xs text-muted-foreground">
                     {filters.bathroomsMin}+
                   </span>
@@ -321,7 +323,7 @@ export const SearchFilters = ({
         <AccordionItem value="area">
           <AccordionTrigger onClick={(e) => e.stopPropagation()}>
             <div className="flex items-center gap-2">
-              <span>Surface</span>
+              <span>{t('filters.surface')}</span>
               <span className="text-xs text-muted-foreground">
                 {filters.areaMin}+ m²
               </span>
@@ -330,7 +332,7 @@ export const SearchFilters = ({
           <AccordionContent>
             <div className="pt-2" onClick={(e) => e.stopPropagation()}>
               <div className="flex justify-between">
-                <Label htmlFor="areaMin">Surface minimum</Label>
+                <Label htmlFor="areaMin">{t('filters.surfaceMin')}</Label>
                 <span className="text-xs text-muted-foreground">
                   {filters.areaMin} m²
                 </span>
@@ -361,7 +363,7 @@ export const SearchFilters = ({
           }}
           type="button"
         >
-          Réinitialiser
+          {t('search.reset')}
         </Button>
         <Button
           className="flex-1"
@@ -371,7 +373,7 @@ export const SearchFilters = ({
           }}
           type="button"
         >
-          Appliquer
+          {t('search.apply')}
         </Button>
       </div>
     </div>
@@ -381,7 +383,7 @@ export const SearchFilters = ({
     const activeFilters: string[] = [];
     
     if (filters.status !== 'all') {
-      activeFilters.push(filters.status === 'for-sale' ? 'À vendre' : 'À louer');
+      activeFilters.push(filters.status === 'for-sale' ? t('filters.forSale') : t('filters.forRent'));
     }
     
     if (filters.type !== 'all') {
@@ -439,7 +441,7 @@ export const SearchFilters = ({
             className="text-primary hover:text-primary/80 text-xs underline"
             type="button"
           >
-            Réinitialiser tout
+            {t('search.resetAll')}
           </button>
         )}
       </div>
@@ -454,14 +456,14 @@ export const SearchFilters = ({
             <Button variant="outline" className="w-full flex justify-between" type="button">
               <div className="flex items-center gap-2">
                 <Filter className="h-4 w-4" />
-                <span>Filtres</span>
+                <span>{t('search.filters')}</span>
               </div>
               <ChevronDown className="h-4 w-4" />
             </Button>
           </SheetTrigger>
           <SheetContent side="bottom" className="h-[85vh]">
             <SheetHeader>
-              <SheetTitle>Filtres</SheetTitle>
+              <SheetTitle>{t('search.filters')}</SheetTitle>
             </SheetHeader>
             <div className="mt-6 overflow-y-auto pb-24">
               <FiltersContent />
@@ -476,7 +478,7 @@ export const SearchFilters = ({
   return (
     <div className="border rounded-lg p-4 space-y-4">
       <div className="flex items-center justify-between">
-        <h3 className="font-medium">Filtres</h3>
+        <h3 className="font-medium">{t('search.filters')}</h3>
         <Button
           variant="ghost"
           size="sm"
@@ -488,7 +490,7 @@ export const SearchFilters = ({
           }}
           type="button"
         >
-          Réinitialiser
+          {t('search.reset')}
         </Button>
       </div>
       <FiltersContent />

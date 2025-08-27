@@ -3,6 +3,63 @@
     "title": "AlertImmo",
     "tagline": "Real estate listing aggregator since 2023"
   },
+  "hero": {
+    "realTimeNotifications": "Real-time notifications",
+    "title": "The first real estate listing aggregator in Morocco",
+    "subtitle": "Search among thousands of listings updated in real time",
+    "multipleSources": "Multiple sources",
+    "intelligentCollection": "Intelligent Collection",
+    "intelligentCollectionDesc": "Our system continuously analyzes Moroccan real estate sites and social networks.",
+    "centralization": "Centralization",
+    "centralizationDesc": "All listings are grouped and categorized to facilitate your search.",
+    "realTimeAlertsDesc": "Receive instant notifications for new listings that match your criteria.",
+    "howItWorks": "How does Alert Immo work?"
+  },
+  "search": {
+    "title": "Search",
+    "description": "Find your ideal property among thousands of listings",
+    "placeholder": "Search by city, neighborhood or property type...",
+    "filters": "Filters",
+    "reset": "Reset",
+    "apply": "Apply",
+    "resetAll": "Reset all"
+  },
+  "filters": {
+    "listingType": "Listing type",
+    "all": "All",
+    "forSale": "For Sale",
+    "forRent": "For Rent",
+    "cityOrNeighborhood": "City or neighborhood",
+    "cityPlaceholder": "Casablanca, Marrakech, Agdal...",
+    "propertyType": "Property type",
+    "allTypes": "All types",
+    "apartment": "Apartment",
+    "house": "House",
+    "villa": "Villa",
+    "riad": "Riad",
+    "land": "Land",
+    "commercial": "Commercial",
+    "price": "Price",
+    "priceMin": "Minimum price",
+    "priceMax": "Maximum price",
+    "rooms": "Bedrooms & Bathrooms",
+    "bedroomsMin": "Min. bedrooms",
+    "bathroomsMin": "Min. bathrooms",
+    "surface": "Surface",
+    "surfaceMin": "Minimum surface"
+  },
+  "contact": {
+    "title": "Contact us",
+    "description": "A question? A comment? Don't hesitate to contact us",
+    "name": "Name",
+    "namePlaceholder": "Your name",
+    "email": "Email",
+    "emailPlaceholder": "your@email.com",
+    "message": "Message",
+    "messagePlaceholder": "Your message...",
+    "send": "Send",
+    "sending": "Sending..."
+  },
   "common": {
     "search": "Search",
     "filter": "Filter",
@@ -69,7 +126,8 @@
     "invalidEmail": "Invalid email address",
     "passwordTooShort": "Password must be at least 8 characters",
     "twoFactor": "Two-Factor Authentication",
-    "verificationCode": "Verification Code"
+    "verificationCode": "Verification Code",
+    "loginRequired": "Please sign in to access this feature"
   },
   "profile": {
     "title": "Profile",
@@ -99,6 +157,8 @@
   },
   "properties": {
     "title": "Properties",
+    "featured": "Featured properties",
+    "recent": "Recent properties",
     "type": "Type",
     "price": "Price",
     "surface": "Surface",
@@ -121,7 +181,14 @@
     "office": "Office",
     "land": "Land",
     "garage": "Garage",
-    "commercial": "Commercial"
+    "commercial": "Commercial",
+    "bedrooms": "bedroom",
+    "bedroomsPlural": "bedrooms",
+    "bathrooms": "bathroom", 
+    "bathroomsPlural": "bathrooms",
+    "source": "Source",
+    "addToFavorites": "Add to favorites",
+    "removeFromFavorites": "Remove from favorites"
   },
   "alerts": {
     "title": "Alerts",

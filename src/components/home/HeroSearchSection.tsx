@@ -10,10 +10,10 @@ export const HeroSearchSection = () => {
     <section className="bg-gradient-to-r from-blue-600 to-blue-800 text-white py-16">
       <div className="container mx-auto px-4 text-center">
         <h1 className="text-4xl md:text-6xl font-bold mb-6">
-          {t('hero.title', 'Trouvez votre bien immobilier idéal')}
+          {t('hero.title')}
         </h1>
         <p className="text-xl mb-8 opacity-90">
-          {t('hero.subtitle', 'Recherchez parmi des milliers d\'annonces mises à jour en temps réel')}
+          {t('hero.subtitle')}
         </p>
         
         <div className="max-w-2xl mx-auto">
