@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { useProperties, PropertyFilters } from '@/hooks/useProperties';
@@ -12,11 +11,16 @@ import { toast } from 'sonner';
 
 const SearchPage = () => {
   const { t } = useTranslation();
+  
+  // Safely initialize search params
   const [searchParams, setSearchParams] = useSearchParams();
   const [showMap, setShowMap] = useState(false);
   const [selectedProperties, setSelectedProperties] = useState<Property[]>([]);
+  
+  const initialQuery = searchParams.get('q') || '';
+  
   const [filters, setFilters] = useState<PropertyFilters>({
-    city: searchParams.get('q') || '',
+    city: initialQuery,
     status: undefined,
     type: undefined,
     minPrice: 0,
