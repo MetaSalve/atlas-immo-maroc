@@ -20,4 +20,7 @@ export default defineConfig(({ mode }) => ({
     },
     dedupe: ['react', 'react-dom', 'react-helmet-async'],
   },
+  optimizeDeps: {
+    include: ['react', 'react-dom', 'react-router-dom'],
+  },
 }));
