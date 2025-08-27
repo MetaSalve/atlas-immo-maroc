@@ -11,14 +11,12 @@ import AdminDashboardPage from '@/pages/AdminDashboard';
 import PropertiesPage from '@/pages/PropertiesPage';
 import SearchPage from '@/pages/SearchPage';
 import { NotFound } from '@/components/common/NotFound';
-import { RouteObject } from 'react-router-dom';
 import { ProtectedRoute } from '@/components/auth/ProtectedRoute';
 
-const routes: RouteObject[] = [
+const routes = [
   {
     path: '/',
-    element: <HomePage />,
-    index: true
+    element: <HomePage />
   },
   {
     path: '/auth',
@@ -55,10 +53,6 @@ const routes: RouteObject[] = [
   {
     path: '/admin',
     element: <ProtectedRoute element={<AdminDashboardPage />} />
-  },
-  {
-    path: '*',
-    element: <NotFound />
   }
 ];
 
