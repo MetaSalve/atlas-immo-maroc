@@ -9,8 +9,9 @@ export const HeroSection = () => {
   const { t } = useTranslation();
   
   return (
-    <section className="relative py-12 px-4 rounded-2xl bg-gradient-to-br from-navy/30 to-skyblue/20 text-white overflow-hidden min-h-[340px]">
+    <section className="relative py-12 px-4 rounded-2xl overflow-hidden min-h-[340px]">
       <MoroccanHeroImage />
+      <div className="absolute inset-0 bg-navy/40 rounded-2xl z-5"></div>
       <div className="relative max-w-2xl mx-auto text-center z-10">
         <div className="mb-2 pb-1 font-bold text-lg uppercase tracking-wider text-gold">
           {t('hero.realTimeNotifications')}
