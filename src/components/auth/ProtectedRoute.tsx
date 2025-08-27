@@ -5,6 +5,7 @@ import { useAuth } from '@/providers/AuthProvider';
 import { toast } from "sonner";
 import { LoadingFallback } from '@/components/common/LoadingFallback';
 import { PageTransition } from '@/components/ui/animations';
+import { useTranslation } from '@/i18n';
 
 interface ProtectedRouteProps {
   element: React.ReactNode;
@@ -17,6 +18,7 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
 }) => {
   const { user, loading } = useAuth();
   const location = useLocation();
+  const { t } = useTranslation();
   
   if (loading) {
     return <LoadingFallback />;
@@ -24,8 +26,8 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
 
   // Only check authentication for protected routes
   if (requiresAuth && !user) {
-    toast.info("Connexion requise", {
-      description: "Veuillez vous connecter pour accéder à cette fonctionnalité",
+    toast.info(t('auth.loginRequired'), {
+      description: t('auth.loginRequiredDescription'),
       position: "top-center",
       id: "auth-required",
     });

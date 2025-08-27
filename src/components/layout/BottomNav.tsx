@@ -3,25 +3,27 @@ import { Home, Heart, User, Bell } from 'lucide-react';
 import { NavLink } from 'react-router-dom';
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/providers/AuthProvider';
+import { useTranslation } from '@/i18n';
 
 export const BottomNav = () => {
   const { user } = useAuth();
+  const { t } = useTranslation();
   
   return (
     <div className="fixed bottom-0 left-0 z-50 w-full h-16 bg-background border-t">
       <div className="grid h-full grid-cols-4">
-        <NavItem to="/" icon={<Home />} label="Accueil" />
+        <NavItem to="/" icon={<Home />} label={t('nav.home')} />
         {user ? (
           <>
-            <NavItem to="/favorites" icon={<Heart />} label="Favoris" />
-            <NavItem to="/alerts" icon={<Bell />} label="Alertes" />
-            <NavItem to="/profile" icon={<User />} label="Compte" />
+            <NavItem to="/favorites" icon={<Heart />} label={t('nav.favorites')} />
+            <NavItem to="/alerts" icon={<Bell />} label={t('nav.alerts')} />
+            <NavItem to="/profile" icon={<User />} label={t('nav.profile')} />
           </>
         ) : (
           <>
-            <NavItem to="/auth" icon={<Heart />} label="Favoris" />
-            <NavItem to="/auth" icon={<Bell />} label="Alertes" />
-            <NavItem to="/auth" icon={<User />} label="Compte" />
+            <NavItem to="/auth" icon={<Heart />} label={t('nav.favorites')} />
+            <NavItem to="/auth" icon={<Bell />} label={t('nav.alerts')} />
+            <NavItem to="/auth" icon={<User />} label={t('nav.profile')} />
           </>
         )}
       </div>

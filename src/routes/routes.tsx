@@ -10,6 +10,7 @@ import NotificationsPage from '@/pages/NotificationsPage';
 import AdminDashboardPage from '@/pages/AdminDashboard';
 import PropertiesPage from '@/pages/PropertiesPage';
 import SearchPage from '@/pages/SearchPage';
+import ResetPasswordPage from '@/pages/ResetPasswordPage';
 import { NotFound } from '@/components/common/NotFound';
 import { ProtectedRoute } from '@/components/auth/ProtectedRoute';
 
@@ -53,6 +54,10 @@ const routes = [
   {
     path: '/admin',
     element: <ProtectedRoute element={<AdminDashboardPage />} />
+  },
+  {
+    path: '/auth/reset-password',
+    element: <ResetPasswordPage />
   }
 ];
 

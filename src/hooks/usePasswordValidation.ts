@@ -1,20 +1,24 @@
 
+import { useTranslation } from '@/i18n';
+
 export const usePasswordValidation = () => {
+  const { t } = useTranslation();
+  
   const validatePassword = (password: string): string | null => {
     if (password.length < 8) {
-      return "Le mot de passe doit contenir au moins 8 caractères";
+      return t('auth.passwordTooShort');
     }
     
     if (!/[A-Z]/.test(password)) {
-      return "Le mot de passe doit contenir au moins une majuscule";
+      return t('auth.passwordNeedsUppercase');
     }
     
     if (!/[0-9]/.test(password)) {
-      return "Le mot de passe doit contenir au moins un chiffre";
+      return t('auth.passwordNeedsNumber');
     }
     
     if (!/[!@#$%^&*(),.?":{}|<>]/.test(password)) {
-      return "Le mot de passe doit contenir au moins un caractère spécial";
+      return t('auth.passwordNeedsSpecial');
     }
     
     return null;
