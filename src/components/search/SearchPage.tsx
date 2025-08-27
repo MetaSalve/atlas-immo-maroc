@@ -17,6 +17,12 @@ const SearchPage = () => {
   const [selectedProperties, setSelectedProperties] = useState<Property[]>([]);
   const [filters, setFilters] = useState<PropertyFilters>({
     city: searchParams.get('q') || '',
+    status: undefined,
+    type: undefined,
+    minPrice: 0,
+    maxPrice: 10000000,
+    bedrooms: 0,
+    bathrooms: 0,
   });
 
   const { data: properties = [], isLoading } = useProperties(filters);
@@ -39,7 +45,15 @@ const SearchPage = () => {
   };
 
   const handleResetFilters = () => {
-    setFilters({ city: searchQuery });
+    setFilters({ 
+      city: searchQuery,
+      status: undefined,
+      type: undefined,
+      minPrice: 0,
+      maxPrice: 10000000,
+      bedrooms: 0,
+      bathrooms: 0,
+    });
     toast.info('Filtres réinitialisés');
   };
 

@@ -1,14 +1,15 @@
 
 import { Button } from '@/components/ui/button';
-import { SimpleSearchFilters } from './SimpleSearchFilters';
+import { SimpleSearchFilters, SimpleSearchFiltersValues } from './SimpleSearchFilters';
 import { Bell } from 'lucide-react';
 import { useAuth } from '@/providers/AuthProvider';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
+import { PropertyFilters } from '@/hooks/useProperties';
 
 interface SearchSidebarProps {
-  filters: any;
-  onFilterChange: (filters: any) => void;
+  filters: PropertyFilters;
+  onFilterChange: (filters: PropertyFilters) => void;
   onApplyFilters: () => void;
   onResetFilters: () => void;
   onSaveAlert: () => void;
@@ -26,6 +27,47 @@ export const SearchSidebar = ({
   const { user } = useAuth();
   const navigate = useNavigate();
 
+  // Convert PropertyFilters to SimpleSearchFiltersValues
+  const simpleFilters: SimpleSearchFiltersValues = {
+    status: filters.status || 'all',
+    type: filters.type || 'all',
+    location: filters.city || '',
+    priceMin: filters.minPrice || 0,
+    priceMax: filters.maxPrice || 10000000,
+    bedroomsMin: filters.bedrooms || 0,
+    bathroomsMin: filters.bathrooms || 0,
+    areaMin: 0, // Not used in PropertyFilters, set default
+  };
+
+  // Convert SimpleSearchFiltersValues to PropertyFilters
+  const handleSimpleFilterChange = (newFilters: Partial<SimpleSearchFiltersValues>) => {
+    const propertyFilters: Partial<PropertyFilters> = {};
+    
+    if (newFilters.status !== undefined) {
+      propertyFilters.status = newFilters.status === 'all' ? undefined : newFilters.status;
+    }
+    if (newFilters.type !== undefined) {
+      propertyFilters.type = newFilters.type === 'all' ? undefined : newFilters.type;
+    }
+    if (newFilters.location !== undefined) {
+      propertyFilters.city = newFilters.location;
+    }
+    if (newFilters.priceMin !== undefined) {
+      propertyFilters.minPrice = newFilters.priceMin;
+    }
+    if (newFilters.priceMax !== undefined) {
+      propertyFilters.maxPrice = newFilters.priceMax;
+    }
+    if (newFilters.bedroomsMin !== undefined) {
+      propertyFilters.bedrooms = newFilters.bedroomsMin;
+    }
+    if (newFilters.bathroomsMin !== undefined) {
+      propertyFilters.bathrooms = newFilters.bathroomsMin;
+    }
+
+    onFilterChange({ ...filters, ...propertyFilters });
+  };
+
   const handleSaveAlert = () => {
     if (!user) {
       toast.info("Connexion requise", {
@@ -40,8 +82,8 @@ export const SearchSidebar = ({
   return (
     <div className="space-y-6">
       <SimpleSearchFilters
-        values={filters}
-        onChange={onFilterChange}
+        values={simpleFilters}
+        onChange={handleSimpleFilterChange}
         onApplyFilters={onApplyFilters}
         onResetFilters={onResetFilters}
       />

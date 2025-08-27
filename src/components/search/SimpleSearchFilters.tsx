@@ -128,7 +128,7 @@ export const SimpleSearchFilters = ({
           <div className="space-y-2">
             <Label htmlFor="bedrooms">Chambres (min)</Label>
             <Select 
-              value={values.bedroomsMin.toString()} 
+              value={values.bedroomsMin?.toString() || "0"} 
               onValueChange={(value) => onChange({ bedroomsMin: parseInt(value) })}
             >
               <SelectTrigger className="w-full" id="bedrooms">
@@ -149,7 +149,7 @@ export const SimpleSearchFilters = ({
           <div className="space-y-2">
             <Label htmlFor="bathrooms">Salles de bain (min)</Label>
             <Select 
-              value={values.bathroomsMin.toString()} 
+              value={values.bathroomsMin?.toString() || "0"} 
               onValueChange={(value) => onChange({ bathroomsMin: parseInt(value) })}
             >
               <SelectTrigger className="w-full" id="bathrooms">
