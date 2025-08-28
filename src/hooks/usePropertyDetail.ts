@@ -75,8 +75,8 @@ export const usePropertyDetail = (propertyId: string) => {
         url: data.source_url,
       },
       contactInfo: {
-        // Handle different access levels for contact information
-        name: data.contact_name || (session ? 'Premium requis' : 'Connexion requise'),
+        // Contact information is only available for premium users
+        name: data.contact_name || undefined,
         phone: data.contact_phone || undefined,
         email: data.contact_email || undefined,
       },

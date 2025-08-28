@@ -12,6 +12,7 @@ import { usePropertyDetail } from '@/hooks/usePropertyDetail';
 import { useToast } from '@/hooks/use-toast';
 import { useFavorites } from '@/hooks/useFavorites';
 import { useAuth } from '@/providers/AuthProvider';
+import { PremiumContactInfo } from '@/components/property/PremiumContactInfo';
 import { cn } from '@/lib/utils';
 
 const PropertyDetailPage = () => {
@@ -234,84 +235,52 @@ const PropertyDetailPage = () => {
             </div>
             
             <div className="mt-6">
-              <h3 className="font-semibold mb-2">Contacter</h3>
+              <h3 className="font-semibold mb-2">Contact du propriétaire</h3>
               <div className="text-muted-foreground">
-                {/* Show contact name only if available (premium users) */}
-                {property.contactInfo.name ? (
-                  <p>{property.contactInfo.name}</p>
-                ) : (
-                  <p className="text-sm text-muted-foreground">Contact disponible</p>
-                )}
-                
-                {!session && (
-                  <div className="bg-muted/50 border border-muted rounded-lg p-4 mt-3">
-                    <div className="flex items-center gap-2 text-muted-foreground mb-2">
-                      <LogIn className="h-4 w-4" />
-                      <span className="text-sm font-medium">Connexion requise</span>
-                    </div>
-                    <p className="text-sm text-muted-foreground mb-3">
-                      Connectez-vous pour voir les informations de contact
-                    </p>
-                    <Link to="/auth">
-                      <Button size="sm" className="w-full">
-                        Se connecter
-                      </Button>
-                    </Link>
+                {/* Show contact information if available (premium users) */}
+                {property.contactInfo.name && (
+                  <div className="space-y-2">
+                    <p className="font-medium text-foreground">{property.contactInfo.name}</p>
+                    
+                    {property.contactInfo.phone && (
+                      <a 
+                        href={`tel:${property.contactInfo.phone}`}
+                        className="flex items-center gap-2 text-primary hover:text-primary/80"
+                      >
+                        <Phone className="h-4 w-4" />
+                        <span>{property.contactInfo.phone}</span>
+                      </a>
+                    )}
+                    
+                    {property.contactInfo.email && (
+                      <a 
+                        href={`mailto:${property.contactInfo.email}`}
+                        className="flex items-center gap-2 text-primary hover:text-primary/80"
+                      >
+                        <Mail className="h-4 w-4" />
+                        <span>{property.contactInfo.email}</span>
+                      </a>
+                    )}
                   </div>
                 )}
                 
-                {/* Show premium upgrade message if logged in but not premium */}
-                {session && !property.contactInfo.name && (
-                  <div className="bg-gradient-to-r from-primary/10 to-secondary/10 border border-primary/20 rounded-lg p-4 mt-3">
-                    <div className="flex items-center gap-2 text-primary mb-2">
-                      <CreditCard className="h-4 w-4" />
-                      <span className="text-sm font-medium">Abonnement Premium requis</span>
-                    </div>
-                    <p className="text-sm text-muted-foreground mb-3">
-                      Passez au Premium pour accéder aux informations de contact des propriétaires
-                    </p>
-                    <Link to="/subscription">
-                      <Button size="sm" className="w-full">
-                        Découvrir Premium
-                      </Button>
-                    </Link>
-                  </div>
-                )}
-                
-                {session && property.contactInfo.phone && (
-                  <a 
-                    href={`tel:${property.contactInfo.phone}`}
-                    className="flex items-center gap-2 text-primary hover:text-primary/80 mt-3"
-                  >
-                    <Phone className="h-4 w-4" />
-                    <span>{property.contactInfo.phone}</span>
-                  </a>
-                )}
-                
-                {session && property.contactInfo.email && (
-                  <a 
-                    href={`mailto:${property.contactInfo.email}`}
-                    className="flex items-center gap-2 text-primary hover:text-primary/80 mt-2"
-                  >
-                    <Mail className="h-4 w-4" />
-                    <span>{property.contactInfo.email}</span>
-                  </a>
-                )}
+                {/* Show premium upgrade message or login prompt */}
+                <PremiumContactInfo hasContactInfo={!!property.contactInfo.name} />
               </div>
-              
-              {session && (
-                <div className="mt-6 space-y-2">
-                  <Button className="w-full flex items-center gap-2">
-                    <Phone className="h-4 w-4" />
-                    <span>Appeler</span>
-                  </Button>
-                  <Button variant="outline" className="w-full flex items-center gap-2">
-                    <Mail className="h-4 w-4" />
-                    <span>Envoyer un message</span>
-                  </Button>
-                </div>
-              )}
             </div>
+              
+            {session && (
+              <div className="mt-6 space-y-2">
+                <Button className="w-full flex items-center gap-2">
+                  <Phone className="h-4 w-4" />
+                  <span>Appeler</span>
+                </Button>
+                <Button variant="outline" className="w-full flex items-center gap-2">
+                  <Mail className="h-4 w-4" />
+                  <span>Envoyer un message</span>
+                </Button>
+              </div>
+            )}
           </div>
         </div>
       </div>

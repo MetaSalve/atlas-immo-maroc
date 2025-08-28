@@ -183,10 +183,10 @@ export const useProperties = (
         url: property.source_url,
       },
       contactInfo: {
-        // Only include contact info for authenticated users
-        name: session ? (property.contact_name || 'Contact non disponible') : 'Connexion requise',
-        phone: session ? property.contact_phone : undefined,
-        email: session ? property.contact_email : undefined,
+        // Contact information is only available for premium users
+        name: property.contact_name || undefined,
+        phone: property.contact_phone || undefined,
+        email: property.contact_email || undefined,
       },
       createdAt: property.created_at,
       updatedAt: property.updated_at,

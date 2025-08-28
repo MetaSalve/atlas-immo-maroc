@@ -90,8 +90,10 @@ export const PropertyCompare = ({ properties, onClose }: PropertyCompareProps) =
                     <TableCell className="font-medium">Contact</TableCell>
                     {properties.map((property) => (
                       <TableCell key={`${property.id}-contact`}>
-                        {property.contactInfo.name || (
-                          <span className="text-muted-foreground text-sm">Premium requis</span>
+                        {property.contactInfo.name ? (
+                          <span className="text-sm">{property.contactInfo.name}</span>
+                        ) : (
+                          <span className="text-muted-foreground text-sm italic">Premium requis</span>
                         )}
                       </TableCell>
                     ))}
