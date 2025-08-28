@@ -75,10 +75,10 @@ export const usePropertyDetail = (propertyId: string) => {
         url: data.source_url,
       },
       contactInfo: {
-        // Only include contact info for authenticated users
-        name: session ? (data.contact_name || 'Contact non disponible') : 'Connexion requise',
-        phone: session ? data.contact_phone : undefined,
-        email: session ? data.contact_email : undefined,
+        // Handle different access levels for contact information
+        name: data.contact_name || (session ? 'Premium requis' : 'Connexion requise'),
+        phone: data.contact_phone || undefined,
+        email: data.contact_email || undefined,
       },
       createdAt: data.created_at,
       updatedAt: data.updated_at,
