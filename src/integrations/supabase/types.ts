@@ -739,6 +739,9 @@ export type Database = {
           bathrooms: number
           bedrooms: number
           city: string
+          contact_email: string
+          contact_name: string
+          contact_phone: string
           created_at: string
           description: string
           district: string

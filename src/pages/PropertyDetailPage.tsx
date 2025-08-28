@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { 
   Heart, ArrowLeft, MapPin, Phone, Mail, Share2, 
-  Clock, Home, Bed, Bath, Maximize, ExternalLink, LogIn
+  Clock, Home, Bed, Bath, Maximize, ExternalLink, LogIn, CreditCard
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { PropertyImageCarousel } from '@/components/property/PropertyImageCarousel';
@@ -236,7 +236,12 @@ const PropertyDetailPage = () => {
             <div className="mt-6">
               <h3 className="font-semibold mb-2">Contacter</h3>
               <div className="text-muted-foreground">
-                <p>{property.contactInfo.name}</p>
+                {/* Show contact name only if available (premium users) */}
+                {property.contactInfo.name ? (
+                  <p>{property.contactInfo.name}</p>
+                ) : (
+                  <p className="text-sm text-muted-foreground">Contact disponible</p>
+                )}
                 
                 {!session && (
                   <div className="bg-muted/50 border border-muted rounded-lg p-4 mt-3">
@@ -250,6 +255,24 @@ const PropertyDetailPage = () => {
                     <Link to="/auth">
                       <Button size="sm" className="w-full">
                         Se connecter
+                      </Button>
+                    </Link>
+                  </div>
+                )}
+                
+                {/* Show premium upgrade message if logged in but not premium */}
+                {session && !property.contactInfo.name && (
+                  <div className="bg-gradient-to-r from-primary/10 to-secondary/10 border border-primary/20 rounded-lg p-4 mt-3">
+                    <div className="flex items-center gap-2 text-primary mb-2">
+                      <CreditCard className="h-4 w-4" />
+                      <span className="text-sm font-medium">Abonnement Premium requis</span>
+                    </div>
+                    <p className="text-sm text-muted-foreground mb-3">
+                      Passez au Premium pour accéder aux informations de contact des propriétaires
+                    </p>
+                    <Link to="/subscription">
+                      <Button size="sm" className="w-full">
+                        Découvrir Premium
                       </Button>
                     </Link>
                   </div>
