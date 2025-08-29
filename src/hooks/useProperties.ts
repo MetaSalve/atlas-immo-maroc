@@ -62,87 +62,47 @@ export const useProperties = (
     let error: any = null;
     let count: number | null = null;
     
-    // Use appropriate table/view based on authentication status
-    if (session) {
-      // Authenticated users can access full properties table with contact info
-      let query = supabase
-        .from('properties')
-        .select('*', { count: 'exact' })
-        .order('created_at', { ascending: false })
-        .range(from, to);
-
-      if (currentFilters) {
-        if (currentFilters.city) {
-          query = query.ilike('city', `%${currentFilters.city}%`);
+    // All users (authenticated and anonymous) get data through secure RPC
+    // This ensures contact info is properly gated at the database level
+    const rpcResult = await supabase.rpc('get_public_properties');
+    
+    let allData = rpcResult.data || [];
+    error = rpcResult.error;
+    
+    // Apply filters in JavaScript since RPC doesn't support query chaining
+    if (currentFilters && allData.length > 0) {
+      allData = allData.filter((property: any) => {
+        if (currentFilters.city && !property.city?.toLowerCase().includes(currentFilters.city.toLowerCase())) {
+          return false;
         }
-        if (currentFilters.type) {
-          query = query.eq('type', currentFilters.type);
+        if (currentFilters.type && property.type !== currentFilters.type) {
+          return false;
         }
-        if (currentFilters.status) {
-          query = query.eq('status', currentFilters.status);
+        if (currentFilters.status && property.status !== currentFilters.status) {
+          return false;
         }
-        if (currentFilters.minPrice !== undefined) {
-          query = query.gte('price', currentFilters.minPrice);
+        if (currentFilters.minPrice !== undefined && Number(property.price) < currentFilters.minPrice) {
+          return false;
         }
-        if (currentFilters.maxPrice !== undefined) {
-          query = query.lte('price', currentFilters.maxPrice);
+        if (currentFilters.maxPrice !== undefined && Number(property.price) > currentFilters.maxPrice) {
+          return false;
         }
-        if (currentFilters.bedrooms !== undefined) {
-          query = query.gte('bedrooms', currentFilters.bedrooms);
+        if (currentFilters.bedrooms !== undefined && (property.bedrooms || 0) < currentFilters.bedrooms) {
+          return false;
         }
-        if (currentFilters.bathrooms !== undefined) {
-          query = query.gte('bathrooms', currentFilters.bathrooms);
+        if (currentFilters.bathrooms !== undefined && (property.bathrooms || 0) < currentFilters.bathrooms) {
+          return false;
         }
-      }
-
-      const result = await query;
-      data = result.data;
-      error = result.error;
-      count = result.count;
-    } else {
-      // Anonymous users call public function without contact info
-      // Note: For anonymous users, we need to get all data first then apply filters in JavaScript
-      // since RPC calls don't support the same chaining as table queries
-      const result = await supabase.rpc('get_public_properties');
-      
-      let allData = result.data || [];
-      error = result.error;
-      
-      // Apply filters in JavaScript for anonymous users
-      if (currentFilters && allData.length > 0) {
-        allData = allData.filter((property: any) => {
-          if (currentFilters.city && !property.city?.toLowerCase().includes(currentFilters.city.toLowerCase())) {
-            return false;
-          }
-          if (currentFilters.type && property.type !== currentFilters.type) {
-            return false;
-          }
-          if (currentFilters.status && property.status !== currentFilters.status) {
-            return false;
-          }
-          if (currentFilters.minPrice !== undefined && Number(property.price) < currentFilters.minPrice) {
-            return false;
-          }
-          if (currentFilters.maxPrice !== undefined && Number(property.price) > currentFilters.maxPrice) {
-            return false;
-          }
-          if (currentFilters.bedrooms !== undefined && (property.bedrooms || 0) < currentFilters.bedrooms) {
-            return false;
-          }
-          if (currentFilters.bathrooms !== undefined && (property.bathrooms || 0) < currentFilters.bathrooms) {
-            return false;
-          }
-          return true;
-        });
-      }
-      
-      // Sort by created_at descending (newest first)
-      allData = allData.sort((a: any, b: any) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
-      
-      // Apply pagination manually
-      count = allData.length;
-      data = allData.slice(from, to + 1);
+        return true;
+      });
     }
+    
+    // Sort by created_at descending (newest first)
+    allData = allData.sort((a: any, b: any) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
+    
+    // Apply pagination manually
+    count = allData.length;
+    data = allData.slice(from, to + 1);
     
     if (error) {
       console.error('Erreur lors de la récupération des propriétés:', error);
@@ -192,10 +152,10 @@ export const useProperties = (
       updatedAt: property.updated_at,
     }));
     
-    const result = { properties, total: count || 0, page: currentPage };
+    const finalResult = { properties, total: count || 0, page: currentPage };
     
     console.log(`${properties.length} propriétés transformées et prêtes à afficher`);
-    return result;
+    return finalResult;
   };
 
   const result = useQuery({

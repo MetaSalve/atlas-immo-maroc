@@ -14,28 +14,15 @@ export const usePropertyDetail = (propertyId: string) => {
     let data: any = null;
     let error: any = null;
 
-    // Use appropriate table/view based on authentication status
-    if (session) {
-      // Authenticated users can access full properties table with contact info
-      const result = await supabase
-        .from('properties')
-        .select('*')
-        .eq('id', propertyId)
-        .maybeSingle();
-      
-      data = result.data;
+    // All users get data through secure RPC that gates contact info
+    const result = await supabase.rpc('get_public_properties');
+    
+    if (result.error) {
       error = result.error;
+      data = null;
     } else {
-      // Anonymous users call public function without contact info
-      const result = await supabase.rpc('get_public_properties');
-      
-      if (result.error) {
-        error = result.error;
-        data = null;
-      } else {
-        // Find the specific property by ID from the function result
-        data = result.data?.find((property: any) => property.id === propertyId) || null;
-      }
+      // Find the specific property by ID from the function result
+      data = result.data?.find((property: any) => property.id === propertyId) || null;
     }
 
     if (error) {
