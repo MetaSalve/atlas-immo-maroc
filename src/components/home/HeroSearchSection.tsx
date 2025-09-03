@@ -10,7 +10,7 @@ export const HeroSearchSection = () => {
     <section className="bg-gradient-to-r from-blue-600 to-blue-800 text-white py-16">
       <div className="container mx-auto px-4 text-center">
         <h1 className="text-4xl md:text-6xl font-bold mb-6">
-          {t('hero.title')}
+          {t('hero.title', 'Le premier agrégateur d\'annonces immobilières au Maroc')}
         </h1>
         <p className="text-xl mb-8 opacity-90">
           {t('hero.subtitle')}

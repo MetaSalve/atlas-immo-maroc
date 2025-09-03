@@ -364,6 +364,39 @@ export type Database = {
         }
         Relationships: []
       }
+      property_ratings: {
+        Row: {
+          comment: string | null
+          created_at: string | null
+          helpful_count: number | null
+          id: string
+          property_id: string
+          rating: number
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          comment?: string | null
+          created_at?: string | null
+          helpful_count?: number | null
+          id?: string
+          property_id: string
+          rating: number
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          comment?: string | null
+          created_at?: string | null
+          helpful_count?: number | null
+          id?: string
+          property_id?: string
+          rating?: number
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       property_sources: {
         Row: {
           active: boolean | null
@@ -760,6 +793,10 @@ export type Database = {
           type: string
           updated_at: string
         }[]
+      }
+      set_security_headers: {
+        Args: Record<PropertyKey, never>
+        Returns: undefined
       }
       update_test_user_profiles: {
         Args: Record<PropertyKey, never>

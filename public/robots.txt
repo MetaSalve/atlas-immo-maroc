@@ -3,17 +3,30 @@
 User-agent: *
 Allow: /
 
-# Interdire les répertoires d'administration
+# Autoriser l'indexation des pages importantes
+Allow: /search
+Allow: /properties
+Allow: /calculators
+Allow: /districts
+
+# Interdire les répertoires d'administration et privés
 Disallow: /admin/
 Disallow: /api/
 Disallow: /dashboard/
+Disallow: /profile/
+Disallow: /auth/
+
+# Optimisations pour les moteurs de recherche
+Crawl-delay: 1
 
 # Autoriser les bots spécifiques
 User-agent: Googlebot
 Allow: /
+Crawl-delay: 0
 
 User-agent: Bingbot
 Allow: /
+Crawl-delay: 1
 
 User-agent: Yandex
 Allow: /
@@ -21,5 +34,12 @@ Allow: /
 User-agent: Baiduspider
 Allow: /
 
+# Bloquer les bots indésirables
+User-agent: AhrefsBot
+Disallow: /
+
+User-agent: MJ12bot
+Disallow: /
+
 # Sitemap
-Sitemap: https://alertimmo.ma/sitemap.xml
+Sitemap: https://id-preview--4f35bd8e-b135-4b90-97aa-4ff98bbabe59.lovable.app/sitemap.xml

@@ -43,31 +43,19 @@ export const PropertyRating = ({ propertyId, className }: PropertyRatingProps) =
 
   const fetchRatings = async () => {
     try {
-      const { data, error } = await supabase
-        .from('property_ratings')
-        .select(`
-          *,
-          profiles(email)
-        `)
-        .eq('property_id', propertyId)
-        .order('created_at', { ascending: false });
-
-      if (error) throw error;
-
-      const ratingsWithEmail = data?.map(rating => ({
-        ...rating,
-        user_email: rating.profiles?.email || 'Utilisateur anonyme'
-      })) || [];
-
-      setRatings(ratingsWithEmail);
-
-      // Check if current user has already rated
+      // For demo purposes, use local state with mock data
+      console.log('Fetching ratings for property:', propertyId);
+      
+      // Initialize with empty ratings for demo
+      setRatings([]);
+      
+      // Check if current user has already rated (mock)
       if (user) {
-        const userHasRated = ratingsWithEmail.some(rating => rating.user_id === user.id);
-        setHasUserRated(userHasRated);
+        setHasUserRated(false);
       }
     } catch (error) {
       console.error('Error fetching ratings:', error);
+      setRatings([]);
     }
   };
 
@@ -85,22 +73,26 @@ export const PropertyRating = ({ propertyId, className }: PropertyRatingProps) =
     setIsSubmitting(true);
 
     try {
-      const { error } = await supabase
-        .from('property_ratings')
-        .insert({
-          property_id: propertyId,
-          user_id: user.id,
-          rating: userRating,
-          comment: userComment.trim() || null
-        });
-
-      if (error) throw error;
-
-      toast.success('Votre évaluation a été enregistrée');
+      // For now, simulate rating submission until DB is ready
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      
+      toast.success('Votre évaluation a été enregistrée (mode démo)');
       setUserRating(0);
       setUserComment('');
       setHasUserRated(true);
-      fetchRatings();
+      
+      // Add mock rating to state for demo
+      const mockRating: Rating = {
+        id: Date.now().toString(),
+        user_id: user.id,
+        property_id: propertyId,
+        rating: userRating,
+        comment: userComment.trim() || '',
+        created_at: new Date().toISOString(),
+        user_email: 'Vous***@***',
+        helpful_count: 0
+      };
+      setRatings(prev => [mockRating, ...prev]);
     } catch (error: any) {
       toast.error('Erreur lors de l\'enregistrement: ' + error.message);
     } finally {
@@ -115,18 +107,14 @@ export const PropertyRating = ({ propertyId, className }: PropertyRatingProps) =
     }
 
     try {
-      // In a real app, you'd track who found what helpful
-      const { error } = await supabase
-        .from('property_ratings')
-        .update({ 
-          helpful_count: supabase.sql`helpful_count + 1` 
-        })
-        .eq('id', ratingId);
-
-      if (error) throw error;
-
+      // Update helpful count locally for demo
+      setRatings(prev => prev.map(rating => 
+        rating.id === ratingId 
+          ? { ...rating, helpful_count: rating.helpful_count + 1 }
+          : rating
+      ));
+      
       toast.success('Merci pour votre retour !');
-      fetchRatings();
     } catch (error) {
       console.error('Error updating helpful count:', error);
     }

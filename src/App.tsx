@@ -7,6 +7,8 @@ import { NotFound } from "@/components/common/NotFound";
 import { configureSecurityHeaders, runSecurityChecks } from "./utils/securityHeaders";
 import { CookieConsent } from "@/components/common/CookieConsent";
 import { AuthWrapper } from "@/components/auth/AuthWrapper";
+import { GoogleAnalytics } from "@/components/analytics/GoogleAnalytics";
+import { LiveChat } from "@/components/support/LiveChat";
 
 function App() {
   // Configurer les en-têtes de sécurité au chargement de l'application
@@ -17,6 +19,7 @@ function App() {
 
   return (
     <AuthWrapper>
+      <GoogleAnalytics />
       <Routes>
         {routes.map((route, index) => (
           <Route
@@ -40,6 +43,7 @@ function App() {
       </Routes>
       
       <CookieConsent />
+      <LiveChat />
     </AuthWrapper>
   );
 }

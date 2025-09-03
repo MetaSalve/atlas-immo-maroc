@@ -1,63 +1,76 @@
 
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <!-- Pages principales -->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:mobile="http://www.google.com/schemas/sitemap-mobile/1.0" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
   <url>
-    <loc>https://alertimmo.ma/</loc>
-    <lastmod>2024-04-24</lastmod>
+    <loc>https://id-preview--4f35bd8e-b135-4b90-97aa-4ff98bbabe59.lovable.app/</loc>
+    <lastmod>2025-01-29T00:00:00+00:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://alertimmo.ma/search</loc>
-    <lastmod>2024-04-24</lastmod>
+    <loc>https://id-preview--4f35bd8e-b135-4b90-97aa-4ff98bbabe59.lovable.app/search</loc>
+    <lastmod>2025-01-29T00:00:00+00:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://alertimmo.ma/auth</loc>
-    <lastmod>2024-04-24</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <loc>https://id-preview--4f35bd8e-b135-4b90-97aa-4ff98bbabe59.lovable.app/properties</loc>
+    <lastmod>2025-01-29T00:00:00+00:00</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://alertimmo.ma/subscription</loc>
-    <lastmod>2024-04-24</lastmod>
-    <changefreq>monthly</changefreq>
+    <loc>https://id-preview--4f35bd8e-b135-4b90-97aa-4ff98bbabe59.lovable.app/apartments-casablanca</loc>
+    <lastmod>2025-01-29T00:00:00+00:00</lastmod>
+    <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
-  
-  <!-- Pages légales -->
   <url>
-    <loc>https://alertimmo.ma/legal</loc>
-    <lastmod>2024-04-24</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.3</priority>
+    <loc>https://id-preview--4f35bd8e-b135-4b90-97aa-4ff98bbabe59.lovable.app/villas-rabat</loc>
+    <lastmod>2025-01-29T00:00:00+00:00</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://alertimmo.ma/privacy</loc>
-    <lastmod>2024-04-24</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.3</priority>
+    <loc>https://id-preview--4f35bd8e-b135-4b90-97aa-4ff98bbabe59.lovable.app/maisons-marrakech</loc>
+    <lastmod>2025-01-29T00:00:00+00:00</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://alertimmo.ma/terms</loc>
-    <lastmod>2024-04-24</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.3</priority>
-  </url>
-  
-  <!-- Exemples de pages de propriétés principales -->
-  <url>
-    <loc>https://alertimmo.ma/properties/123</loc>
-    <lastmod>2024-04-24</lastmod>
+    <loc>https://id-preview--4f35bd8e-b135-4b90-97aa-4ff98bbabe59.lovable.app/favorites</loc>
+    <lastmod>2025-01-29T00:00:00+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://alertimmo.ma/properties/456</loc>
-    <lastmod>2024-04-24</lastmod>
+    <loc>https://id-preview--4f35bd8e-b135-4b90-97aa-4ff98bbabe59.lovable.app/alerts</loc>
+    <lastmod>2025-01-29T00:00:00+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://id-preview--4f35bd8e-b135-4b90-97aa-4ff98bbabe59.lovable.app/auth</loc>
+    <lastmod>2025-01-29T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://id-preview--4f35bd8e-b135-4b90-97aa-4ff98bbabe59.lovable.app/legal</loc>
+    <lastmod>2025-01-29T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://id-preview--4f35bd8e-b135-4b90-97aa-4ff98bbabe59.lovable.app/privacy</loc>
+    <lastmod>2025-01-29T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://id-preview--4f35bd8e-b135-4b90-97aa-4ff98bbabe59.lovable.app/terms</loc>
+    <lastmod>2025-01-29T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
 </urlset>

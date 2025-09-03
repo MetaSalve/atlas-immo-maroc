@@ -11,6 +11,11 @@ import AdminDashboardPage from '@/pages/AdminDashboard';
 import PropertiesPage from '@/pages/PropertiesPage';
 import SearchPage from '@/pages/SearchPage';
 import ResetPasswordPage from '@/pages/ResetPasswordPage';
+import CalculatorPage from '@/pages/CalculatorPage';
+import DistrictPage from '@/pages/DistrictPage';
+import LegalPage from '@/pages/LegalPage';
+import PrivacyPage from '@/pages/PrivacyPage';
+import TermsPage from '@/pages/TermsPage';
 import { NotFound } from '@/components/common/NotFound';
 import { ProtectedRoute } from '@/components/auth/ProtectedRoute';
 
@@ -58,6 +63,26 @@ const routes = [
   {
     path: '/auth/reset-password',
     element: <ResetPasswordPage />
+  },
+  {
+    path: '/calculators',
+    element: <CalculatorPage />
+  },
+  {
+    path: '/districts',
+    element: <DistrictPage />
+  },
+  {
+    path: '/legal',
+    element: <LegalPage />
+  },
+  {
+    path: '/privacy',
+    element: <PrivacyPage />
+  },
+  {
+    path: '/terms',
+    element: <TermsPage />
   }
 ];
 
